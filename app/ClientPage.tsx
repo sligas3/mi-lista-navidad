@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Wish } from '@/lib/supabase'
+import { User } from '@/lib/types/database'
 import { createWish, toggleWish, deleteWish } from './actions'
 import HeaderNavidad from '@/components/HeaderNavidad'
 import Footer from '@/components/Footer'
@@ -14,12 +15,15 @@ import Stats from '@/components/Stats'
 import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
+import { UserMenu } from '@/components/auth/UserMenu'
+import Link from 'next/link'
 
 interface ClientPageProps {
   initialWishes: Wish[]
+  user: User | null
 }
 
-export default function ClientPage({ initialWishes }: ClientPageProps) {
+export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes)
   const [nombreUsuario, setNombreUsuario] = useState<string>('')
   const [showUserModal, setShowUserModal] = useState(false)
@@ -101,8 +105,9 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
         <div className="max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto space-y-8 md:space-y-12">
           <HeaderNavidad />
 
-          {/* Botones de acción */}
-          <div className="flex gap-2 md:gap-3 mb-8 justify-center flex-wrap">
+          {/* Header con auth */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex gap-2 flex-wrap">
             <Button
               onClick={handleChangeUser}
               variant="outline"
@@ -125,6 +130,17 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
             >
               📊 Estadísticas
             </Button>
+            </div>
+            
+            {user ? (
+              <UserMenu user={user} />
+            ) : (
+              <Link href="/login">
+                <Button variant="outline" size="sm">
+                  🎄 Iniciar sesión
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Estadísticas */}
