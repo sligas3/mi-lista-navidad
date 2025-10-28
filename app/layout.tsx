@@ -4,30 +4,33 @@ import "./globals.css";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   variable: "--font-poppins",
   display: "swap",
-  preload: true,
-  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+  adjustFontFallback: true,
 });
 
 const manrope = Manrope({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   variable: "--font-manrope",
   display: "swap",
-  preload: true,
-  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
   title: "🎄 Mi Lista de Deseos Navideña",
   description: "Comparte tus deseos navideños con familia y amigos",
   keywords: ["navidad", "deseos", "wishlist", "regalos"],
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${poppins.variable} ${manrope.variable}`}>
+    <html lang="es" className={`${poppins.variable} ${manrope.variable}`} style={{ WebkitFontSmoothing: 'antialiased' }}>
       <body className="bg-emerald-950" style={{
         background: 'radial-gradient(ellipse at top, #064e3b 0%, #022c22 50%, #0a1f1a 100%)',
         minHeight: '100vh'

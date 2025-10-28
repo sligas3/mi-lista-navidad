@@ -18,16 +18,35 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-display font-semibold tracking-tight;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
   }
 
   p {
     @apply leading-relaxed;
+  }
+
+  /* Optimizaciones específicas por navegador */
+  @supports (-webkit-touch-callout: none) {
+    /* iOS Safari */
+    body {
+      -webkit-text-size-adjust: 100%;
+    }
+  }
+
+  @supports (-moz-appearance: none) {
+    /* Firefox */
+    body {
+      -moz-text-size-adjust: 100%;
+    }
   }
 
   /* Scrollbar personalizado */
