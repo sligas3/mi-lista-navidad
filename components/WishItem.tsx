@@ -3,6 +3,9 @@
 import { Wish } from '@/lib/supabase'
 import { formatearFecha, getPrioridadEmoji } from '@/lib/utils'
 import { useState } from 'react'
+import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
 
 interface WishItemProps {
   wish: Wish
@@ -35,58 +38,55 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete }: Wish
   }
 
   return (
-    <div
-      className={`bg-white/95 rounded-lg p-5 shadow-lg border-2 transition-all hover:shadow-xl ${
-        wish.cumplido
-          ? 'border-green-400 opacity-75'
-          : 'border-navidad-dorado/30'
-      }`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl">{wish.cumplido ? '✅' : '🎁'}</span>
-            <h3
-              className={`font-semibold text-navidad-oscuro ${
-                wish.cumplido ? 'line-through opacity-60' : ''
-              }`}
-            >
+    <Card className={wish.cumplido ? 'opacity-60' : ''}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-1 space-y-3">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl flex-shrink-0">
+              {wish.cumplido ? '✅' : '🎁'}
+            </span>
+            <p className={`text-base font-medium text-zinc-900 ${wish.cumplido ? 'line-through' : ''}`}>
               {wish.deseo}
-            </h3>
+            </p>
           </div>
 
-          <div className="flex items-center gap-3 text-sm text-gray-600">
-            <span className="flex items-center gap-1">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-sm text-zinc-600 flex items-center gap-1">
               👤 <span className="font-medium">{wish.nombre_usuario}</span>
             </span>
-            <span>{getPrioridadEmoji(wish.prioridad)}</span>
-            <span className="text-xs opacity-60">
+            <span className="text-sm">{getPrioridadEmoji(wish.prioridad)}</span>
+            <Badge variant={wish.cumplido ? 'success' : 'warning'}>
+              {wish.cumplido ? 'Cumplido' : 'Pendiente'}
+            </Badge>
+            <span className="text-xs text-zinc-400">
               {formatearFecha(wish.created_at)}
             </span>
           </div>
         </div>
 
         {isOwner && (
-          <div className="flex gap-2">
-            <button
+          <div className="flex gap-2 flex-shrink-0">
+            <Button
               onClick={handleToggle}
               disabled={loading}
-              className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white text-sm rounded-md transition-colors disabled:opacity-50"
+              variant="ghost"
+              size="sm"
               title={wish.cumplido ? 'Marcar pendiente' : 'Marcar cumplido'}
             >
               {wish.cumplido ? '↩️' : '✓'}
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleDelete}
               disabled={loading}
-              className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors disabled:opacity-50"
+              variant="ghost"
+              size="sm"
               title="Eliminar"
             >
               🗑️
-            </button>
+            </Button>
           </div>
         )}
       </div>
-    </div>
+    </Card>
   )
 }

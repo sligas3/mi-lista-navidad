@@ -1,22 +1,29 @@
 import type { Metadata } from "next";
-import { Mountains_of_Christmas } from "next/font/google";
+import { Outfit, Inter } from "next/font/google";
 import "./globals.css";
 
-const mountainsOfChristmas = Mountains_of_Christmas({
-  weight: ["400", "700"],
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-navidad",
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "🎄 Mi Lista de Deseos Navideña",
   description: "Comparte tus deseos navideños con familia y amigos",
+  keywords: ["navidad", "deseos", "wishlist", "regalos"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
-      <body className={`${mountainsOfChristmas.variable} antialiased`}>{children}</body>
+    <html lang="es" className={`${outfit.variable} ${inter.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

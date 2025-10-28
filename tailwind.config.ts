@@ -9,16 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navidad: {
-          rojo: '#C41E3A',
-          verde: '#165B33',
-          dorado: '#FFD700',
-          nieve: '#F8F9FA',
-          oscuro: '#1A1A1A',
+        primary: {
+          DEFAULT: '#E11D48',
+          hover: '#BE123C',
+          light: '#FFF1F2',
+          dark: '#9F1239',
+        },
+        secondary: {
+          DEFAULT: '#16A34A',
+          hover: '#15803D',
+          light: '#F0FDF4',
+          dark: '#166534',
+        },
+        accent: {
+          DEFAULT: '#EAB308',
+          hover: '#CA8A04',
+          light: '#FEF9C3',
+          dark: '#A16207',
         },
       },
       fontFamily: {
-        navidad: ['"Mountains of Christmas"', 'cursive'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
       },
     },
   },

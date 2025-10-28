@@ -3,6 +3,8 @@
 import { Wish } from '@/lib/supabase'
 import WishItem from './WishItem'
 import { useState } from 'react'
+import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 
 interface WishListProps {
   wishes: Wish[]
@@ -29,43 +31,48 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete }: Wi
   })
 
   return (
-    <div className="space-y-4">
-      {/* Filtros y búsqueda */}
-      <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 space-y-3">
-        <input
-          type="text"
+    <div className="space-y-6">
+      {/* Filtros */}
+      <div className="space-y-4">
+        <Input
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           placeholder="🔍 Buscar por deseo o persona..."
-          className="w-full px-4 py-2 rounded-lg bg-white/90 text-navidad-oscuro placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-navidad-dorado"
         />
 
-        <div className="flex gap-2">
-          {(['todos', 'pendientes', 'cumplidos'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFiltro(f)}
-              className={`flex-1 py-2 rounded-lg font-medium text-sm transition-all ${
-                filtro === f
-                  ? 'bg-navidad-dorado text-navidad-oscuro'
-                  : 'bg-white/20 text-white hover:bg-white/30'
-              }`}
-            >
-              {f === 'todos' && '🎁 Todos'}
-              {f === 'pendientes' && '⏳ Pendientes'}
-              {f === 'cumplidos' && '✅ Cumplidos'}
-            </button>
-          ))}
+        <div className="flex gap-2 flex-wrap">
+          <Button
+            onClick={() => setFiltro('todos')}
+            variant={filtro === 'todos' ? 'primary' : 'outline'}
+            size="sm"
+          >
+            🎁 Todos
+          </Button>
+          <Button
+            onClick={() => setFiltro('pendientes')}
+            variant={filtro === 'pendientes' ? 'primary' : 'outline'}
+            size="sm"
+          >
+            ⏳ Pendientes
+          </Button>
+          <Button
+            onClick={() => setFiltro('cumplidos')}
+            variant={filtro === 'cumplidos' ? 'primary' : 'outline'}
+            size="sm"
+          >
+            ✅ Cumplidos
+          </Button>
         </div>
       </div>
 
-      {/* Lista de deseos */}
+      {/* Lista */}
       {wishesFiltrados.length === 0 ? (
-        <div className="text-center py-12 bg-white/10 backdrop-blur-md rounded-xl">
-          <p className="text-white/70 text-lg">
-            {busqueda ? '🔍 No se encontraron deseos' : '🎄 Aún no hay deseos navideños'}
-          </p>
-          <p className="text-white/50 text-sm mt-2">
+        <div className="text-center py-16 bg-white rounded-lg border border-zinc-200">
+          <div className="text-6xl mb-4">🎄</div>
+          <h3 className="text-lg font-semibold text-zinc-900 mb-2">
+            {busqueda ? 'No se encontraron deseos' : 'Aún no hay deseos navideños'}
+          </h3>
+          <p className="text-zinc-600">
             {!busqueda && '¡Sé el primero en agregar uno! ✨'}
           </p>
         </div>
@@ -83,8 +90,7 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete }: Wi
         </div>
       )}
 
-      {/* Contador */}
-      <p className="text-center text-white/60 text-sm">
+      <p className="text-center text-sm text-zinc-500">
         Mostrando {wishesFiltrados.length} de {wishes.length} deseos
       </p>
     </div>

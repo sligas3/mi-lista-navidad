@@ -2,6 +2,7 @@
 
 import { Wish } from '@/lib/supabase'
 import { getPrioridadEmoji } from '@/lib/utils'
+import { Button } from '@/components/ui/Button'
 
 interface ExportButtonProps {
   wishes: Wish[]
@@ -23,11 +24,12 @@ export default function ExportButton({ wishes, onExport }: ExportButtonProps) {
   }
 
   return (
-    <button
+    <Button
       onClick={handleExport}
-      className="px-4 py-2 bg-navidad-verde hover:bg-navidad-verde/90 text-white rounded-lg text-sm transition-all font-medium"
+      variant="secondary"
+      size="sm"
     >
-      📋 Exportar lista
-    </button>
+      📋 Exportar
+    </Button>
   )
 }

@@ -9,10 +9,11 @@ import WishForm from '@/components/WishForm'
 import WishList from '@/components/WishList'
 import SnowEffect from '@/components/SnowEffect'
 import UserModal from '@/components/UserModal'
-import Toast from '@/components/Toast'
+import { Toast } from '@/components/ui/Toast'
 import Stats from '@/components/Stats'
 import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
+import { Button } from '@/components/ui/Button'
 
 interface ClientPageProps {
   initialWishes: Wish[]
@@ -22,7 +23,7 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes)
   const [nombreUsuario, setNombreUsuario] = useState<string>('')
   const [showUserModal, setShowUserModal] = useState(false)
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null)
+  const [toast, setToast] = useState<{ message: string; variant: 'success' | 'error' | 'info' | 'warning' } | null>(null)
   const [selectedUser, setSelectedUser] = useState('Todos')
   const [showStats, setShowStats] = useState(false)
 
@@ -48,27 +49,27 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
   const handleCreateWish = async (deseo: string, prioridad: 1 | 2 | 3) => {
     try {
       await createWish(nombreUsuario, deseo, prioridad)
-      setToast({ message: '🎁 Deseo agregado con éxito', type: 'success' })
+      setToast({ message: 'Deseo agregado con éxito', variant: 'success' })
     } catch (error) {
-      setToast({ message: '❌ Error al agregar deseo', type: 'error' })
+      setToast({ message: 'Error al agregar deseo', variant: 'error' })
     }
   }
 
   const handleToggleWish = async (id: string, cumplido: boolean) => {
     try {
       await toggleWish(id, cumplido)
-      setToast({ message: cumplido ? '✅ Deseo cumplido' : '⏳ Marcado como pendiente', type: 'success' })
+      setToast({ message: cumplido ? 'Deseo cumplido' : 'Marcado como pendiente', variant: 'success' })
     } catch (error) {
-      setToast({ message: '❌ Error al actualizar', type: 'error' })
+      setToast({ message: 'Error al actualizar', variant: 'error' })
     }
   }
 
   const handleDeleteWish = async (id: string) => {
     try {
       await deleteWish(id)
-      setToast({ message: '🗑️ Deseo eliminado', type: 'success' })
+      setToast({ message: 'Deseo eliminado', variant: 'success' })
     } catch (error) {
-      setToast({ message: '❌ Error al eliminar', type: 'error' })
+      setToast({ message: 'Error al eliminar', variant: 'error' })
     }
   }
 
@@ -79,11 +80,11 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
   const handleShare = () => {
     const url = window.location.href
     navigator.clipboard.writeText(url)
-    setToast({ message: '🔗 Enlace copiado al portapapeles', type: 'success' })
+    setToast({ message: 'Enlace copiado al portapapeles', variant: 'success' })
   }
 
   const handleExport = () => {
-    setToast({ message: '📋 Lista copiada al portapapeles', type: 'success' })
+    setToast({ message: 'Lista copiada al portapapeles', variant: 'success' })
   }
 
   const filteredWishes = selectedUser === 'Todos' 
@@ -97,30 +98,33 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
       {showUserModal && <UserModal onSetUser={handleSetUser} />}
 
       <main className="min-h-screen p-4 md:p-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto">
           <HeaderNavidad />
 
           {/* Botones de acción */}
-          <div className="flex gap-2 mb-6 justify-center flex-wrap">
-            <button
+          <div className="flex gap-2 md:gap-3 mb-8 justify-center flex-wrap">
+            <Button
               onClick={handleChangeUser}
-              className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg text-sm transition-all backdrop-blur-sm"
+              variant="outline"
+              size="sm"
             >
               👤 Cambiar usuario
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleShare}
-              className="px-4 py-2 bg-navidad-dorado hover:bg-navidad-dorado/90 text-navidad-oscuro font-medium rounded-lg text-sm transition-all"
+              variant="secondary"
+              size="sm"
             >
-              🔗 Compartir lista
-            </button>
+              🔗 Compartir
+            </Button>
             <ExportButton wishes={wishes} onExport={handleExport} />
-            <button
+            <Button
               onClick={() => setShowStats(!showStats)}
-              className="px-4 py-2 bg-navidad-rojo hover:bg-navidad-rojo/90 text-white rounded-lg text-sm transition-all font-medium"
+              variant="ghost"
+              size="sm"
             >
-              📊 {showStats ? 'Ocultar' : 'Ver'} estadísticas
-            </button>
+              📊 Estadísticas
+            </Button>
           </div>
 
           {/* Estadísticas */}
@@ -161,7 +165,7 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
       {toast && (
         <Toast
           message={toast.message}
-          type={toast.type}
+          variant={toast.variant}
           onClose={() => setToast(null)}
         />
       )}
