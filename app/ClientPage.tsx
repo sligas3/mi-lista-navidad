@@ -7,7 +7,7 @@ import HeaderNavidad from '@/components/HeaderNavidad'
 import Footer from '@/components/Footer'
 import WishForm from '@/components/WishForm'
 import WishList from '@/components/WishList'
-import SnowEffect from '@/components/SnowEffect'
+import BackgroundFX from '@/components/ui/BackgroundFX'
 import UserModal from '@/components/UserModal'
 import { Toast } from '@/components/ui/Toast'
 import Stats from '@/components/Stats'
@@ -93,12 +93,12 @@ export default function ClientPage({ initialWishes }: ClientPageProps) {
 
   return (
     <>
-      <SnowEffect />
+      <BackgroundFX />
       
       {showUserModal && <UserModal onSetUser={handleSetUser} />}
 
-      <main className="min-h-screen p-4 md:p-8">
-        <div className="max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto">
+      <main className="min-h-screen p-4 md:p-8 lg:p-12">
+        <div className="max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto space-y-8 md:space-y-12">
           <HeaderNavidad />
 
           {/* Botones de acción */}

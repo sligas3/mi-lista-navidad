@@ -1,7 +1,7 @@
 // Calcular días hasta Navidad
 export function diasHastaNavidad(): number {
   const hoy = new Date();
-  const navidad = new Date(hoy.getFullYear(), 11, 25); // Mes 11 = Diciembre
+  const navidad = new Date(hoy.getFullYear(), 11, 25);
 
   if (hoy > navidad) {
     navidad.setFullYear(navidad.getFullYear() + 1);
@@ -41,4 +41,11 @@ export function getSaludo(): string {
 // Validar nombre de usuario
 export function validarNombre(nombre: string): boolean {
   return nombre.trim().length >= 2 && nombre.trim().length <= 30;
+}
+
+// Extraer URL de un texto
+export function extractUrl(text: string): string | null {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const match = text.match(urlRegex);
+  return match ? match[0] : null;
 }

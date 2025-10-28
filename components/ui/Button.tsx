@@ -3,15 +3,15 @@ import { cn } from "@/lib/cn";
 import { forwardRef } from "react";
 
 const button = cva(
-  "inline-flex items-center justify-center rounded-lg font-medium transition-all focus-ring disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98]",
+  "inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus-ring disabled:opacity-50 disabled:pointer-events-none active:scale-95 hover:scale-[1.02]",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-white hover:bg-primary-hover shadow-sm",
-        secondary: "bg-secondary text-white hover:bg-secondary-hover shadow-sm",
-        ghost: "bg-transparent text-primary hover:bg-primary-light",
-        outline: "border-2 border-zinc-300 bg-white hover:bg-zinc-50",
-        destructive: "bg-red-600 text-white hover:bg-red-700 shadow-sm",
+        primary: "bg-green-600 text-white hover:bg-green-500 hover:shadow-xl hover:shadow-green-900/60 active:bg-green-700",
+        secondary: "bg-rose-600 text-white hover:bg-rose-500 hover:shadow-xl hover:shadow-rose-900/60 active:bg-rose-700",
+        ghost: "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm active:bg-white/30",
+        outline: "border-2 border-white/30 bg-transparent text-white hover:bg-white/10 hover:border-white/50 active:bg-white/20",
+        destructive: "bg-red-600 text-white hover:bg-red-500 hover:shadow-xl hover:shadow-red-900/60 active:bg-red-700",
       },
       size: {
         sm: "h-9 px-3 text-sm",
@@ -32,12 +32,17 @@ export interface ButtonProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   isLoading?: boolean;
+  as?: 'button' | 'a';
+  href?: string;
+  target?: string;
+  rel?: string;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, leftIcon, rightIcon, isLoading, children, disabled, ...props }, ref) => {
+  ({ className, variant, size, leftIcon, rightIcon, isLoading, children, disabled, as = 'button', ...props }, ref) => {
+    const Component = as as any;
     return (
-      <button
+      <Component
         ref={ref}
         className={cn(button({ variant, size }), className)}
         disabled={disabled || isLoading}
@@ -54,7 +59,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ) : null}
         {children}
         {rightIcon && <span className="ml-2">{rightIcon}</span>}
-      </button>
+      </Component>
     );
   }
 );

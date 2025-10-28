@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Outfit, Inter } from "next/font/google";
+import { Poppins, Manrope } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-poppins",
   display: "swap",
 });
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -22,8 +23,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${outfit.variable} ${inter.variable}`}>
-      <body>{children}</body>
+    <html lang="es" className={`${poppins.variable} ${manrope.variable}`}>
+      <body className="bg-emerald-950" style={{
+        background: 'radial-gradient(ellipse at top, #064e3b 0%, #022c22 50%, #0a1f1a 100%)',
+        minHeight: '100vh'
+      }}>
+        {children}
+      </body>
     </html>
   );
 }

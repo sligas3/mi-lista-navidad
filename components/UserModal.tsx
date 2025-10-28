@@ -23,21 +23,21 @@ export default function UserModal({ onSetUser }: UserModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in">
-      <div className="bg-white rounded-xl p-8 max-w-md w-full shadow-2xl">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in">
+      <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 md:p-10 max-w-md w-full shadow-2xl border border-white/20 animate-scale-in">
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4">🎅</div>
-          <h2 className="font-display text-3xl font-bold text-zinc-900 mb-2">
+          <div className="text-7xl mb-6 animate-float">🎅</div>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-3 tracking-tight">
             ¡Bienvenido!
           </h2>
-          <p className="text-zinc-600">
+          <p className="text-white/80 text-base md:text-lg">
             ¿Cómo te llamas?
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="nombre" required>
+            <Label htmlFor="nombre" required className="text-base">
               Tu nombre
             </Label>
             <Input
@@ -58,13 +58,13 @@ export default function UserModal({ onSetUser }: UserModalProps) {
             type="submit"
             variant="primary"
             size="lg"
-            className="w-full"
+            className="w-full text-base font-bold shadow-2xl shadow-green-900/60"
             leftIcon="✨"
           >
-            Entrar
+            Entrar al mundo navideño
           </Button>
 
-          <p className="text-xs text-center text-zinc-500">
+          <p className="text-xs text-center text-white/60">
             Tu nombre se guardará localmente en tu navegador
           </p>
         </form>

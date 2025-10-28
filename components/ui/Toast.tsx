@@ -11,17 +11,17 @@ export interface ToastProps {
 }
 
 const variantStyles = {
-  success: "bg-green-50 text-green-800 border-green-200",
-  error: "bg-red-50 text-red-800 border-red-200",
-  info: "bg-blue-50 text-blue-800 border-blue-200",
-  warning: "bg-yellow-50 text-yellow-800 border-yellow-200",
+  success: "bg-green-500/95 text-white border-green-400/50",
+  error: "bg-red-500/95 text-white border-red-400/50",
+  info: "bg-blue-500/95 text-white border-blue-400/50",
+  warning: "bg-yellow-500/95 text-white border-yellow-400/50",
 };
 
 const icons = {
-  success: "✓",
-  error: "✕",
-  info: "ℹ",
-  warning: "⚠",
+  success: "✅",
+  error: "❌",
+  info: "ℹ️",
+  warning: "⚠️",
 };
 
 export function Toast({ message, variant = 'success', onClose, duration = 3000 }: ToastProps) {
@@ -33,17 +33,17 @@ export function Toast({ message, variant = 'success', onClose, duration = 3000 }
   return (
     <div
       className={cn(
-        "fixed bottom-4 right-4 z-50 animate-in flex items-center gap-3 rounded-lg border px-4 py-3 shadow-lg max-w-md",
+        "fixed bottom-4 right-4 z-50 animate-scale-in flex items-center gap-3 rounded-lg border px-5 py-3.5 shadow-2xl max-w-md backdrop-blur-sm",
         variantStyles[variant]
       )}
       role="alert"
       aria-live="polite"
     >
-      <span className="text-lg font-semibold">{icons[variant]}</span>
-      <p className="text-sm font-medium flex-1">{message}</p>
+      <span className="text-xl">{icons[variant]}</span>
+      <p className="text-sm font-semibold flex-1">{message}</p>
       <button
         onClick={onClose}
-        className="text-current opacity-70 hover:opacity-100 transition-opacity"
+        className="text-white/80 hover:text-white transition-colors ml-2"
         aria-label="Cerrar"
       >
         ✕
