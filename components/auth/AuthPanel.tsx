@@ -151,7 +151,7 @@ export function AuthPanel() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="space-y-2 overflow-hidden"
+            className="space-y-2"
           >
             <Label htmlFor="displayName">Nombre</Label>
             <Input
