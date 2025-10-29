@@ -57,7 +57,7 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
 
   return (
     <Card>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <MotionDiv
           {...(shouldAnimate && {
             initial: { opacity: 0, y: 10 },
@@ -66,8 +66,8 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
           })}
           className="space-y-2"
         >
-          <Label htmlFor="titulo" required className="text-base flex items-center gap-2">
-            <Sparkles className="w-4 h-4" />
+          <Label htmlFor="titulo" required className="text-sm sm:text-base flex items-center gap-1.5 sm:gap-2">
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             ¿Qué deseas?
           </Label>
           <Input
@@ -91,8 +91,8 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
           })}
           className="space-y-2"
         >
-          <Label htmlFor="link" className="text-base flex items-center gap-2">
-            <LinkIcon className="w-4 h-4" />
+          <Label htmlFor="link" className="text-sm sm:text-base flex items-center gap-1.5 sm:gap-2">
+            <LinkIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Link
           </Label>
           <Input
@@ -128,19 +128,19 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
               type="submit"
               variant="primary"
               size="lg"
-              className="w-full text-base font-bold shadow-2xl shadow-green-900/60"
+              className="w-full font-bold shadow-2xl shadow-green-900/60"
               isLoading={loading}
-              leftIcon={<Gift className="w-5 h-5" />}
+              leftIcon={<Gift className="w-4 h-4 sm:w-5 sm:h-5" />}
             >
               Agregar deseo
             </Button>
-            <p className="text-xs text-center text-white/60 mt-3">
+            <p className="text-[10px] xs:text-xs text-center text-white/60 mt-2 sm:mt-3">
               Pidiendo como: <span className="font-semibold text-white">{user.display_name || user.email}</span>
             </p>
           </MotionDiv>
         ) : (
           <div className="space-y-3">
-            <p className="text-sm text-center text-white/80">
+            <p className="text-xs sm:text-sm text-center text-white/80">
               Inicia sesión para crear deseos
             </p>
             <Link href="/login?returnUrl=/" className="block">
@@ -148,8 +148,8 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
                 type="button"
                 variant="primary"
                 size="lg"
-                className="w-full text-base font-bold"
-                leftIcon={<TreePine className="w-5 h-5" />}
+                className="w-full font-bold"
+                leftIcon={<TreePine className="w-4 h-4 sm:w-5 sm:h-5" />}
               >
                 Ingresar
               </Button>

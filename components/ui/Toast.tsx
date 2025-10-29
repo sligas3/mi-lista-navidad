@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/cn";
 import { useEffect } from "react";
+import { CheckCircle, XCircle, Info, AlertTriangle, X } from 'lucide-react';
 
 export interface ToastProps {
   message: string;
@@ -17,11 +18,11 @@ const variantStyles = {
   warning: "bg-yellow-500/95 text-white border-yellow-400/50",
 };
 
-const icons = {
-  success: "✅",
-  error: "❌",
-  info: "ℹ️",
-  warning: "⚠️",
+const iconComponents = {
+  success: CheckCircle,
+  error: XCircle,
+  info: Info,
+  warning: AlertTriangle,
 };
 
 export function Toast({ message, variant = 'success', onClose, duration = 3000 }: ToastProps) {
@@ -33,23 +34,26 @@ export function Toast({ message, variant = 'success', onClose, duration = 3000 }
   return (
     <div
       className={cn(
-        "fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50 animate-scale-in flex items-center gap-3 rounded-lg border px-5 py-3.5 shadow-2xl backdrop-blur-sm",
+        "fixed bottom-3 left-3 right-3 sm:bottom-4 sm:left-auto sm:right-4 sm:max-w-md z-50 animate-scale-in flex items-center gap-2 sm:gap-3 rounded-lg border px-3 py-2.5 sm:px-5 sm:py-3.5 shadow-2xl backdrop-blur-sm",
         variantStyles[variant]
       )}
       style={{
-        paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+        paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))',
       }}
       role="alert"
       aria-live="polite"
     >
-      <span className="text-xl">{icons[variant]}</span>
-      <p className="text-sm font-semibold flex-1">{message}</p>
+      {(() => {
+        const IconComponent = iconComponents[variant]
+        return <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+      })()}
+      <p className="text-xs sm:text-sm font-semibold flex-1">{message}</p>
       <button
         onClick={onClose}
-        className="text-white/80 hover:text-white transition-colors ml-2 min-w-[24px] min-h-[24px] flex items-center justify-center"
+        className="text-white/80 hover:text-white transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center flex-shrink-0"
         aria-label="Cerrar notificación"
       >
-        ✕
+        <X className="w-4 h-4" />
       </button>
     </div>
   );

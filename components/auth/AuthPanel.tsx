@@ -71,7 +71,7 @@ export function AuthPanel() {
           ? 'Este email ya está registrado. Intenta iniciar sesión.'
           : 'Error al crear cuenta. Verifica tus datos.')
       } else {
-        setError('¡Revisa tu email para confirmar tu cuenta! 📧')
+        setError('¡Revisa tu email para confirmar tu cuenta!')
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({
@@ -94,7 +94,7 @@ export function AuthPanel() {
   return (
     <div className="w-full max-w-md mx-auto">
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 bg-white/5 p-1 rounded-xl relative">
+      <div className="flex gap-1.5 sm:gap-2 mb-4 sm:mb-6 bg-white/5 p-1 rounded-xl relative">
         <motion.div
           layoutId="activeTab"
           className="absolute inset-y-1 bg-white/20 rounded-lg"
@@ -107,7 +107,7 @@ export function AuthPanel() {
         <button
           type="button"
           onClick={() => { setMode('login'); setError(null) }}
-          className={`relative z-10 flex-1 py-3 px-4 rounded-lg font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
+          className={`relative z-10 flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-lg font-semibold text-sm sm:text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
             isLogin ? 'text-white' : 'text-white/70 hover:text-white'
           }`}
         >
@@ -116,7 +116,7 @@ export function AuthPanel() {
         <button
           type="button"
           onClick={() => { setMode('register'); setError(null) }}
-          className={`relative z-10 flex-1 py-3 px-4 rounded-lg font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
+          className={`relative z-10 flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-lg font-semibold text-sm sm:text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
             !isLogin ? 'text-white' : 'text-white/70 hover:text-white'
           }`}
         >
@@ -210,7 +210,7 @@ export function AuthPanel() {
       </form>
 
       {/* Microcopy */}
-      <p className="text-center text-sm text-white/70 mt-4">
+      <p className="text-center text-xs sm:text-sm text-white/70 mt-3 sm:mt-4">
         {isLogin ? (
           <>¿No tienes cuenta? <button type="button" onClick={() => setMode('register')} className="text-yellow-400 hover:underline font-semibold">Créala aquí</button></>
         ) : (
@@ -229,7 +229,7 @@ export function AuthPanel() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`mt-4 p-4 rounded-lg text-sm ${
+            className={`mt-3 sm:mt-4 p-3 sm:p-4 rounded-lg text-xs sm:text-sm ${
               error.includes('Revisa')
                 ? 'bg-green-500/20 text-green-300 border border-green-500/30'
                 : 'bg-red-500/20 text-red-300 border border-red-500/30'

@@ -42,7 +42,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             exit: { opacity: 0 },
             transition: { duration: 0.15 }
           })}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-3 sm:px-4"
           onClick={onClose}
           role="dialog"
           aria-modal="true"
@@ -60,19 +60,19 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           >
             
             {/* Contenido del modal */}
-            <div className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-white/20 shadow-2xl">
+            <div className="relative bg-white/10 backdrop-blur-xl rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-white/20 shadow-2xl">
               {/* Botón cerrar */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-lg p-1"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-lg p-1"
                 aria-label="Cerrar modal"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
 
               {/* Título */}
-              <h2 id="auth-modal-title" className="text-3xl font-display font-bold text-white text-center mb-6 flex items-center justify-center gap-2">
-                <TreePine className="w-8 h-8 text-green-400" />
+              <h2 id="auth-modal-title" className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white text-center mb-4 sm:mb-6 flex items-center justify-center gap-1.5 sm:gap-2">
+                <TreePine className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-400" />
                 Bienvenido
               </h2>
 

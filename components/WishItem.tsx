@@ -69,7 +69,7 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
             </span>
             <div className="flex-1">
               <p className={`text-sm sm:text-base font-semibold text-white leading-relaxed break-words ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
-                {deseoSinUrl}
+                {formatDisplayName(deseoSinUrl)}
               </p>
               {url && (
                 <a 

@@ -31,11 +31,11 @@ export function PrioritySegment({ value, onChange }: PrioritySegmentProps) {
 
   return (
     <div className="space-y-2">
-      <label className="block text-base text-white">
+      <label className="block text-sm sm:text-base text-white">
         ¿Cuánto lo deseas?
       </label>
       
-      <div className="relative flex gap-2 p-1.5 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
+      <div className="relative flex gap-1.5 sm:gap-2 p-1 sm:p-1.5 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
         {options.map((option) => {
           const isSelected = value === option.value
           
@@ -45,7 +45,7 @@ export function PrioritySegment({ value, onChange }: PrioritySegmentProps) {
               type="button"
               onClick={() => onChange(option.value)}
               className={`
-                relative flex-1 px-4 py-2.5 rounded-md text-sm font-medium
+                relative flex-1 px-2 py-2 sm:px-4 sm:py-2.5 rounded-md text-xs sm:text-sm font-medium
                 transition-all duration-200
                 ${isSelected 
                   ? 'text-gray-900' 
@@ -62,17 +62,18 @@ export function PrioritySegment({ value, onChange }: PrioritySegmentProps) {
                 />
               )}
               
-              <span className="relative flex items-center justify-center gap-1.5">
-                <option.icon className={`w-4 h-4 ${option.color}`} />
-                <span>{option.label}</span>
+              <span className="relative flex items-center justify-center gap-1 sm:gap-1.5">
+                <option.icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${option.color}`} />
+                <span className="hidden xs:inline">{option.label}</span>
               </span>
             </button>
           )
         })}
       </div>
       
-      <p className="text-xs text-gray-500">
-        Mucho: lo deseo muchísimo | Normal: me gustaría | Un poco: si es posible
+      <p className="text-[10px] xs:text-xs text-gray-500">
+        <span className="hidden sm:inline">Mucho: lo deseo muchísimo | Normal: me gustaría | Un poco: si es posible</span>
+        <span className="sm:hidden">Selecciona cuánto lo deseas</span>
       </p>
     </div>
   )
