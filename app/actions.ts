@@ -19,11 +19,13 @@ export async function getWishes() {
 }
 
 export async function createWish(nombreUsuario: string, deseo: string, prioridad: 1 | 2 | 3) {
+  const deseoCapitalizado = deseo.charAt(0).toUpperCase() + deseo.slice(1).toLowerCase()
+  
   const { error } = await supabase
     .from('wishes')
     .insert({
       nombre_usuario: nombreUsuario,
-      deseo: deseo,
+      deseo: deseoCapitalizado,
       prioridad: prioridad,
       cumplido: false,
     })
