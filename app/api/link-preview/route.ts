@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAuth } from '@/lib/auth-helpers'
 
 export async function GET(request: NextRequest) {
+  try {
+    await requireAuth()
+  } catch {
+    return NextResponse.json({ error: 'No autenticado' }, { status: 401 })
+  }
+
   const searchParams = request.nextUrl.searchParams
   const url = searchParams.get('url')
 

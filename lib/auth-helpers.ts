@@ -1,43 +1,28 @@
 import { createClient } from './supabase-server'
 
-export async function getUser() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  return user
-}
-
-export async function getUserProfile() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) return null
-
-  const { data: profile } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  return profile
-}
-
-export async function isAdmin() {
-  const profile = await getUserProfile()
-  return profile?.role === 'admin'
-}
-
 export async function requireAuth() {
-  const user = await getUser()
-  if (!user) {
+  const supabase = await createClient()
+  const { data: { session } } = await supabase.auth.getSession()
+  
+  if (!session) {
     throw new Error('No autenticado')
   }
-  return user
+  
+  return { session, supabase }
 }
 
 export async function requireAdmin() {
-  await requireAuth()
-  const admin = await isAdmin()
-  if (!admin) {
-    throw new Error('Requiere permisos de administrador')
+  const { session, supabase } = await requireAuth()
+  
+  const { data: user } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', session.user.id)
+    .single()
+  
+  if (user?.role !== 'admin') {
+    throw new Error('Acceso denegado: se requiere rol de administrador')
   }
+  
+  return { session, supabase, user }
 }

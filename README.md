@@ -44,7 +44,11 @@ npm run dev
 ## 🔧 Configuración de Supabase
 
 1. Crear proyecto en [supabase.com](https://supabase.com)
-2. Ejecutar migraciones SQL (ver `/supabase/migrations`)
+2. Ejecutar migraciones SQL:
+   - Ir a SQL Editor en Supabase Dashboard
+   - Ejecutar `002_create_users_table.sql`
+   - Ejecutar `003_enable_rls_wishes.sql` ⚠️ **IMPORTANTE para seguridad**
+   - Ver instrucciones detalladas en `/supabase/migrations/README.md`
 3. Configurar OAuth providers en Authentication > Providers
 4. Copiar URL y Anon Key a `.env.local`
 
@@ -56,6 +60,12 @@ npm run dev
 - ✅ Compresión gzip habilitada
 - ✅ Imágenes en formato AVIF/WebP
 - ✅ Cache de imágenes (1 año)
+
+### Seguridad
+- ✅ Row Level Security (RLS) habilitado en todas las tablas
+- ✅ Autenticación requerida para todas las operaciones
+- ✅ Protección a nivel de UI, API y base de datos
+- ✅ Middleware de autenticación en rutas protegidas
 
 ### Disponibilidad
 - ✅ Cron job diario para mantener Supabase activo

@@ -1,9 +1,11 @@
 'use server'
 
-import { supabase } from '@/lib/supabase'
+import { requireAuth } from '@/lib/auth-helpers'
 import { revalidatePath } from 'next/cache'
 
 export async function getWishes() {
+  const { supabase } = await requireAuth()
+
   const { data, error } = await supabase
     .from('wishes')
     .select('id, nombre_usuario, deseo, prioridad, cumplido, created_at')
@@ -19,6 +21,8 @@ export async function getWishes() {
 }
 
 export async function createWish(nombreUsuario: string, deseo: string, prioridad: 1 | 2 | 3) {
+  const { supabase } = await requireAuth()
+
   // Extraer URL si existe para no modificarla
   const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+)/g
   const urlMatch = deseo.match(urlRegex)
@@ -54,6 +58,8 @@ export async function createWish(nombreUsuario: string, deseo: string, prioridad
 }
 
 export async function toggleWish(id: string, cumplido: boolean) {
+  const { supabase } = await requireAuth()
+
   const { error } = await supabase
     .from('wishes')
     .update({ cumplido })
@@ -68,6 +74,8 @@ export async function toggleWish(id: string, cumplido: boolean) {
 }
 
 export async function deleteWish(id: string) {
+  const { supabase } = await requireAuth()
+
   const { error } = await supabase
     .from('wishes')
     .delete()

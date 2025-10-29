@@ -14,6 +14,7 @@ import { ProfileModal } from '@/components/ProfileModal'
 import { Toast } from '@/components/ui/Toast'
 import { updateProfile } from './actions/auth'
 import Stats from '@/components/Stats'
+import { WelcomeToast } from '@/components/auth/WelcomeToast'
 import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
@@ -103,6 +104,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
     <>
       <BackgroundFX />
       <SnowEffect />
+      <WelcomeToast userName={user?.display_name} />
       
       {showProfileModal && user && (
         <ProfileModal
