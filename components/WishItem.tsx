@@ -78,6 +78,13 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
                   rel="noopener noreferrer"
                   className="text-[11px] xs:text-xs sm:text-sm text-blue-400 hover:text-blue-300 underline mt-0.5 sm:mt-1 inline-block truncate max-w-full"
                   title={url}
+                  onClick={(e) => {
+                    // En móvil, prevenir app nativa y forzar navegador
+                    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                      e.preventDefault()
+                      window.open(url, '_blank', 'noopener,noreferrer')
+                    }
+                  }}
                 >
                   {url.length > 40 ? `${url.substring(0, 37)}...` : url}
                 </a>
