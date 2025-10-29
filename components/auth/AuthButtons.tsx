@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase-browser'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
+import { TreePine } from 'lucide-react'
 
 interface AuthButtonsProps {
   mode?: 'login' | 'register'
@@ -65,7 +66,7 @@ export function AuthButtons({ mode = 'login' }: AuthButtonsProps) {
         variant="secondary"
         size="lg"
         className="w-full"
-        leftIcon="🎄"
+        leftIcon={<TreePine className="w-5 h-5" />}
       >
         Continuar con Google
       </Button>

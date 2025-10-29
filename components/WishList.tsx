@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { WishSkeleton } from '@/components/ui/Skeleton'
 import { User } from '@/lib/types/database'
+import { Search, Gift, Clock, CheckCircle, TreePine, Sparkles } from 'lucide-react'
 
 interface WishListProps {
   wishes: Wish[]
@@ -41,7 +42,8 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
         <Input
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
-          placeholder="🔍 Buscar por deseo o persona..."
+          placeholder="Buscar por deseo o persona..."
+          leftIcon={<Search className="w-4 h-4" />}
         />
 
         <div className="flex gap-2 flex-wrap">
@@ -50,21 +52,24 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
             variant={filtro === 'todos' ? 'primary' : 'outline'}
             size="md"
           >
-            🎁 Todos
+            <Gift className="w-4 h-4 mr-1.5" />
+            Todos
           </Button>
           <Button
             onClick={() => setFiltro('pendientes')}
             variant={filtro === 'pendientes' ? 'primary' : 'outline'}
             size="md"
           >
-            ⏳ Pendientes
+            <Clock className="w-4 h-4 mr-1.5" />
+            Pendientes
           </Button>
           <Button
             onClick={() => setFiltro('cumplidos')}
             variant={filtro === 'cumplidos' ? 'primary' : 'outline'}
             size="md"
           >
-            ✅ Cumplidos
+            <CheckCircle className="w-4 h-4 mr-1.5" />
+            Cumplidos
           </Button>
         </div>
       </div>
@@ -78,12 +83,17 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
         </div>
       ) : wishesFiltrados.length === 0 ? (
         <div className="text-center py-16 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
-          <div className="text-6xl mb-4">🎄</div>
+          <TreePine className="w-16 h-16 mx-auto mb-4 text-green-400" />
           <h3 className="text-lg font-semibold text-white mb-2">
             {busqueda ? 'No se encontraron deseos' : 'Aún no hay deseos navideños'}
           </h3>
           <p className="text-white/70">
-            {!busqueda && '¡Sé el primero en agregar uno! ✨'}
+            {!busqueda && (
+              <span className="inline-flex items-center gap-1.5">
+                ¡Sé el primero en agregar uno!
+                <Sparkles className="w-4 h-4" />
+              </span>
+            )}
           </p>
         </div>
       ) : (

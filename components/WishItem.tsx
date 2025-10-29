@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { LinkPreviewCard } from '@/components/ui/LinkPreviewCard'
 import { User } from '@/lib/types/database'
+import { Gift, CheckCircle, User as UserIcon, Undo2, Trash2 } from 'lucide-react'
 
 interface WishItemProps {
   wish: Wish
@@ -46,8 +47,12 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 space-y-3">
           <div className="flex items-start gap-3">
-            <span className="text-2xl flex-shrink-0">
-              {wish.cumplido ? '✅' : '🎁'}
+            <span className="flex-shrink-0">
+              {wish.cumplido ? (
+                <CheckCircle className="w-6 h-6 text-green-400" />
+              ) : (
+                <Gift className="w-6 h-6 text-yellow-400" />
+              )}
             </span>
             <p className={`text-base font-semibold text-white leading-relaxed break-words ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
               {wish.deseo}
@@ -57,8 +62,9 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
           {url && <LinkPreviewCard url={url} />}
 
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-white/70 flex items-center gap-1">
-              👤 <span className="font-medium">{wish.nombre_usuario}</span>
+            <span className="text-sm text-white/70 flex items-center gap-1.5">
+              <UserIcon className="w-4 h-4" />
+              <span className="font-medium">{wish.nombre_usuario}</span>
             </span>
             <span className="text-sm">{getPrioridadEmoji(wish.prioridad)}</span>
             <Badge variant={wish.cumplido ? 'success' : 'warning'}>
@@ -81,7 +87,11 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
               title={wish.cumplido ? 'Marcar pendiente' : 'Marcar cumplido'}
               aria-label={wish.cumplido ? 'Marcar pendiente' : 'Marcar cumplido'}
             >
-              {wish.cumplido ? '↩️' : '✓'}
+              {wish.cumplido ? (
+                <Undo2 className="w-5 h-5" />
+              ) : (
+                <CheckCircle className="w-5 h-5" />
+              )}
             </Button>
             <Button
               onClick={handleDelete}
@@ -92,7 +102,7 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
               title="Eliminar"
               aria-label="Eliminar deseo"
             >
-              🗑️
+              <Trash2 className="w-5 h-5" />
             </Button>
           </div>
         )}

@@ -17,6 +17,7 @@ import Stats from '@/components/Stats'
 import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
+import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper } from 'lucide-react'
 
 interface ClientPageProps {
   initialWishes: Wish[]
@@ -43,7 +44,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const handleSaveProfile = async (displayName: string) => {
     try {
       await updateProfile({ display_name: displayName })
-      setToast({ message: '¡Perfil actualizado! 🎉', variant: 'success' })
+      setToast({ message: '¡Perfil actualizado!', variant: 'success' })
       window.location.reload()
     } catch (error) {
       throw error
@@ -54,7 +55,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
     if (!user) return
     try {
       await createWish(user.display_name || user.email || 'Usuario', deseo, prioridad)
-      setToast({ message: '¡Deseo agregado con éxito! 🎁', variant: 'success' })
+      setToast({ message: '¡Deseo agregado con éxito!', variant: 'success' })
     } catch (error) {
       setToast({ message: 'No se pudo agregar el deseo. Inténtalo de nuevo.', variant: 'error' })
     }
@@ -63,7 +64,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const handleToggleWish = async (id: string, cumplido: boolean) => {
     try {
       await toggleWish(id, cumplido)
-      setToast({ message: cumplido ? '¡Deseo cumplido! ✅' : 'Marcado como pendiente ⏳', variant: 'success' })
+      setToast({ message: cumplido ? '¡Deseo cumplido!' : 'Marcado como pendiente', variant: 'success' })
     } catch (error) {
       setToast({ message: 'No se pudo actualizar el deseo.', variant: 'error' })
     }
@@ -117,7 +118,8 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
               size="md"
               className="min-h-[44px] py-3 px-4 text-[16px]"
             >
-              🔗 Compartir
+              <LinkIcon className="w-4 h-4 mr-1.5" />
+              Compartir
             </Button>
             <ExportButton wishes={wishes} onExport={handleExport} />
             <Button
@@ -126,7 +128,8 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
               size="md"
               className="min-h-[44px] py-3 px-4 text-[16px]"
             >
-              📊 Estadísticas
+              <BarChart3 className="w-4 h-4 mr-1.5" />
+              Estadísticas
             </Button>
           </div>
 

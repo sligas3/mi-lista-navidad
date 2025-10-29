@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/Separator'
 import { PasswordField } from './PasswordField'
 import { useRouter } from 'next/navigation'
 import { formatDisplayName } from '@/lib/formatName'
+import { Gift, Mail } from 'lucide-react'
 
 type AuthMode = 'login' | 'register'
 
@@ -213,7 +214,10 @@ export function AuthPanel() {
         {isLogin ? (
           <>¿No tienes cuenta? <button type="button" onClick={() => setMode('register')} className="text-yellow-400 hover:underline font-semibold">Créala aquí</button></>
         ) : (
-          <>Usa tu correo para crear tu lista 🎁</>
+          <span className="inline-flex items-center gap-1.5">
+            Usa tu correo para crear tu lista
+            <Gift className="w-4 h-4" />
+          </span>
         )}
       </p>
 
@@ -226,7 +230,7 @@ export function AuthPanel() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
             className={`mt-4 p-4 rounded-lg text-sm ${
-              error.includes('Revisa') || error.includes('📧')
+              error.includes('Revisa')
                 ? 'bg-green-500/20 text-green-300 border border-green-500/30'
                 : 'bg-red-500/20 text-red-300 border border-red-500/30'
             }`}

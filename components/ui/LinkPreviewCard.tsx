@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Button } from './Button'
 import { formatUrl } from '@/lib/formatUrl'
+import { Gift } from 'lucide-react'
 
 interface LinkPreview {
   title: string
@@ -75,7 +76,8 @@ export function LinkPreviewCard({ url }: LinkPreviewCardProps) {
             size="sm"
             className="text-xs"
           >
-            Ver producto 🎁
+            <Gift className="w-4 h-4 mr-1" />
+            Ver producto
           </Button>
         </div>
       </div>

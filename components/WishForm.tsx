@@ -6,6 +6,10 @@ import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
 import { Card } from '@/components/ui/Card'
 import { User } from '@/lib/types/database'
+import { PrioritySegment } from '@/components/wish/PrioritySegment'
+import { LinkPreview } from '@/components/wish/LinkPreview'
+import { motion } from 'framer-motion'
+import { Sparkles, Link as LinkIcon, Gift, TreePine } from 'lucide-react'
 import Link from 'next/link'
 
 interface WishFormProps {
@@ -15,24 +19,26 @@ interface WishFormProps {
 }
 
 export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProps) {
-  const [deseo, setDeseo] = useState('')
+  const [titulo, setTitulo] = useState('')
+  const [link, setLink] = useState('')
   const [prioridad, setPrioridad] = useState<1 | 2 | 3>(2)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [hasUrl, setHasUrl] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!deseo.trim()) {
-      setError('Por favor escribe tu deseo')
+    if (!titulo.trim()) {
+      setError('Por favor escribe el título de tu deseo')
       return
     }
 
     setLoading(true)
     setError('')
     try {
+      const deseo = link.trim() ? `${titulo.trim()} ${link.trim()}` : titulo.trim()
       await onSubmit(deseo, prioridad)
-      setDeseo('')
+      setTitulo('')
+      setLink('')
       setPrioridad(2)
     } catch (err) {
       setError('Error al agregar el deseo')
@@ -44,73 +50,78 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
   return (
     <Card>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="deseo" required className="text-base">
-            ✨ Tu deseo navideño
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="space-y-2"
+        >
+          <Label htmlFor="titulo" required className="text-base flex items-center gap-2">
+            <Sparkles className="w-4 h-4" />
+            ¿Qué deseas?
           </Label>
           <Input
-            id="deseo"
-            value={deseo}
+            id="titulo"
+            value={titulo}
             onChange={(e) => {
-              const value = e.target.value
-              setDeseo(value)
+              setTitulo(e.target.value)
               setError('')
-              setHasUrl(/https?:\/\/[^\s]+/.test(value))
             }}
-            placeholder="Ej: Un nuevo libro de aventuras 📚 o https://..."
-            maxLength={2048}
+            placeholder="Ej: Un libro de aventuras"
+            maxLength={500}
             error={error}
-            className="break-all"
           />
-          <div className="flex items-center justify-between text-xs">
-            <p className="text-white/60">
-              {deseo.length}/2048 caracteres
-            </p>
-            {hasUrl && (
-              <span className="text-yellow-400 flex items-center gap-1">
-                🔗 Link detectado
-              </span>
-            )}
-          </div>
-        </div>
+        </motion.div>
 
-        <div className="space-y-2">
-          <Label className="text-base">⭐ Prioridad</Label>
-          <div className="flex gap-2">
-            {[1, 2, 3].map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => setPrioridad(p as 1 | 2 | 3)}
-                className={`flex-1 min-h-[44px] py-3 px-4 rounded-lg font-semibold text-base transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-                  prioridad === p
-                    ? 'bg-yellow-500 text-emerald-950 shadow-lg'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
-                aria-label={`Prioridad ${p} estrella${p > 1 ? 's' : ''}`}
-              >
-                {'⭐'.repeat(p)}
-              </button>
-            ))}
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-2"
+        >
+          <Label htmlFor="link" className="text-base flex items-center gap-2">
+            <LinkIcon className="w-4 h-4" />
+            Link
+          </Label>
+          <Input
+            id="link"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            placeholder="https://..."
+            maxLength={2048}
+            type="url"
+          />
+          <LinkPreview url={link} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <PrioritySegment value={prioridad} onChange={setPrioridad} />
+        </motion.div>
 
         {user ? (
-          <>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
             <Button
               type="submit"
               variant="primary"
               size="lg"
               className="w-full text-base font-bold shadow-2xl shadow-green-900/60"
               isLoading={loading}
-              leftIcon="🎁"
+              leftIcon={<Gift className="w-5 h-5" />}
             >
-              Agregar Deseo
+              Agregar deseo
             </Button>
-            <p className="text-xs text-center text-white/60">
+            <p className="text-xs text-center text-white/60 mt-3">
               Pidiendo como: <span className="font-semibold text-white">{user.display_name || user.email}</span>
             </p>
-          </>
+          </motion.div>
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-center text-white/80">
@@ -122,7 +133,7 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
                 variant="primary"
                 size="lg"
                 className="w-full text-base font-bold"
-                leftIcon="🎄"
+                leftIcon={<TreePine className="w-5 h-5" />}
               >
                 Ingresar
               </Button>

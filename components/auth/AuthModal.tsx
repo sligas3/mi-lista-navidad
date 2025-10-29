@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect } from 'react'
 import { AuthPanel } from './AuthPanel'
+import { TreePine } from 'lucide-react'
 
 interface AuthModalProps {
   isOpen: boolean
@@ -65,8 +66,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </button>
 
               {/* Título */}
-              <h2 id="auth-modal-title" className="text-3xl font-display font-bold text-white text-center mb-6">
-                🎄 Bienvenido
+              <h2 id="auth-modal-title" className="text-3xl font-display font-bold text-white text-center mb-6 flex items-center justify-center gap-2">
+                <TreePine className="w-8 h-8 text-green-400" />
+                Bienvenido
               </h2>
 
               {/* Panel de autenticación */}

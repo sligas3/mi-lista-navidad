@@ -1,6 +1,7 @@
 'use client'
 
 import { Wish } from '@/lib/supabase'
+import { BarChart3, TreePine, Users, Star } from 'lucide-react'
 
 interface StatsProps {
   wishes: Wish[]
@@ -21,11 +22,13 @@ export default function Stats({ wishes }: StatsProps) {
 
   return (
     <div className="glass-effect rounded-2xl p-8 mb-6 border-2 border-navidad-dorado/30 card-hover relative overflow-hidden">
-      <div className="absolute -right-8 -top-8 text-9xl opacity-5 rotate-12">
-        📊
+      <div className="absolute -right-8 -top-8 opacity-5 rotate-12">
+        <BarChart3 className="w-36 h-36" />
       </div>
-      <h3 className="font-navidad text-3xl text-navidad-dorado mb-6 text-center animate-glow relative z-10">
-        📊 Estadísticas Navideñas 🎄
+      <h3 className="font-navidad text-3xl text-navidad-dorado mb-6 text-center animate-glow relative z-10 flex items-center justify-center gap-3">
+        <BarChart3 className="w-8 h-8" />
+        Estadísticas Navideñas
+        <TreePine className="w-8 h-8 text-green-400" />
       </h3>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
@@ -52,12 +55,18 @@ export default function Stats({ wishes }: StatsProps) {
 
       <div className="mt-4 grid grid-cols-2 gap-4">
         <div className="bg-white/5 rounded-lg p-3">
-          <div className="text-white/70 text-xs mb-2">👥 Personas</div>
+          <div className="text-white/70 text-xs mb-2 flex items-center gap-1">
+            <Users className="w-3 h-3" />
+            Personas
+          </div>
           <div className="text-white font-medium">{usuarios.length}</div>
         </div>
 
         <div className="bg-white/5 rounded-lg p-3">
-          <div className="text-white/70 text-xs mb-2">⭐ Prioridad Alta</div>
+          <div className="text-white/70 text-xs mb-2 flex items-center gap-1">
+            <Star className="w-3 h-3" />
+            Prioridad Alta
+          </div>
           <div className="text-white font-medium">{prioridades.alta} pendientes</div>
         </div>
       </div>

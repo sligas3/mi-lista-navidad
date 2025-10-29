@@ -6,7 +6,7 @@ export default function SnowEffect() {
   const [snowflakes, setSnowflakes] = useState<Array<{ id: number; left: number; delay: number; duration: number }>>([])
 
   useEffect(() => {
-    const flakes = Array.from({ length: 20 }, (_, i) => ({
+    const flakes = Array.from({ length: 40 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 5,
@@ -20,14 +20,17 @@ export default function SnowEffect() {
       {snowflakes.map((flake) => (
         <div
           key={flake.id}
-          className="snowflake absolute text-white/60"
+          className="snowflake absolute"
           style={{
             left: `${flake.left}%`,
             animationDelay: `${flake.delay}s`,
             animationDuration: `${flake.duration}s`,
           }}
         >
-          ❄️
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2v20M2 12h20M5.64 5.64l12.72 12.72M5.64 18.36L18.36 5.64" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.6"/>
+            <circle cx="12" cy="12" r="2" fill="white" opacity="0.6"/>
+          </svg>
         </div>
       ))}
     </div>
