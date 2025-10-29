@@ -134,10 +134,10 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
               variant="ghost"
               size="lg"
               aria-label="Estadísticas"
-              className="min-h-[44px]"
+              className="min-h-[44px] whitespace-nowrap"
             >
-              <BarChart3 className="w-4 h-4 sm:mr-1.5" />
-              <span className="hidden sm:inline">Estadísticas</span>
+              <BarChart3 className="w-4 h-4 mr-1.5" />
+              <span>Estadísticas</span>
             </Button>
           </div>
 
