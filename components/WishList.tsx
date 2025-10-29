@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { WishSkeleton } from '@/components/ui/Skeleton'
+import { User } from '@/lib/types/database'
 
 interface WishListProps {
   wishes: Wish[]
@@ -13,9 +14,10 @@ interface WishListProps {
   onToggle: (id: string, cumplido: boolean) => Promise<void>
   onDelete: (id: string) => Promise<void>
   isLoading?: boolean
+  user?: User | null
 }
 
-export default function WishList({ wishes, currentUser, onToggle, onDelete, isLoading = false }: WishListProps) {
+export default function WishList({ wishes, currentUser, onToggle, onDelete, isLoading = false, user }: WishListProps) {
   const [filtro, setFiltro] = useState<'todos' | 'pendientes' | 'cumplidos'>('todos')
   const [busqueda, setBusqueda] = useState('')
 
@@ -46,21 +48,21 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
           <Button
             onClick={() => setFiltro('todos')}
             variant={filtro === 'todos' ? 'primary' : 'outline'}
-            size="sm"
+            size="md"
           >
             🎁 Todos
           </Button>
           <Button
             onClick={() => setFiltro('pendientes')}
             variant={filtro === 'pendientes' ? 'primary' : 'outline'}
-            size="sm"
+            size="md"
           >
             ⏳ Pendientes
           </Button>
           <Button
             onClick={() => setFiltro('cumplidos')}
             variant={filtro === 'cumplidos' ? 'primary' : 'outline'}
-            size="sm"
+            size="md"
           >
             ✅ Cumplidos
           </Button>
@@ -93,6 +95,7 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
               currentUser={currentUser}
               onToggle={onToggle}
               onDelete={onDelete}
+              user={user}
             />
           ))}
         </div>

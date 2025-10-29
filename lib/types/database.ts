@@ -15,4 +15,5 @@ export interface Wish {
   prioridad: 1 | 2 | 3
   cumplido: boolean
   created_at: string
+  user_id?: string | null
 }

@@ -7,17 +7,19 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { LinkPreviewCard } from '@/components/ui/LinkPreviewCard'
+import { User } from '@/lib/types/database'
 
 interface WishItemProps {
   wish: Wish
   currentUser: string
   onToggle: (id: string, cumplido: boolean) => Promise<void>
   onDelete: (id: string) => Promise<void>
+  user?: User | null
 }
 
-export default function WishItem({ wish, currentUser, onToggle, onDelete }: WishItemProps) {
+export default function WishItem({ wish, currentUser, onToggle, onDelete, user }: WishItemProps) {
   const [loading, setLoading] = useState(false)
-  const isOwner = wish.nombre_usuario === currentUser
+  const isOwner = user ? wish.user_id === user.id : wish.nombre_usuario === currentUser
   const url = extractUrl(wish.deseo)
 
   const handleToggle = async () => {
@@ -47,7 +49,7 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete }: Wish
             <span className="text-2xl flex-shrink-0">
               {wish.cumplido ? '✅' : '🎁'}
             </span>
-            <p className={`text-base font-semibold text-white leading-relaxed ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
+            <p className={`text-base font-semibold text-white leading-relaxed break-words ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
               {wish.deseo}
             </p>
           </div>
@@ -74,8 +76,10 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete }: Wish
               onClick={handleToggle}
               disabled={loading}
               variant="ghost"
-              size="sm"
+              size="md"
+              className="min-w-[44px]"
               title={wish.cumplido ? 'Marcar pendiente' : 'Marcar cumplido'}
+              aria-label={wish.cumplido ? 'Marcar pendiente' : 'Marcar cumplido'}
             >
               {wish.cumplido ? '↩️' : '✓'}
             </Button>
@@ -83,8 +87,10 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete }: Wish
               onClick={handleDelete}
               disabled={loading}
               variant="ghost"
-              size="sm"
+              size="md"
+              className="min-w-[44px]"
               title="Eliminar"
+              aria-label="Eliminar deseo"
             >
               🗑️
             </Button>

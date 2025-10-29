@@ -33,9 +33,12 @@ export function Toast({ message, variant = 'success', onClose, duration = 3000 }
   return (
     <div
       className={cn(
-        "fixed bottom-4 right-4 z-50 animate-scale-in flex items-center gap-3 rounded-lg border px-5 py-3.5 shadow-2xl max-w-md backdrop-blur-sm",
+        "fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50 animate-scale-in flex items-center gap-3 rounded-lg border px-5 py-3.5 shadow-2xl backdrop-blur-sm",
         variantStyles[variant]
       )}
+      style={{
+        paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+      }}
       role="alert"
       aria-live="polite"
     >
@@ -43,8 +46,8 @@ export function Toast({ message, variant = 'success', onClose, duration = 3000 }
       <p className="text-sm font-semibold flex-1">{message}</p>
       <button
         onClick={onClose}
-        className="text-white/80 hover:text-white transition-colors ml-2"
-        aria-label="Cerrar"
+        className="text-white/80 hover:text-white transition-colors ml-2 min-w-[24px] min-h-[24px] flex items-center justify-center"
+        aria-label="Cerrar notificación"
       >
         ✕
       </button>

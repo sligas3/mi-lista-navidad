@@ -9,25 +9,48 @@ Una aplicación web festiva para crear y compartir listas de deseos navideños c
 
 ## ✨ Características
 
-- 🎁 **CRUD completo**: Crear, leer, actualizar y eliminar deseos
-- 👥 **Multi-usuario**: Identificación simple por nombre (localStorage)
-- ⭐ **Prioridades**: Clasifica deseos por importancia (1-3 estrellas)
-- ✅ **Estado**: Marca deseos como cumplidos o pendientes
-- 🔍 **Filtros**: Por estado, usuario y búsqueda de texto
-- 📊 **Estadísticas**: Visualiza progreso y métricas
-- 📋 **Exportar**: Copia la lista completa como texto
-- 🔗 **Compartir**: Enlace directo para compartir
-- ❄️ **Tema navideño**: Colores festivos, emojis y nieve cayendo
-- 📱 **Responsive**: Diseño adaptado a móvil y desktop
+### 🔐 Autenticación
+- **Login/Registro unificado**: Panel con tabs intuitivos
+- **Google OAuth**: Inicio de sesión social rápido
+- **Email/Password**: Autenticación tradicional con validaciones
+- **Sesión persistente**: Reconoce usuarios autenticados
+- **Logout visible**: Botón siempre accesible en header
+- **Validaciones en vivo**: Email válido, password mínimo 6 caracteres
+- **Medidor de fortaleza**: Indica seguridad de contraseña
+- **Toggle ver contraseña**: 👁️ para mostrar/ocultar
+- **Mensajes claros**: Errores con soluciones, feedback inmediato
+
+### 🎁 Gestión de Deseos
+- **CRUD completo**: Crear, leer, actualizar y eliminar deseos
+- **Permisos por sesión**: Solo el dueño edita/elimina sus deseos
+- **URLs largas**: Soporta links hasta 2048 caracteres
+- **Previews de links**: Muestra imagen y descripción de URLs
+- **Prioridades**: Clasifica deseos por importancia (1-3 estrellas)
+- **Estado**: Marca deseos como cumplidos o pendientes
+
+### 🔍 Navegación y Filtros
+- **Filtros**: Por estado, usuario y búsqueda de texto
+- **Estadísticas**: Visualiza progreso y métricas
+- **Exportar**: Copia la lista completa como texto
+- **Compartir**: Enlace directo para compartir
+
+### 🎨 UX/UI
+- **Responsive**: Optimizado para iPhone 11–15 Pro Max
+- **Tap targets**: Mínimo 44px para accesibilidad táctil
+- **Safe areas**: Soporte para notch/Dynamic Island
+- **Animaciones suaves**: Respeta prefers-reduced-motion
+- **Tema navideño**: Colores festivos, emojis y nieve cayendo
+- **Toasts**: Notificaciones de éxito/error con feedback claro
 
 ## 🛠️ Stack Tecnológico
 
 - **Framework**: Next.js 14 (App Router)
-- **Base de datos**: Supabase (PostgreSQL)
+- **Autenticación**: Supabase Auth (Google OAuth + Email/Password)
+- **Base de datos**: Supabase (PostgreSQL con RLS)
 - **Estilos**: TailwindCSS 4
 - **Lenguaje**: TypeScript
 - **Deploy**: Vercel
-- **Fuente**: Mountains of Christmas (Google Fonts)
+- **Fuentes**: Poppins, Manrope (Google Fonts)
 
 ## 📋 Requisitos Previos
 
@@ -58,36 +81,34 @@ npm install
 2. Crea un nuevo proyecto
 3. Guarda la contraseña de la base de datos
 
-#### b) Ejecutar migración SQL
+#### b) Configurar autenticación
 
-En el **SQL Editor** de Supabase, ejecuta:
+1. En **Authentication → Providers**, habilita:
+   - **Email** (activado por defecto)
+   - **Google** (opcional, requiere OAuth credentials)
+
+2. Para Google OAuth:
+   - Ve a [Google Cloud Console](https://console.cloud.google.com)
+   - Crea un proyecto y habilita Google+ API
+   - Crea credenciales OAuth 2.0
+   - Añade redirect URI: `https://<tu-proyecto>.supabase.co/auth/v1/callback`
+   - Copia Client ID y Secret a Supabase
+
+#### c) Ejecutar migraciones SQL
+
+En el **SQL Editor** de Supabase, ejecuta los archivos en `supabase/migrations/`:
+
+1. **002_create_users_table.sql**: Crea tabla users con triggers
+2. **001_create_wishes_table.sql**: Crea tabla wishes (si existe)
+
+O ejecuta manualmente:
 
 ```sql
--- Crear tabla wishes
-CREATE TABLE wishes (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  nombre_usuario TEXT NOT NULL CHECK (char_length(nombre_usuario) >= 2),
-  deseo TEXT NOT NULL CHECK (char_length(deseo) >= 3),
-  prioridad INTEGER DEFAULT 1 CHECK (prioridad BETWEEN 1 AND 3),
-  cumplido BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Índices
-CREATE INDEX idx_wishes_usuario ON wishes(nombre_usuario);
-CREATE INDEX idx_wishes_created ON wishes(created_at DESC);
-
--- Habilitar RLS
-ALTER TABLE wishes ENABLE ROW LEVEL SECURITY;
-
--- Políticas
-CREATE POLICY "Lectura pública" ON wishes FOR SELECT USING (true);
-CREATE POLICY "Crear deseos" ON wishes FOR INSERT WITH CHECK (true);
-CREATE POLICY "Actualizar deseos" ON wishes FOR UPDATE USING (true);
-CREATE POLICY "Eliminar deseos" ON wishes FOR DELETE USING (true);
+-- Ver supabase/migrations/002_create_users_table.sql
+-- Crea tabla users, triggers y políticas RLS
 ```
 
-#### c) Obtener credenciales
+#### d) Obtener credenciales
 
 En **Settings → API**, copia:
 - Project URL
@@ -207,6 +228,59 @@ vercel logs <deployment-url>
 # Ver build logs
 vercel inspect <deployment-url>
 ```
+
+## 🔐 Flujos de Autenticación
+
+### Registro de Usuario
+
+1. Usuario hace click en "Ingresar" (header)
+2. Se muestra AuthPanel con tabs
+3. Usuario selecciona "Crear cuenta"
+4. Opciones:
+   - **Google**: Redirect a OAuth, callback automático
+   - **Email**: Completa nombre, email, contraseña
+5. Validaciones en vivo:
+   - Email válido (regex)
+   - Password ≥ 6 caracteres
+   - Medidor de fortaleza (Débil/Media/Fuerte)
+6. Al enviar:
+   - Supabase crea usuario en `auth.users`
+   - Trigger crea perfil en `public.users`
+   - Email de confirmación enviado
+7. Usuario confirma email y puede iniciar sesión
+
+### Inicio de Sesión
+1. Usuario hace click en "Ingresar"
+2. Tab "Iniciar sesión" activo por defecto
+3. Opciones:
+   - **Google**: Login instantáneo
+   - **Email**: Ingresa credenciales
+4. Validación de email en vivo
+5. Al enviar:
+   - Supabase valida credenciales
+   - Si éxito: redirect a home (o returnUrl)
+   - Si error: mensaje claro con solución
+6. Header muestra avatar + nombre + botón "Salir"
+
+### Sesión Activa
+
+- **Header**: Muestra UserMenu con avatar, nombre y botón Logout
+- **WishForm**: Prellenado con nombre del usuario, no editable
+- **WishItem**: Solo dueño ve botones editar/eliminar
+- **Permisos**: Crear/editar/eliminar requieren sesión
+
+### Cierre de Sesión
+1. Usuario hace click en "Salir" (header)
+2. Supabase cierra sesión
+3. Toast: "Sesión cerrada correctamente"
+4. Redirect a home
+5. Header muestra botón "Ingresar"
+
+### Protección de Rutas
+
+- **Públicas**: Home, ver lista de deseos
+- **Requieren sesión**: Crear, editar, eliminar deseos
+- **Redirect automático**: Si usuario ya logueado visita /login → home
 
 ## 🐛 Troubleshooting
 

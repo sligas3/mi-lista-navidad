@@ -9,14 +9,15 @@ import Footer from '@/components/Footer'
 import WishForm from '@/components/WishForm'
 import WishList from '@/components/WishList'
 import BackgroundFX from '@/components/ui/BackgroundFX'
+import SnowEffect from '@/components/SnowEffect'
 import UserModal from '@/components/UserModal'
+import { ProfileModal } from '@/components/ProfileModal'
 import { Toast } from '@/components/ui/Toast'
+import { updateProfile } from './actions/auth'
 import Stats from '@/components/Stats'
 import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
-import { UserMenu } from '@/components/auth/UserMenu'
-import Link from 'next/link'
 
 interface ClientPageProps {
   initialWishes: Wish[]
@@ -27,9 +28,16 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes)
   const [nombreUsuario, setNombreUsuario] = useState<string>('')
   const [showUserModal, setShowUserModal] = useState(false)
+  const [showProfileModal, setShowProfileModal] = useState(false)
   const [toast, setToast] = useState<{ message: string; variant: 'success' | 'error' | 'info' | 'warning' } | null>(null)
   const [selectedUser, setSelectedUser] = useState('Todos')
   const [showStats, setShowStats] = useState(false)
+
+  useEffect(() => {
+    if (user && !user.display_name) {
+      setShowProfileModal(true)
+    }
+  }, [user])
 
   useEffect(() => {
     const savedName = localStorage.getItem('navidad_user')
@@ -50,30 +58,40 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
     setShowUserModal(false)
   }
 
+  const handleSaveProfile = async (displayName: string) => {
+    try {
+      await updateProfile({ display_name: displayName })
+      setToast({ message: '¡Perfil actualizado! 🎉', variant: 'success' })
+      window.location.reload()
+    } catch (error) {
+      throw error
+    }
+  }
+
   const handleCreateWish = async (deseo: string, prioridad: 1 | 2 | 3) => {
     try {
       await createWish(nombreUsuario, deseo, prioridad)
-      setToast({ message: 'Deseo agregado con éxito', variant: 'success' })
+      setToast({ message: '¡Deseo agregado con éxito! 🎁', variant: 'success' })
     } catch (error) {
-      setToast({ message: 'Error al agregar deseo', variant: 'error' })
+      setToast({ message: 'No se pudo agregar el deseo. Inténtalo de nuevo.', variant: 'error' })
     }
   }
 
   const handleToggleWish = async (id: string, cumplido: boolean) => {
     try {
       await toggleWish(id, cumplido)
-      setToast({ message: cumplido ? 'Deseo cumplido' : 'Marcado como pendiente', variant: 'success' })
+      setToast({ message: cumplido ? '¡Deseo cumplido! ✅' : 'Marcado como pendiente ⏳', variant: 'success' })
     } catch (error) {
-      setToast({ message: 'Error al actualizar', variant: 'error' })
+      setToast({ message: 'No se pudo actualizar el deseo.', variant: 'error' })
     }
   }
 
   const handleDeleteWish = async (id: string) => {
     try {
       await deleteWish(id)
-      setToast({ message: 'Deseo eliminado', variant: 'success' })
+      setToast({ message: 'Deseo eliminado correctamente', variant: 'success' })
     } catch (error) {
-      setToast({ message: 'Error al eliminar', variant: 'error' })
+      setToast({ message: 'No se pudo eliminar el deseo.', variant: 'error' })
     }
   }
 
@@ -98,27 +116,28 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   return (
     <>
       <BackgroundFX />
+      <SnowEffect />
       
       {showUserModal && <UserModal onSetUser={handleSetUser} />}
+      {showProfileModal && user && (
+        <ProfileModal
+          user={user}
+          onSave={handleSaveProfile}
+          onClose={() => setShowProfileModal(false)}
+        />
+      )}
 
-      <main className="min-h-screen p-4 md:p-8 lg:p-12">
-        <div className="max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto space-y-8 md:space-y-12">
+      <main className="min-h-screen px-4 py-6 sm:px-6 md:px-8 md:py-8 lg:py-12">
+        <div className="container mx-auto max-w-screen-sm md:max-w-screen-md lg:max-w-3xl space-y-6 md:space-y-8">
           <HeaderNavidad />
 
-          {/* Header con auth */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex gap-2 flex-wrap">
-            <Button
-              onClick={handleChangeUser}
-              variant="outline"
-              size="sm"
-            >
-              👤 Cambiar usuario
-            </Button>
+          {/* Acciones */}
+          <div className="flex gap-2 flex-wrap">
             <Button
               onClick={handleShare}
               variant="secondary"
-              size="sm"
+              size="md"
+              className="min-h-[44px] py-3 px-4 text-[16px]"
             >
               🔗 Compartir
             </Button>
@@ -126,21 +145,11 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
             <Button
               onClick={() => setShowStats(!showStats)}
               variant="ghost"
-              size="sm"
+              size="md"
+              className="min-h-[44px] py-3 px-4 text-[16px]"
             >
               📊 Estadísticas
             </Button>
-            </div>
-            
-            {user ? (
-              <UserMenu user={user} />
-            ) : (
-              <Link href="/login">
-                <Button variant="outline" size="sm">
-                  🎄 Iniciar sesión
-                </Button>
-              </Link>
-            )}
           </div>
 
           {/* Estadísticas */}
@@ -158,10 +167,11 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
           )}
 
           {/* Formulario */}
-          <div className="mb-8">
+          <div>
             <WishForm
               nombreUsuario={nombreUsuario}
               onSubmit={handleCreateWish}
+              user={user}
             />
           </div>
 
@@ -171,6 +181,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
             currentUser={nombreUsuario}
             onToggle={handleToggleWish}
             onDelete={handleDeleteWish}
+            user={user}
           />
 
           <Footer />

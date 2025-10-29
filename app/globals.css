@@ -20,6 +20,10 @@
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern" 1;
     font-kerning: normal;
+    font-size: 16px;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -39,6 +43,11 @@
     /* iOS Safari */
     body {
       -webkit-text-size-adjust: 100%;
+    }
+    
+    /* Prevenir zoom en inputs en iOS */
+    input, select, textarea {
+      font-size: 16px;
     }
   }
 
@@ -115,6 +124,22 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950;
   }
 
+  /* Animaciones suaves para auth panel */
+  [data-state="open"] {
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Animación de orbes */
   @keyframes float-orb {
     0%, 100% {
@@ -146,10 +171,57 @@
     }
   }
 
+  /* Animación de copos de nieve */
+  .snowflake {
+    position: fixed;
+    top: -10vh;
+    color: white;
+    font-size: 1.5rem;
+    -webkit-animation: snowfall linear infinite;
+    animation: snowfall linear infinite;
+    pointer-events: none;
+    z-index: 9999;
+    will-change: transform, opacity;
+  }
+
+  @-webkit-keyframes snowfall {
+    0% {
+      -webkit-transform: translateY(-10vh) translateX(0);
+      transform: translateY(-10vh) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: translateY(100vh) translateX(10vw);
+      transform: translateY(100vh) translateX(10vw);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes snowfall {
+    0% {
+      -webkit-transform: translateY(-10vh) translateX(0);
+      transform: translateY(-10vh) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: translateY(100vh) translateX(10vw);
+      transform: translateY(100vh) translateX(10vw);
+      opacity: 0.3;
+    }
+  }
+
   /* Respeta prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
-    .orb {
+    .orb,
+    .animate-in,
+    .animate-scale-in,
+    .animate-float,
+    [data-state="open"] {
       animation: none !important;
+    }
+    
+    * {
+      transition-duration: 0.01ms !important;
     }
   }
 }

@@ -58,12 +58,19 @@ create trigger on_users_updated
 
 create or replace function public.handle_new_user()
 returns trigger as $$
+declare
+  raw_name text;
 begin
+  raw_name := coalesce(new.raw_user_meta_data->>'name', new.raw_user_meta_data->>'display_name');
+  
   insert into public.users (id, email, display_name, avatar_url)
   values (
     new.id,
     new.email,
-    coalesce(new.raw_user_meta_data->>'display_name', split_part(new.email, '@', 1)),
+    case 
+      when raw_name is not null then lower(trim(raw_name))
+      else null
+    end,
     new.raw_user_meta_data->>'avatar_url'
   );
   return new;

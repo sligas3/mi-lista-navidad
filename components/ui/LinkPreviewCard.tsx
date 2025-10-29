@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from './Button'
+import { formatUrl } from '@/lib/formatUrl'
 
 interface LinkPreview {
   title: string
@@ -59,10 +60,12 @@ export function LinkPreviewCard({ url }: LinkPreviewCardProps) {
           />
         )}
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-white text-sm line-clamp-2 mb-1">
+          <h4 className="font-semibold text-white text-sm line-clamp-2 mb-1 break-words">
             {preview.title}
           </h4>
-          <p className="text-xs text-white/60 mb-2">{preview.domain}</p>
+          <p className="text-xs text-white/60 mb-2 break-all" title={preview.url}>
+            {formatUrl(preview.url, 40)}
+          </p>
           <Button
             as="a"
             href={preview.url}
