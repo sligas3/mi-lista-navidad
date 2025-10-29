@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
 import { User } from '@/lib/types/database'
+import { UserCircle } from 'lucide-react'
 
 interface ProfileModalProps {
   user: User
@@ -42,7 +43,7 @@ export function ProfileModal({ user, onSave, onClose }: ProfileModalProps) {
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in">
       <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 md:p-8 max-w-md w-full shadow-2xl border border-white/20 animate-scale-in">
         <div className="text-center mb-6">
-          <div className="text-5xl mb-4">👤</div>
+          <UserCircle className="w-16 h-16 mx-auto mb-4 text-white" />
           <h2 className="font-display text-3xl font-bold text-white mb-2">
             Completa tu perfil
           </h2>

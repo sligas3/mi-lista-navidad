@@ -1,34 +1,33 @@
-/**
- * Avatares navideños para usuarios
- */
+import { 
+  User, Gift, Star, Bell, Snowflake, TreePine, 
+  Sparkles, Heart, Candy, Cookie, Music, Crown
+} from 'lucide-react'
+import { LucideIcon } from 'lucide-react'
 
-const CHRISTMAS_AVATARS = [
-  '🎅', // Santa
-  '🤶', // Mrs. Claus
-  '🎄', // Christmas Tree
-  '⛄', // Snowman
-  '☃️', // Snowman
-  '🦌', // Reindeer
-  '🎁', // Gift
-  '⭐', // Star
-  '🔔', // Bell
-  '🕯️', // Candle
-  '🧦', // Stocking
-  '❄️', // Snowflake
-  '🎀', // Ribbon
-  '🍪', // Cookie
-  '🥛', // Milk
-  '🎶', // Music
-  '👼', // Angel
-  '🌟', // Glowing Star
+/**
+ * Avatares navideños para usuarios (iconos SVG)
+ */
+const CHRISTMAS_AVATARS: LucideIcon[] = [
+  User,      // Usuario
+  Gift,      // Regalo
+  Star,      // Estrella
+  Bell,      // Campana
+  Snowflake, // Copo de nieve
+  TreePine,  // Árbol
+  Sparkles,  // Destellos
+  Heart,     // Corazón
+  Candy,     // Dulce
+  Cookie,    // Galleta
+  Music,     // Música
+  Crown,     // Corona
 ]
 
 /**
  * Obtiene un avatar navideño aleatorio basado en el email del usuario
- * Siempre retorna el mismo emoji para el mismo email
+ * Siempre retorna el mismo icono para el mismo email
  */
-export function getChristmasAvatar(email: string | null | undefined): string {
-  if (!email) return '🎄'
+export function getChristmasAvatar(email: string | null | undefined): LucideIcon {
+  if (!email) return TreePine
   
   // Hash simple del email para obtener un índice consistente
   let hash = 0

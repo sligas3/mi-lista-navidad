@@ -33,8 +33,11 @@ export function UserMenu({ user }: UserMenuProps) {
     <div className="flex items-center gap-2">
       {/* Avatar + Nombre */}
       <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10">
-        <div className={`w-8 h-8 rounded-full ${getAvatarColor(user.email)} flex items-center justify-center text-xl`}>
-          {getChristmasAvatar(user.email)}
+        <div className={`w-8 h-8 rounded-full ${getAvatarColor(user.email)} flex items-center justify-center`}>
+          {(() => {
+            const AvatarIcon = getChristmasAvatar(user.email)
+            return <AvatarIcon className="w-5 h-5 text-white" />
+          })()}
         </div>
         <div className="hidden sm:block">
           <p className="text-white text-sm font-medium leading-tight">
