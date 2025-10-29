@@ -10,7 +10,6 @@ import WishForm from '@/components/WishForm'
 import WishList from '@/components/WishList'
 import BackgroundFX from '@/components/ui/BackgroundFX'
 import SnowEffect from '@/components/SnowEffect'
-import UserModal from '@/components/UserModal'
 import { ProfileModal } from '@/components/ProfileModal'
 import { Toast } from '@/components/ui/Toast'
 import { updateProfile } from './actions/auth'
@@ -26,8 +25,6 @@ interface ClientPageProps {
 
 export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes)
-  const [nombreUsuario, setNombreUsuario] = useState<string>('')
-  const [showUserModal, setShowUserModal] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [toast, setToast] = useState<{ message: string; variant: 'success' | 'error' | 'info' | 'warning' } | null>(null)
   const [selectedUser, setSelectedUser] = useState('Todos')
@@ -40,23 +37,8 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   }, [user])
 
   useEffect(() => {
-    const savedName = localStorage.getItem('navidad_user')
-    if (savedName) {
-      setNombreUsuario(savedName)
-    } else {
-      setShowUserModal(true)
-    }
-  }, [])
-
-  useEffect(() => {
     setWishes(initialWishes)
   }, [initialWishes])
-
-  const handleSetUser = (nombre: string) => {
-    setNombreUsuario(nombre)
-    localStorage.setItem('navidad_user', nombre)
-    setShowUserModal(false)
-  }
 
   const handleSaveProfile = async (displayName: string) => {
     try {
@@ -69,8 +51,9 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   }
 
   const handleCreateWish = async (deseo: string, prioridad: 1 | 2 | 3) => {
+    if (!user) return
     try {
-      await createWish(nombreUsuario, deseo, prioridad)
+      await createWish(user.display_name || user.email || 'Usuario', deseo, prioridad)
       setToast({ message: '¡Deseo agregado con éxito! 🎁', variant: 'success' })
     } catch (error) {
       setToast({ message: 'No se pudo agregar el deseo. Inténtalo de nuevo.', variant: 'error' })
@@ -95,10 +78,6 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
     }
   }
 
-  const handleChangeUser = () => {
-    setShowUserModal(true)
-  }
-
   const handleShare = () => {
     const url = window.location.href
     navigator.clipboard.writeText(url)
@@ -118,7 +97,6 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
       <BackgroundFX />
       <SnowEffect />
       
-      {showUserModal && <UserModal onSetUser={handleSetUser} />}
       {showProfileModal && user && (
         <ProfileModal
           user={user}
@@ -169,7 +147,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
           {/* Formulario */}
           <div>
             <WishForm
-              nombreUsuario={nombreUsuario}
+              nombreUsuario={user?.display_name || user?.email || ''}
               onSubmit={handleCreateWish}
               user={user}
             />
@@ -178,7 +156,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
           {/* Lista de deseos */}
           <WishList
             wishes={filteredWishes}
-            currentUser={nombreUsuario}
+            currentUser={user?.display_name || user?.email || ''}
             onToggle={handleToggleWish}
             onDelete={handleDeleteWish}
             user={user}
