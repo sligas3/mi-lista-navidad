@@ -237,6 +237,21 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Fix para botones fixed en Chrome móvil */
+  .fixed-mobile-safe {
+    position: fixed;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Mejora táctil para inputs */
+  input, textarea, button, select {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   /* Respeta prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     .orb,

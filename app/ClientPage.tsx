@@ -185,38 +185,37 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
 
           {/* Botón flotante para agregar deseo (FAB) */}
           {user && (
-            <button
-              onClick={() => {
-                if (!showForm) {
-                  setShowForm(true)
-                } else {
-                  setShowForm(false)
-                }
-              }}
-              className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 text-white font-bold px-4 py-3 sm:px-6 sm:py-4 rounded-full shadow-2xl motion-safe:hover:shadow-emerald-500/50 motion-safe:hover:scale-[1.08] motion-safe:active:scale-[0.96] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[52px] min-w-[52px] sm:min-h-[60px] sm:min-w-[60px] flex items-center justify-center gap-1.5 sm:gap-2 group text-touch-safe hover:brightness-110 ${
-                showForm 
-                  ? 'bg-rose-600 hover:bg-rose-700 motion-safe:hover:shadow-rose-500/50 focus-visible:ring-rose-400' 
-                  : 'bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400'
-              }`}
-              aria-label={showForm ? 'Cerrar formulario' : 'Agregar nuevo deseo'}
-              aria-expanded={showForm}
-              style={{
-                paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))',
-              }}
-            >
-              {showForm ? (
-                <>
-                  <X className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
-                  <span className="hidden sm:inline">Cerrar</span>
-                </>
-              ) : (
-                <>
-                  <Plus className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
-                  <span className="hidden xs:inline">Agregar</span>
-                  <Gift className="w-4 h-4 sm:w-5 sm:h-5 hidden xs:inline" />
-                </>
-              )}
-            </button>
+            <div className="fixed-mobile-safe bottom-4 right-4 sm:bottom-6 sm:right-6 z-50" style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
+              <button
+                onClick={() => {
+                  if (!showForm) {
+                    setShowForm(true)
+                  } else {
+                    setShowForm(false)
+                  }
+                }}
+                className={`text-white font-bold px-4 py-3 sm:px-6 sm:py-4 rounded-full shadow-2xl motion-safe:hover:shadow-emerald-500/50 motion-safe:hover:scale-[1.08] motion-safe:active:scale-[0.96] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[52px] min-w-[52px] sm:min-h-[60px] sm:min-w-[60px] flex items-center justify-center gap-1.5 sm:gap-2 group text-touch-safe hover:brightness-110 ${
+                  showForm 
+                    ? 'bg-rose-600 hover:bg-rose-700 motion-safe:hover:shadow-rose-500/50 focus-visible:ring-rose-400' 
+                    : 'bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400'
+                }`}
+                aria-label={showForm ? 'Cerrar formulario' : 'Agregar nuevo deseo'}
+                aria-expanded={showForm}
+              >
+                {showForm ? (
+                  <>
+                    <X className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
+                    <span className="hidden sm:inline">Cerrar</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
+                    <span className="hidden xs:inline">Agregar</span>
+                    <Gift className="w-4 h-4 sm:w-5 sm:h-5 hidden xs:inline" />
+                  </>
+                )}
+              </button>
+            </div>
           )}
 
           <Footer />

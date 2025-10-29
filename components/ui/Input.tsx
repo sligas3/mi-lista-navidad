@@ -23,11 +23,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               "focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent focus:bg-white/15",
               "motion-safe:focus:scale-[1.01]",
               "disabled:cursor-not-allowed disabled:opacity-50",
+              "touch-manipulation",
               error && "border-red-400 focus:ring-red-400",
               leftIcon ? "pl-10 pr-4" : "px-4",
               className
             )}
             aria-invalid={!!error}
+            inputMode={props.type === 'url' ? 'url' : props.type === 'email' ? 'email' : 'text'}
             {...props}
           />
         </div>

@@ -45,10 +45,10 @@ const WishForm = forwardRef<WishFormRef, WishFormProps>(({ nombreUsuario, onSubm
       if (formRef.current && inputRef.current) {
         formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
         setTimeout(() => {
-          inputRef.current?.focus()
+          inputRef.current?.focus({ preventScroll: true })
           setShowFocusRing(true)
           setTimeout(() => setShowFocusRing(false), 1000)
-        }, 300)
+        }, 400)
       }
     }
   }))
@@ -56,10 +56,16 @@ const WishForm = forwardRef<WishFormRef, WishFormProps>(({ nombreUsuario, onSubm
   useEffect(() => {
     if (isVisible && inputRef.current) {
       const timer = setTimeout(() => {
-        inputRef.current?.focus()
-        setShowFocusRing(true)
-        setTimeout(() => setShowFocusRing(false), 1000)
-      }, 250)
+        if (formRef.current) {
+          formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+        setTimeout(() => {
+          inputRef.current?.focus({ preventScroll: true })
+          inputRef.current?.click()
+          setShowFocusRing(true)
+          setTimeout(() => setShowFocusRing(false), 1200)
+        }, 400)
+      }, 100)
       return () => clearTimeout(timer)
     }
   }, [isVisible])
