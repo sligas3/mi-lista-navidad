@@ -6,8 +6,9 @@ import { revalidatePath } from 'next/cache'
 export async function getWishes() {
   const { data, error } = await supabase
     .from('wishes')
-    .select('*')
+    .select('id, nombre_usuario, deseo, prioridad, cumplido, created_at, user_id')
     .order('created_at', { ascending: false })
+    .limit(100)
 
   if (error) {
     console.error('Error fetching wishes:', error)

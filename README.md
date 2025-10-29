@@ -1,413 +1,157 @@
 # 🎄 Mi Lista de Deseos Navideña
 
-Una aplicación web festiva para crear y compartir listas de deseos navideños con familia y amigos.
+Lista de deseos navideña colaborativa con autenticación y diseño festivo.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
-![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+## 🚀 Características
 
-## ✨ Características
-
-### 🔐 Autenticación
-- **Login/Registro unificado**: Panel con tabs intuitivos
-- **Google OAuth**: Inicio de sesión social rápido
-- **Email/Password**: Autenticación tradicional con validaciones
-- **Sesión persistente**: Reconoce usuarios autenticados
-- **Logout visible**: Botón siempre accesible en header
-- **Validaciones en vivo**: Email válido, password mínimo 6 caracteres
-- **Medidor de fortaleza**: Indica seguridad de contraseña
-- **Toggle ver contraseña**: 👁️ para mostrar/ocultar
-- **Mensajes claros**: Errores con soluciones, feedback inmediato
-
-### 🎁 Gestión de Deseos
-- **CRUD completo**: Crear, leer, actualizar y eliminar deseos
-- **Permisos por sesión**: Solo el dueño edita/elimina sus deseos
-- **URLs largas**: Soporta links hasta 2048 caracteres
-- **Previews de links**: Muestra imagen y descripción de URLs
-- **Prioridades**: Clasifica deseos por importancia (1-3 estrellas)
-- **Estado**: Marca deseos como cumplidos o pendientes
-
-### 🔍 Navegación y Filtros
-- **Filtros**: Por estado, usuario y búsqueda de texto
-- **Estadísticas**: Visualiza progreso y métricas
-- **Exportar**: Copia la lista completa como texto
-- **Compartir**: Enlace directo para compartir
-
-### 🎨 UX/UI
-- **Responsive**: Optimizado para iPhone 11–15 Pro Max
-- **Tap targets**: Mínimo 44px para accesibilidad táctil
-- **Safe areas**: Soporte para notch/Dynamic Island
-- **Animaciones suaves**: Respeta prefers-reduced-motion
-- **Tema navideño**: Colores festivos, emojis y nieve cayendo
-- **Toasts**: Notificaciones de éxito/error con feedback claro
+- ✨ Autenticación con Supabase (Google OAuth + Email/Password)
+- 🎁 Crear, editar y eliminar deseos
+- ⭐ Sistema de prioridades (Mucho, Normal, Un poco)
+- 🔗 Soporte para URLs largas con preview
+- 🎨 Diseño responsive con animaciones navideñas
+- ❄️ Efectos visuales: nieve, árbol navideño, orbes flotantes
+- 🎯 Iconos SVG con Lucide React
+- ⌨️ Hotkeys para prioridades (1/2/3)
 
 ## 🛠️ Stack Tecnológico
 
-- **Framework**: Next.js 14 (App Router)
-- **Autenticación**: Supabase Auth (Google OAuth + Email/Password)
-- **Base de datos**: Supabase (PostgreSQL con RLS)
-- **Estilos**: TailwindCSS 4
-- **Lenguaje**: TypeScript
-- **Deploy**: Vercel
-- **Fuentes**: Poppins, Manrope (Google Fonts)
+- **Framework**: Next.js 15 (App Router)
+- **Styling**: Tailwind CSS
+- **Animaciones**: Framer Motion
+- **Base de datos**: Supabase (PostgreSQL)
+- **Auth**: Supabase Auth
+- **Deployment**: Vercel
+- **Iconos**: Lucide React
 
-## 📋 Requisitos Previos
-
-- Node.js 18+ instalado
-- Cuenta en [Supabase](https://supabase.com)
-- Cuenta en [Vercel](https://vercel.com) (para deploy)
-
-## 🚀 Instalación Local
-
-### 1. Clonar el repositorio
+## 📦 Instalación
 
 ```bash
-git clone <tu-repo>
+# Clonar repositorio
+git clone https://github.com/sligas3/mi-lista-navidad.git
 cd mi-lista-navidad
-```
 
-### 2. Instalar dependencias
-
-```bash
+# Instalar dependencias
 npm install
-```
 
-### 3. Configurar Supabase
+# Configurar variables de entorno
+cp .env.local.example .env.local
+# Editar .env.local con tus credenciales de Supabase
 
-#### a) Crear proyecto en Supabase
-
-1. Ve a [supabase.com](https://supabase.com)
-2. Crea un nuevo proyecto
-3. Guarda la contraseña de la base de datos
-
-#### b) Configurar autenticación
-
-1. En **Authentication → Providers**, habilita:
-   - **Email** (activado por defecto)
-   - **Google** (opcional, requiere OAuth credentials)
-
-2. Para Google OAuth:
-   - Ve a [Google Cloud Console](https://console.cloud.google.com)
-   - Crea un proyecto y habilita Google+ API
-   - Crea credenciales OAuth 2.0
-   - Añade redirect URI: `https://<tu-proyecto>.supabase.co/auth/v1/callback`
-   - Copia Client ID y Secret a Supabase
-
-#### c) Ejecutar migraciones SQL
-
-En el **SQL Editor** de Supabase, ejecuta los archivos en `supabase/migrations/`:
-
-1. **002_create_users_table.sql**: Crea tabla users con triggers
-2. **001_create_wishes_table.sql**: Crea tabla wishes (si existe)
-
-O ejecuta manualmente:
-
-```sql
--- Ver supabase/migrations/002_create_users_table.sql
--- Crea tabla users, triggers y políticas RLS
-```
-
-#### d) Obtener credenciales
-
-En **Settings → API**, copia:
-- Project URL
-- anon/public key
-
-### 4. Configurar variables de entorno
-
-Crea `.env.local` en la raíz:
-
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key-aqui
-```
-
-### 5. Ejecutar en desarrollo
-
-```bash
+# Ejecutar en desarrollo
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000)
+## 🔧 Configuración de Supabase
 
-## 🌐 Deploy en Vercel
+1. Crear proyecto en [supabase.com](https://supabase.com)
+2. Ejecutar migraciones SQL (ver `/supabase/migrations`)
+3. Configurar OAuth providers en Authentication > Providers
+4. Copiar URL y Anon Key a `.env.local`
 
-### Opción 1: Deploy desde GitHub (Recomendado)
+## 🎯 Optimizaciones Implementadas
 
-1. **Push a GitHub**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git remote add origin <tu-repo-url>
-   git push -u origin main
-   ```
+### Performance
+- ✅ Queries optimizadas con campos específicos
+- ✅ Límite de 100 deseos por query
+- ✅ Compresión gzip habilitada
+- ✅ Imágenes en formato AVIF/WebP
+- ✅ Cache de imágenes (1 año)
 
-2. **Conectar con Vercel**
-   - Ve a [vercel.com](https://vercel.com)
-   - Click en "New Project"
-   - Importa tu repositorio de GitHub
-   - Vercel detectará Next.js automáticamente
+### Disponibilidad
+- ✅ Cron job diario para mantener Supabase activo
+- ✅ Endpoint `/api/keep-alive` (ejecuta diariamente)
+- ✅ Endpoint `/api/health` para monitoreo
+- ✅ Manejo de errores con fallbacks
 
-3. **Configurar variables de entorno**
-   
-   En **Settings → Environment Variables**, agrega:
-   
-   | Variable | Valor |
-   |----------|-------|
-   | `NEXT_PUBLIC_SUPABASE_URL` | Tu URL de Supabase |
-   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Tu anon key |
+### Límites Free Tier
 
-4. **Deploy**
-   - Click en "Deploy"
-   - Espera 2-3 minutos
-   - ¡Listo! 🎉
+**Vercel**:
+- 100 GB bandwidth/mes ✅
+- Builds ilimitados ✅
+- Serverless Functions: 100 GB-hours/mes ✅
 
-### Opción 2: Deploy con Vercel CLI
+**Supabase**:
+- 500 MB database ✅
+- 5 GB bandwidth/mes ⚠️
+- Pausa después de 7 días inactividad ⚠️ (resuelto con cron)
 
-```bash
-# Instalar Vercel CLI
-npm i -g vercel
-
-# Login
-vercel login
-
-# Deploy
-vercel
-
-# Configurar variables cuando te lo pida
-# NEXT_PUBLIC_SUPABASE_URL: <tu-url>
-# NEXT_PUBLIC_SUPABASE_ANON_KEY: <tu-key>
-
-# Deploy a producción
-vercel --prod
-```
-
-## 🔧 Configuración de Vercel
-
-### Build Settings (automático)
-
-- **Framework Preset**: Next.js
-- **Build Command**: `npm run build`
-- **Output Directory**: `.next`
-- **Install Command**: `npm install`
-
-### Variables de Entorno
-
-Asegúrate de agregar en **todas las environments** (Production, Preview, Development):
-
-```
-NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-```
-
-## ✅ Verificación Post-Deploy
-
-### Checklist
-
-- [ ] La app carga correctamente
-- [ ] Modal de usuario aparece
-- [ ] Se pueden crear deseos
-- [ ] Se pueden marcar como cumplidos
-- [ ] Se pueden eliminar deseos
-- [ ] Filtros funcionan
-- [ ] Búsqueda funciona
-- [ ] Estadísticas se muestran
-- [ ] Exportar copia al portapapeles
-- [ ] Compartir copia URL
-- [ ] Nieve cae correctamente
-- [ ] Responsive en móvil
-
-### Comandos de Verificación
+## 📝 Scripts
 
 ```bash
-# Ver logs en Vercel
-vercel logs <deployment-url>
-
-# Ver build logs
-vercel inspect <deployment-url>
+npm run dev          # Desarrollo
+npm run build        # Build producción
+npm run start        # Servidor producción
+npm run lint         # Linter
 ```
 
-## 🔐 Flujos de Autenticación
-
-### Registro de Usuario
-
-1. Usuario hace click en "Ingresar" (header)
-2. Se muestra AuthPanel con tabs
-3. Usuario selecciona "Crear cuenta"
-4. Opciones:
-   - **Google**: Redirect a OAuth, callback automático
-   - **Email**: Completa nombre, email, contraseña
-5. Validaciones en vivo:
-   - Email válido (regex)
-   - Password ≥ 6 caracteres
-   - Medidor de fortaleza (Débil/Media/Fuerte)
-6. Al enviar:
-   - Supabase crea usuario en `auth.users`
-   - Trigger crea perfil en `public.users`
-   - Email de confirmación enviado
-7. Usuario confirma email y puede iniciar sesión
-
-### Inicio de Sesión
-1. Usuario hace click en "Ingresar"
-2. Tab "Iniciar sesión" activo por defecto
-3. Opciones:
-   - **Google**: Login instantáneo
-   - **Email**: Ingresa credenciales
-4. Validación de email en vivo
-5. Al enviar:
-   - Supabase valida credenciales
-   - Si éxito: redirect a home (o returnUrl)
-   - Si error: mensaje claro con solución
-6. Header muestra avatar + nombre + botón "Salir"
-
-### Sesión Activa
-
-- **Header**: Muestra UserMenu con avatar, nombre y botón Logout
-- **WishForm**: Prellenado con nombre del usuario, no editable
-- **WishItem**: Solo dueño ve botones editar/eliminar
-- **Permisos**: Crear/editar/eliminar requieren sesión
-
-### Cierre de Sesión
-1. Usuario hace click en "Salir" (header)
-2. Supabase cierra sesión
-3. Toast: "Sesión cerrada correctamente"
-4. Redirect a home
-5. Header muestra botón "Ingresar"
-
-### Protección de Rutas
-
-- **Públicas**: Home, ver lista de deseos
-- **Requieren sesión**: Crear, editar, eliminar deseos
-- **Redirect automático**: Si usuario ya logueado visita /login → home
-
-## 🐛 Troubleshooting
-
-### Error: "Missing environment variables"
-
-**Solución**: Verifica que las variables estén en Vercel:
-```bash
-vercel env ls
-```
-
-### Error: "Failed to fetch wishes"
-
-**Solución**: Verifica las políticas RLS en Supabase:
-```sql
-SELECT * FROM pg_policies WHERE tablename = 'wishes';
-```
-
-### Error: "Build failed"
-
-**Solución**: Verifica que el build funcione localmente:
-```bash
-npm run build
-npm start
-```
-
-### La app no actualiza después de cambios
-
-**Solución**: Redeploy forzado:
-```bash
-vercel --force
-```
-
-## 📁 Estructura del Proyecto
+## 🎨 Estructura del Proyecto
 
 ```
 mi-lista-navidad/
 ├── app/
-│   ├── actions.ts          # Server Actions (CRUD)
-│   ├── ClientPage.tsx      # Componente cliente principal
-│   ├── globals.css         # Estilos globales
-│   ├── layout.tsx          # Layout con fuente
-│   └── page.tsx            # Página principal (SSR)
+│   ├── actions/         # Server actions
+│   ├── api/            # API routes
+│   └── ...
 ├── components/
-│   ├── ExportButton.tsx    # Exportar lista
-│   ├── Footer.tsx          # Footer con contador
-│   ├── HeaderNavidad.tsx   # Header festivo
-│   ├── SnowEffect.tsx      # Efecto nieve
-│   ├── Stats.tsx           # Estadísticas
-│   ├── Toast.tsx           # Notificaciones
-│   ├── UserFilter.tsx      # Filtro por usuario
-│   ├── UserModal.tsx       # Modal captura nombre
-│   ├── WishForm.tsx        # Formulario deseos
-│   ├── WishItem.tsx        # Card de deseo
-│   └── WishList.tsx        # Lista con filtros
-├── hooks/
-│   └── useLocalStorage.ts  # Hook localStorage
+│   ├── auth/           # Autenticación
+│   ├── ui/             # Componentes UI
+│   ├── wish/           # Componentes de deseos
+│   └── ...
 ├── lib/
-│   ├── supabase.ts         # Cliente Supabase
-│   └── utils.ts            # Utilidades
-├── .env.example            # Plantilla variables
-├── .env.local              # Variables locales (no commitear)
-├── next.config.js          # Config Next.js
-├── package.json            # Dependencias
-├── tailwind.config.ts      # Config Tailwind
-└── tsconfig.json           # Config TypeScript
+│   ├── supabase.ts     # Cliente Supabase
+│   ├── avatars.ts      # Sistema de avatares
+│   └── ...
+└── public/
+    └── logo.png        # Logo personalizado
 ```
 
-## 🎨 Personalización
+## 🔐 Variables de Entorno
 
-### Cambiar colores
-
-Edita `tailwind.config.ts`:
-
-```typescript
-colors: {
-  navidad: {
-    rojo: '#C41E3A',    // Tu color
-    verde: '#165B33',   // Tu color
-    dorado: '#FFD700',  // Tu color
-  }
-}
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-### Cambiar fuente
+## 🚀 Deployment
 
-Edita `app/layout.tsx`:
+El proyecto está configurado para deployment automático en Vercel:
 
-```typescript
-import { Tu_Fuente } from 'next/font/google'
-```
+1. Conectar repositorio en [vercel.com](https://vercel.com)
+2. Configurar variables de entorno
+3. Deploy automático en cada push a `main`
 
-### Desactivar nieve
+## 📊 Monitoreo
 
-En `app/ClientPage.tsx`, comenta:
+- **Health check**: `https://tu-dominio.com/api/health`
+- **Keep-alive**: `https://tu-dominio.com/api/keep-alive`
+- **Supabase Dashboard**: Monitorear uso de bandwidth y database
 
-```typescript
-// <SnowEffect />
-```
+## 🎄 Uso
 
-## 📝 Scripts Disponibles
-
-```bash
-npm run dev      # Desarrollo (localhost:3000)
-npm run build    # Build de producción
-npm start        # Servidor de producción
-npm run lint     # Linter ESLint
-```
+1. Ingresar con Google o Email
+2. Crear deseos con título y link opcional
+3. Seleccionar prioridad (Mucho/Normal/Un poco)
+4. Compartir lista con familia y amigos
+5. Marcar deseos como cumplidos
 
 ## 🤝 Contribuir
 
+Las contribuciones son bienvenidas. Por favor:
+
 1. Fork el proyecto
 2. Crea una rama (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit cambios (`git commit -m 'Agregar nueva funcionalidad'`)
+3. Commit cambios (`git commit -m 'feat: nueva funcionalidad'`)
 4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abre un Pull Request
 
 ## 📄 Licencia
 
-MIT License - Siéntete libre de usar este proyecto
+MIT
 
-## 🎅 Créditos
+## 👤 Autor
 
-Desarrollado con ❤️ y ☕ para esta Navidad 🎄
+Creado con ❤️ para esta Navidad
 
 ---
 
-**¿Problemas?** Abre un issue en GitHub
-**¿Sugerencias?** Pull requests son bienvenidos
-
-¡Felices fiestas! 🎁✨
+⭐ Si te gusta el proyecto, dale una estrella en GitHub

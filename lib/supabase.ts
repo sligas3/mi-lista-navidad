@@ -7,7 +7,21 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error("Faltan variables de entorno de Supabase. Revisa .env.local");
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  },
+  db: {
+    schema: 'public',
+  },
+  global: {
+    headers: {
+      'x-client-info': 'mi-lista-navidad',
+    },
+  },
+});
 
 // Tipos TypeScript para la tabla wishes
 export interface Wish {
