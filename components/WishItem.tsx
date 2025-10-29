@@ -1,14 +1,15 @@
 'use client'
 
 import { Wish } from '@/lib/supabase'
-import { formatearFecha, getPrioridadEmoji, extractUrl } from '@/lib/utils'
+import { formatearFecha, getPrioridadText, getPrioridadColor, extractUrl } from '@/lib/utils'
+import { formatDisplayName } from '@/lib/formatName'
 import { useState } from 'react'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { LinkPreviewCard } from '@/components/ui/LinkPreviewCard'
 import { User } from '@/lib/types/database'
-import { Gift, CheckCircle, User as UserIcon, Undo2, Trash2 } from 'lucide-react'
+import { Gift, CheckCircle, User as UserIcon, Undo2, Trash2, Sparkles, Star, Heart } from 'lucide-react'
 
 interface WishItemProps {
   wish: Wish
@@ -20,8 +21,20 @@ interface WishItemProps {
 
 export default function WishItem({ wish, currentUser, onToggle, onDelete, user }: WishItemProps) {
   const [loading, setLoading] = useState(false)
-  const isOwner = user ? wish.user_id === user.id : wish.nombre_usuario === currentUser
+  const isOwner = wish.nombre_usuario === currentUser
   const url = extractUrl(wish.deseo)
+  const deseoSinUrl = url ? wish.deseo.replace(url, '').trim() : wish.deseo
+  
+  const getPriorityIcon = (prioridad: 1 | 2 | 3) => {
+    const icons = {
+      1: Sparkles,
+      2: Star,
+      3: Heart,
+    }
+    return icons[prioridad]
+  }
+  
+  const PriorityIcon = getPriorityIcon(wish.prioridad)
 
   const handleToggle = async () => {
     setLoading(true)
@@ -54,9 +67,21 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
                 <Gift className="w-6 h-6 text-yellow-400" />
               )}
             </span>
-            <p className={`text-base font-semibold text-white leading-relaxed break-words ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
-              {wish.deseo}
-            </p>
+            <div className="flex-1">
+              <p className={`text-base font-semibold text-white leading-relaxed break-words ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
+                {deseoSinUrl}
+              </p>
+              {url && (
+                <a 
+                  href={url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-400 hover:text-blue-300 underline break-all mt-1 inline-block"
+                >
+                  {url}
+                </a>
+              )}
+            </div>
           </div>
 
           {url && <LinkPreviewCard url={url} />}
@@ -64,9 +89,12 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
           <div className="flex items-center gap-3 flex-wrap">
             <span className="text-sm text-white/70 flex items-center gap-1.5">
               <UserIcon className="w-4 h-4" />
-              <span className="font-medium">{wish.nombre_usuario}</span>
+              <span className="font-medium">{formatDisplayName(wish.nombre_usuario)}</span>
             </span>
-            <span className="text-sm">{getPrioridadEmoji(wish.prioridad)}</span>
+            <span className={`text-sm flex items-center gap-1 ${getPrioridadColor(wish.prioridad)}`}>
+              <PriorityIcon className="w-4 h-4" />
+              {getPrioridadText(wish.prioridad)}
+            </span>
             <Badge variant={wish.cumplido ? 'success' : 'warning'}>
               {wish.cumplido ? 'Cumplido' : 'Pendiente'}
             </Badge>

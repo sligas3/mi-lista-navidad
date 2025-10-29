@@ -17,7 +17,7 @@ import Stats from '@/components/Stats'
 import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
-import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper } from 'lucide-react'
+import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper, Plus, X } from 'lucide-react'
 
 interface ClientPageProps {
   initialWishes: Wish[]
@@ -30,6 +30,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const [toast, setToast] = useState<{ message: string; variant: 'success' | 'error' | 'info' | 'warning' } | null>(null)
   const [selectedUser, setSelectedUser] = useState('Todos')
   const [showStats, setShowStats] = useState(false)
+  const [showForm, setShowForm] = useState(false)
 
   useEffect(() => {
     if (user && !user.display_name) {
@@ -56,6 +57,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
     try {
       await createWish(user.display_name || user.email || 'Usuario', deseo, prioridad)
       setToast({ message: '¡Deseo agregado con éxito!', variant: 'success' })
+      window.location.reload()
     } catch (error) {
       setToast({ message: 'No se pudo agregar el deseo. Inténtalo de nuevo.', variant: 'error' })
     }
@@ -65,6 +67,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
     try {
       await toggleWish(id, cumplido)
       setToast({ message: cumplido ? '¡Deseo cumplido!' : 'Marcado como pendiente', variant: 'success' })
+      window.location.reload()
     } catch (error) {
       setToast({ message: 'No se pudo actualizar el deseo.', variant: 'error' })
     }
@@ -74,6 +77,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
     try {
       await deleteWish(id)
       setToast({ message: 'Deseo eliminado correctamente', variant: 'success' })
+      window.location.reload()
     } catch (error) {
       setToast({ message: 'No se pudo eliminar el deseo.', variant: 'error' })
     }
@@ -138,23 +142,12 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
 
           {/* Filtro por usuario */}
           {wishes.length > 0 && (
-            <div className="mb-6">
-              <UserFilter
-                wishes={wishes}
-                selectedUser={selectedUser}
-                onSelectUser={setSelectedUser}
-              />
-            </div>
-          )}
-
-          {/* Formulario */}
-          <div>
-            <WishForm
-              nombreUsuario={user?.display_name || user?.email || ''}
-              onSubmit={handleCreateWish}
-              user={user}
+            <UserFilter
+              wishes={wishes}
+              selectedUser={selectedUser}
+              onSelectUser={setSelectedUser}
             />
-          </div>
+          )}
 
           {/* Lista de deseos */}
           <WishList
@@ -164,6 +157,40 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
             onDelete={handleDeleteWish}
             user={user}
           />
+
+          {/* Botón para agregar deseo */}
+          {user && (
+            <div className="sticky bottom-6 z-10">
+              {!showForm ? (
+                <Button
+                  onClick={() => setShowForm(true)}
+                  variant="primary"
+                  size="lg"
+                  className="w-full shadow-2xl shadow-green-900/60 text-base font-bold"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Agregar nuevo deseo
+                </Button>
+              ) : (
+                <div className="space-y-3">
+                  <Button
+                    onClick={() => setShowForm(false)}
+                    variant="ghost"
+                    size="md"
+                    className="w-full"
+                  >
+                    <X className="w-5 h-5 mr-2" />
+                    Cancelar
+                  </Button>
+                  <WishForm
+                    nombreUsuario={user?.display_name || user?.email || ''}
+                    onSubmit={handleCreateWish}
+                    user={user}
+                  />
+                </div>
+              )}
+            </div>
+          )}
 
           <Footer />
         </div>

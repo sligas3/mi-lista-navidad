@@ -11,14 +11,24 @@ export function diasHastaNavidad(): number {
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
-// Obtener emoji según prioridad
-export function getPrioridadEmoji(prioridad: 1 | 2 | 3): string {
-  const emojis = {
-    1: "⭐",
-    2: "⭐⭐",
-    3: "⭐⭐⭐",
+// Obtener texto de prioridad
+export function getPrioridadText(prioridad: 1 | 2 | 3): string {
+  const texts = {
+    1: "Un poco",
+    2: "Normal",
+    3: "Mucho",
   };
-  return emojis[prioridad];
+  return texts[prioridad];
+}
+
+// Obtener color de prioridad
+export function getPrioridadColor(prioridad: 1 | 2 | 3): string {
+  const colors = {
+    1: "text-blue-400",
+    2: "text-yellow-400",
+    3: "text-red-400",
+  };
+  return colors[prioridad];
 }
 
 // Formatear fecha

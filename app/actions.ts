@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 export async function getWishes() {
   const { data, error } = await supabase
     .from('wishes')
-    .select('id, nombre_usuario, deseo, prioridad, cumplido, created_at, user_id')
+    .select('id, nombre_usuario, deseo, prioridad, cumplido, created_at')
     .order('created_at', { ascending: false })
     .limit(100)
 

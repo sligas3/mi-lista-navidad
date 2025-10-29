@@ -1,7 +1,7 @@
 'use client'
 
 import { Wish } from '@/lib/supabase'
-import { getPrioridadEmoji } from '@/lib/utils'
+import { getPrioridadText } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
 import { Clipboard } from 'lucide-react'
 
@@ -15,7 +15,7 @@ export default function ExportButton({ wishes, onExport }: ExportButtonProps) {
     const texto = `MI LISTA DE DESEOS NAVIDEÑA\n\n` +
       wishes.map((w, i) => 
         `${i + 1}. ${w.deseo}\n` +
-        `   ${w.nombre_usuario} | ${getPrioridadEmoji(w.prioridad)} | ${w.cumplido ? 'Cumplido' : 'Pendiente'}`
+        `   ${w.nombre_usuario} | Prioridad: ${getPrioridadText(w.prioridad)} | ${w.cumplido ? 'Cumplido' : 'Pendiente'}`
       ).join('\n\n') +
       `\n\nTotal: ${wishes.length} deseos\n` +
       `Generado: ${new Date().toLocaleDateString('es-ES')}`

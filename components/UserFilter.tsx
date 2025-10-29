@@ -1,6 +1,8 @@
 'use client'
 
 import { Wish } from '@/lib/supabase'
+import { Users, User } from 'lucide-react'
+import { formatDisplayName } from '@/lib/formatName'
 
 interface UserFilterProps {
   wishes: Wish[]
@@ -13,19 +15,34 @@ export default function UserFilter({ wishes, selectedUser, onSelectUser }: UserF
 
   return (
     <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-      {usuarios.map((user) => (
-        <button
-          key={user}
-          onClick={() => onSelectUser(user)}
-          className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-md card-hover ${
-            selectedUser === user
-              ? 'bg-gradient-to-r from-navidad-dorado to-yellow-500 text-navidad-oscuro scale-105'
-              : 'glass-effect text-white hover:bg-white/30 border border-white/30'
-          }`}
-        >
-          {user === 'Todos' ? '👥 Todos' : `👤 ${user}`}
-        </button>
-      ))}
+      {usuarios.map((user) => {
+        const isSelected = selectedUser === user
+        const isTodos = user === 'Todos'
+        
+        return (
+          <button
+            key={user}
+            onClick={() => onSelectUser(user)}
+            className={`min-h-[44px] px-5 py-3 rounded-lg text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-2 ${
+              isSelected
+                ? 'bg-green-600 text-white shadow-lg scale-105'
+                : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+            }`}
+          >
+            {isTodos ? (
+              <>
+                <Users className="w-4 h-4" />
+                Todos
+              </>
+            ) : (
+              <>
+                <User className="w-4 h-4" />
+                {formatDisplayName(user)}
+              </>
+            )}
+          </button>
+        )
+      })}
     </div>
   )
 }
