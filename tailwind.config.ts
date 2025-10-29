@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '390px',
+        'iphone-11': '414px',
+        'iphone-13': '390px',
+        'iphone-15-pro-max': '430px',
+      },
       colors: {
         primary: {
           DEFAULT: '#16A34A',
@@ -71,10 +77,14 @@ const config: Config = {
         '4xl': ['2.25rem', { lineHeight: '1.2' }],
         '5xl': ['3rem', { lineHeight: '1.1' }],
         '6xl': ['3.75rem', { lineHeight: '1' }],
+        'touch-safe': ['16px', { lineHeight: '1.5' }],
       },
       spacing: {
         '18': '4.5rem',
         '22': '5.5rem',
+      },
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },

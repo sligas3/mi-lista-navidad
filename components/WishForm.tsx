@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
@@ -16,22 +16,53 @@ interface WishFormProps {
   nombreUsuario: string
   onSubmit: (deseo: string, prioridad: 1 | 2 | 3) => Promise<void>
   user?: User | null
+  isVisible?: boolean
 }
 
-export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProps) {
+export interface WishFormRef {
+  focusInput: () => void
+}
+
+const WishForm = forwardRef<WishFormRef, WishFormProps>(({ nombreUsuario, onSubmit, user, isVisible }, ref) => {
   const [titulo, setTitulo] = useState('')
   const [link, setLink] = useState('')
   const [prioridad, setPrioridad] = useState<1 | 2 | 3>(2)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showFocusRing, setShowFocusRing] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLDivElement>(null)
   
   const shouldAnimate = useMemo(() => {
     if (typeof window === 'undefined') return false
-    return window.matchMedia('(prefers-reduced-motion: no-preference)').matches && 
-           navigator.hardwareConcurrency > 4
+    return window.matchMedia('(prefers-reduced-motion: no-preference)').matches
   }, [])
   
   const MotionDiv = shouldAnimate ? motion.div : 'div'
+
+  useImperativeHandle(ref, () => ({
+    focusInput: () => {
+      if (formRef.current && inputRef.current) {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        setTimeout(() => {
+          inputRef.current?.focus()
+          setShowFocusRing(true)
+          setTimeout(() => setShowFocusRing(false), 1000)
+        }, 300)
+      }
+    }
+  }))
+
+  useEffect(() => {
+    if (isVisible && inputRef.current) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus()
+        setShowFocusRing(true)
+        setTimeout(() => setShowFocusRing(false), 1000)
+      }, 250)
+      return () => clearTimeout(timer)
+    }
+  }, [isVisible])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -56,7 +87,8 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
   }
 
   return (
-    <Card>
+    <div ref={formRef}>
+      <Card>
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <MotionDiv
           {...(shouldAnimate && {
@@ -71,6 +103,7 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
             ¿Qué deseas?
           </Label>
           <Input
+            ref={inputRef}
             id="titulo"
             value={titulo}
             onChange={(e) => {
@@ -80,6 +113,7 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
             placeholder="Ej: Un libro de aventuras"
             maxLength={500}
             error={error}
+            className={showFocusRing ? 'ring-2 ring-rose-400 ring-offset-2 ring-offset-emerald-950 transition-all duration-300' : ''}
           />
         </MotionDiv>
 
@@ -128,9 +162,9 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
               type="submit"
               variant="primary"
               size="lg"
-              className="w-full font-bold shadow-2xl shadow-green-900/60"
+              className="w-full font-bold shadow-2xl shadow-emerald-900/60 hover:shadow-emerald-500/50 min-h-[52px] text-base sm:text-lg py-3 sm:py-4"
               isLoading={loading}
-              leftIcon={<Gift className="w-4 h-4 sm:w-5 sm:h-5" />}
+              leftIcon={<Gift className="w-5 h-5 sm:w-6 sm:h-6" />}
             >
               Agregar deseo
             </Button>
@@ -148,8 +182,8 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
                 type="button"
                 variant="primary"
                 size="lg"
-                className="w-full font-bold"
-                leftIcon={<TreePine className="w-4 h-4 sm:w-5 sm:h-5" />}
+                className="w-full font-bold min-h-[52px] text-base sm:text-lg py-3 sm:py-4"
+                leftIcon={<TreePine className="w-5 h-5 sm:w-6 sm:h-6" />}
               >
                 Ingresar
               </Button>
@@ -158,5 +192,10 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
         )}
       </form>
     </Card>
+    </div>
   )
-}
+})
+
+WishForm.displayName = 'WishForm'
+
+export default WishForm

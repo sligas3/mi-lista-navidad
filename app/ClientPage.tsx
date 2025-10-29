@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Wish } from '@/lib/supabase'
 import { User } from '@/lib/types/database'
 import { createWish, toggleWish, deleteWish } from './actions'
 import HeaderNavidad from '@/components/HeaderNavidad'
 import Footer from '@/components/Footer'
-import WishForm from '@/components/WishForm'
+import WishForm, { WishFormRef } from '@/components/WishForm'
 import WishList from '@/components/WishList'
 import BackgroundFX from '@/components/ui/BackgroundFX'
 import SnowEffect from '@/components/SnowEffect'
@@ -32,6 +32,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const [selectedUser, setSelectedUser] = useState('Todos')
   const [showStats, setShowStats] = useState(false)
   const [showForm, setShowForm] = useState(false)
+  const wishFormRef = useRef<WishFormRef>(null)
 
   useEffect(() => {
     if (user && !user.display_name) {
@@ -120,20 +121,22 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
             <Button
               onClick={handleShare}
               variant="secondary"
-              size="md"
+              size="lg"
               aria-label="Compartir"
+              className="min-h-[44px]"
             >
-              <LinkIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 sm:mr-1.5" />
+              <LinkIcon className="w-4 h-4 sm:mr-1.5" />
               <span className="hidden sm:inline">Compartir</span>
             </Button>
             <ExportButton wishes={wishes} onExport={handleExport} />
             <Button
               onClick={() => setShowStats(!showStats)}
               variant="ghost"
-              size="md"
+              size="lg"
               aria-label="Estadísticas"
+              className="min-h-[44px]"
             >
-              <BarChart3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 sm:mr-1.5" />
+              <BarChart3 className="w-4 h-4 sm:mr-1.5" />
               <span className="hidden sm:inline">Estadísticas</span>
             </Button>
           </div>
@@ -170,9 +173,11 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
                 className="space-y-3"
               >
                 <WishForm
+                  ref={wishFormRef}
                   nombreUsuario={user?.display_name || user?.email || ''}
                   onSubmit={handleCreateWish}
                   user={user}
+                  isVisible={showForm}
                 />
               </motion.div>
             )}
@@ -181,27 +186,34 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
           {/* Botón flotante para agregar deseo (FAB) */}
           {user && (
             <button
-              onClick={() => setShowForm(!showForm)}
-              className={`fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 text-white font-bold px-3 py-2.5 sm:px-6 sm:py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[44px] sm:min-h-[56px] flex items-center gap-1 sm:gap-2 group text-xs sm:text-base ${
+              onClick={() => {
+                if (!showForm) {
+                  setShowForm(true)
+                } else {
+                  setShowForm(false)
+                }
+              }}
+              className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 text-white font-bold px-4 py-3 sm:px-6 sm:py-4 rounded-full shadow-2xl motion-safe:hover:shadow-emerald-500/50 motion-safe:hover:scale-[1.08] motion-safe:active:scale-[0.96] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[52px] min-w-[52px] sm:min-h-[60px] sm:min-w-[60px] flex items-center justify-center gap-1.5 sm:gap-2 group text-touch-safe hover:brightness-110 ${
                 showForm 
-                  ? 'bg-red-600 hover:bg-red-700 focus-visible:ring-red-400' 
+                  ? 'bg-rose-600 hover:bg-rose-700 motion-safe:hover:shadow-rose-500/50 focus-visible:ring-rose-400' 
                   : 'bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400'
               }`}
               aria-label={showForm ? 'Cerrar formulario' : 'Agregar nuevo deseo'}
+              aria-expanded={showForm}
               style={{
-                paddingBottom: 'calc(0.625rem + env(safe-area-inset-bottom))',
+                paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))',
               }}
             >
               {showForm ? (
                 <>
-                  <X className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover:rotate-90 duration-200" />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
                   <span className="hidden sm:inline">Cerrar</span>
                 </>
               ) : (
                 <>
-                  <Plus className="w-4 h-4 sm:w-6 sm:h-6 transition-transform group-hover:rotate-90 duration-200" />
-                  <span className="hidden sm:inline">Agregar deseo</span>
-                  <Gift className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
+                  <Plus className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
+                  <span className="hidden xs:inline">Agregar</span>
+                  <Gift className="w-4 h-4 sm:w-5 sm:h-5 hidden xs:inline" />
                 </>
               )}
             </button>
