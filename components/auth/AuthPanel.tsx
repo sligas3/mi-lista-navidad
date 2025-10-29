@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase-browser'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -90,19 +91,23 @@ export function AuthPanel() {
   const isLogin = mode === 'login'
 
   return (
-    <div 
-      className="w-full max-w-md mx-auto transition-all duration-300 motion-reduce:transition-none"
-      data-state="open"
-    >
+    <div className="w-full max-w-md mx-auto">
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 bg-white/5 p-1 rounded-xl">
+      <div className="flex gap-2 mb-6 bg-white/5 p-1 rounded-xl relative">
+        <motion.div
+          layoutId="activeTab"
+          className="absolute inset-y-1 bg-white/20 rounded-lg shadow-lg"
+          style={{
+            left: isLogin ? '0.25rem' : '50%',
+            right: isLogin ? '50%' : '0.25rem',
+          }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        />
         <button
           type="button"
           onClick={() => { setMode('login'); setError(null) }}
-          className={`flex-1 py-3 px-4 rounded-lg font-semibold text-base transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-            isLogin
-              ? 'bg-white/20 text-white shadow-lg'
-              : 'text-white/70 hover:text-white hover:bg-white/10'
+          className={`relative z-10 flex-1 py-3 px-4 rounded-lg font-semibold text-base transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
+            isLogin ? 'text-white' : 'text-white/70 hover:text-white'
           }`}
         >
           Iniciar sesión
@@ -110,10 +115,8 @@ export function AuthPanel() {
         <button
           type="button"
           onClick={() => { setMode('register'); setError(null) }}
-          className={`flex-1 py-3 px-4 rounded-lg font-semibold text-base transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-            !isLogin
-              ? 'bg-white/20 text-white shadow-lg'
-              : 'text-white/70 hover:text-white hover:bg-white/10'
+          className={`relative z-10 flex-1 py-3 px-4 rounded-lg font-semibold text-base transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
+            !isLogin ? 'text-white' : 'text-white/70 hover:text-white'
           }`}
         >
           Crear cuenta
@@ -126,7 +129,7 @@ export function AuthPanel() {
         disabled={loading}
         variant="secondary"
         size="lg"
-        className="w-full mb-4"
+        className="w-full mb-4 hover:scale-[1.02] transition-transform duration-200"
       >
         <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -141,8 +144,15 @@ export function AuthPanel() {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
+        <AnimatePresence mode="wait">
         {!isLogin && (
-          <div className="space-y-2">
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-2 overflow-hidden"
+          >
             <Label htmlFor="displayName">Nombre</Label>
             <Input
               id="displayName"
@@ -151,8 +161,9 @@ export function AuthPanel() {
               placeholder="Tu nombre"
               required
             />
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
@@ -189,7 +200,7 @@ export function AuthPanel() {
           disabled={loading}
           variant="primary"
           size="lg"
-          className="w-full"
+          className="w-full hover:scale-[1.02] transition-transform duration-200 shadow-lg hover:shadow-xl"
           isLoading={loading}
           aria-busy={loading}
         >
@@ -207,18 +218,24 @@ export function AuthPanel() {
       </p>
 
       {/* Error/Success */}
-      {error && (
-        <div
-          className={`mt-4 p-4 rounded-lg text-sm ${
-            error.includes('Revisa') || error.includes('📧')
-              ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-              : 'bg-red-500/20 text-red-300 border border-red-500/30'
-          }`}
-          role="alert"
-        >
-          {error}
-        </div>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className={`mt-4 p-4 rounded-lg text-sm ${
+              error.includes('Revisa') || error.includes('📧')
+                ? 'bg-green-500/20 text-green-300 border border-green-500/30'
+                : 'bg-red-500/20 text-red-300 border border-red-500/30'
+            }`}
+            role="alert"
+          >
+            {error}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
