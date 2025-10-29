@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Input } from '@/components/ui/Input'
+import { Eye, EyeOff } from 'lucide-react'
 
 interface PasswordFieldProps {
   id: string
@@ -52,9 +53,7 @@ export function PasswordField({
           className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded p-1"
           aria-label={show ? 'Ocultar contraseña' : 'Ver contraseña'}
         >
-          <span className="text-lg" aria-hidden="true">
-            {show ? '🙈' : '👁️'}
-          </span>
+          {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
         </button>
       </div>
       {showStrength && strength && strength.level > 0 && (

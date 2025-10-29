@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { AuthModal } from '@/components/auth/AuthModal'
 import BackgroundFX from '@/components/ui/BackgroundFX'
+import { TreePine } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -36,8 +37,9 @@ export default function LoginPage() {
     <>
       <BackgroundFX />
       {showMessage && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-600/90 backdrop-blur-sm text-white px-6 py-3 rounded-full shadow-lg animate-in fade-in slide-in-from-top-2 duration-300">
-          🎄 Inicia sesión para ver tu lista
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-600/90 backdrop-blur-sm text-white px-6 py-3 rounded-full shadow-lg animate-in fade-in slide-in-from-top-2 duration-300 flex items-center gap-2">
+          <TreePine className="w-5 h-5" />
+          <span>Inicia sesión para ver tu lista</span>
         </div>
       )}
       <AuthModal isOpen={true} onClose={() => router.push('/')} />

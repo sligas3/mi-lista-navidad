@@ -11,6 +11,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Redirigir rutas antiguas a landing (para usuarios con sesión antigua)
+  if (pathname === '/' || pathname.startsWith('/_next') || pathname.startsWith('/static')) {
+    return NextResponse.next()
+  }
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,

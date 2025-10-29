@@ -5,6 +5,31 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.1.0] - 2024-01-XX
+
+### 🎉 Agregado
+- Filtro de usuarios en forma de árbol de navidad 🎄
+- Estrella dorada SVG en la cima del árbol
+- Tronco decorativo cuando hay más de 3 usuarios
+- Distribución piramidal automática según cantidad de usuarios
+
+### 🎨 Mejorado
+- Todos los emojis reemplazados por iconos SVG de Lucide React
+- Iconos de ojo (Eye/EyeOff) en campo de contraseña
+- Icono TreePine en notificaciones y toasts
+- Icono Gift en AuthPanel
+- Consistencia visual con SVG escalables
+
+---
+
+## [2.0.1] - 2024-01-XX
+
+### 🎉 Agregado
+- Página 404 personalizada con diseño navideño
+- Botones para volver a inicio o dashboard desde 404
+
+---
+
 ## [2.0.0] - 2024-01-XX
 
 ### 🎉 Agregado
