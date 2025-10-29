@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PUBLIC_PATHS = ['/login', '/register', '/auth/callback', '/api/health', '/api/keep-alive']
+const PUBLIC_PATHS = ['/', '/login', '/register', '/auth/callback', '/api/health', '/api/keep-alive']
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl

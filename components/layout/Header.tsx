@@ -21,9 +21,9 @@ export function Header({ user }: HeaderProps) {
       <div className="container mx-auto flex items-center justify-between gap-2 sm:gap-4">
         {/* Logo */}
         <Link 
-          href="/" 
+          href="/dashboard" 
           className="flex items-center text-white hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 rounded-lg p-0.5 sm:p-1"
-          aria-label="Ir a inicio"
+          aria-label="Ir al panel"
         >
           <img 
             src="/logo.png" 

@@ -9,7 +9,7 @@ export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showMessage, setShowMessage] = useState(false)
-  const next = searchParams.get('next') || '/'
+  const next = searchParams.get('next') || '/dashboard'
 
   useEffect(() => {
     // Mostrar mensaje si fue redirigido

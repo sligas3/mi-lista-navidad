@@ -1,10 +1,16 @@
 'use server'
 
-import { requireAuth } from '@/lib/auth-helpers'
+import { createClient } from '@/lib/supabase-server'
 import { revalidatePath } from 'next/cache'
 
 export async function getWishes() {
-  const { supabase } = await requireAuth()
+  const supabase = await createClient()
+  
+  const { data: { session } } = await supabase.auth.getSession()
+  
+  if (!session) {
+    return []
+  }
 
   const { data, error } = await supabase
     .from('wishes')
@@ -21,7 +27,10 @@ export async function getWishes() {
 }
 
 export async function createWish(nombreUsuario: string, deseo: string, prioridad: 1 | 2 | 3) {
-  const { supabase } = await requireAuth()
+  const supabase = await createClient()
+  
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) throw new Error('No autenticado')
 
   // Extraer URL si existe para no modificarla
   const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+)/g
@@ -58,7 +67,10 @@ export async function createWish(nombreUsuario: string, deseo: string, prioridad
 }
 
 export async function toggleWish(id: string, cumplido: boolean) {
-  const { supabase } = await requireAuth()
+  const supabase = await createClient()
+  
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) throw new Error('No autenticado')
 
   const { error } = await supabase
     .from('wishes')
@@ -74,7 +86,10 @@ export async function toggleWish(id: string, cumplido: boolean) {
 }
 
 export async function deleteWish(id: string) {
-  const { supabase } = await requireAuth()
+  const supabase = await createClient()
+  
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) throw new Error('No autenticado')
 
   const { error } = await supabase
     .from('wishes')

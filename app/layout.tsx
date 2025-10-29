@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Manrope } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { getCurrentUser } from "./actions/auth";
 
 export const dynamic = 'force-dynamic'
 
@@ -36,16 +34,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const user = await getCurrentUser()
-  
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${poppins.variable} ${manrope.variable}`} style={{ WebkitFontSmoothing: 'antialiased' }}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+      </head>
       <body className="bg-emerald-950" style={{
         background: 'radial-gradient(ellipse at top, #064e3b 0%, #022c22 50%, #0a1f1a 100%)',
         minHeight: '100vh'
       }}>
-        <Header user={user} />
         {children}
       </body>
     </html>

@@ -1,4 +1,4 @@
-import { isAdmin } from '@/lib/auth-helpers'
+import { requireAdmin } from '@/lib/auth-helpers'
 import { redirect } from 'next/navigation'
 import { ReactNode } from 'react'
 
@@ -7,9 +7,9 @@ interface AdminGuardProps {
 }
 
 export async function AdminGuard({ children }: AdminGuardProps) {
-  const admin = await isAdmin()
-
-  if (!admin) {
+  try {
+    await requireAdmin()
+  } catch {
     redirect('/')
   }
 

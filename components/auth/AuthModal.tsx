@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { AuthPanel } from './AuthPanel'
 import { TreePine, X } from 'lucide-react'
 
@@ -11,9 +11,10 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-  const shouldAnimate = useMemo(() => {
-    if (typeof window === 'undefined') return false
-    return window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+  const [shouldAnimate, setShouldAnimate] = useState(false)
+  
+  useEffect(() => {
+    setShouldAnimate(window.matchMedia('(prefers-reduced-motion: no-preference)').matches)
   }, [])
 
   useEffect(() => {

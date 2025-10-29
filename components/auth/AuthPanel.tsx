@@ -35,7 +35,7 @@ export function AuthPanel() {
   async function handleGoogleLogin() {
     setLoading(true)
     setError(null)
-    const next = new URLSearchParams(window.location.search).get('next') || '/'
+    const next = new URLSearchParams(window.location.search).get('next') || '/dashboard'
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -73,7 +73,7 @@ export function AuthPanel() {
           : 'Error al crear cuenta. Verifica tus datos.')
       } else {
         sessionStorage.setItem('new_session', 'true')
-        const next = new URLSearchParams(window.location.search).get('next') || '/'
+        const next = new URLSearchParams(window.location.search).get('next') || '/dashboard'
         window.location.href = next
       }
     } else {
@@ -86,7 +86,7 @@ export function AuthPanel() {
         setError('Email o contraseña incorrectos. ¿Olvidaste tu contraseña?')
       } else {
         sessionStorage.setItem('new_session', 'true')
-        const next = new URLSearchParams(window.location.search).get('next') || '/'
+        const next = new URLSearchParams(window.location.search).get('next') || '/dashboard'
         window.location.href = next
       }
     }
