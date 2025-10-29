@@ -57,8 +57,8 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
 
   return (
     <Card className={`animate-scale-in ${wish.cumplido ? 'opacity-60' : ''}`}>
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 space-y-3">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="flex-1 space-y-3 min-w-0">
           <div className="flex items-start gap-3">
             <span className="flex-shrink-0">
               {wish.cumplido ? (
@@ -76,9 +76,10 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
                   href={url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-sm text-blue-400 hover:text-blue-300 underline break-all mt-1 inline-block"
+                  className="text-xs sm:text-sm text-blue-400 hover:text-blue-300 underline mt-1 inline-block truncate max-w-full"
+                  title={url}
                 >
-                  {url}
+                  {url.length > 50 ? `${url.substring(0, 47)}...` : url}
                 </a>
               )}
             </div>
@@ -86,51 +87,51 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
 
           {url && <LinkPreviewCard url={url} />}
 
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm text-white/70 flex items-center gap-1.5">
-              <UserIcon className="w-4 h-4" />
-              <span className="font-medium">{formatDisplayName(wish.nombre_usuario)}</span>
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap text-xs sm:text-sm">
+            <span className="text-white/70 flex items-center gap-1">
+              <UserIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="font-medium truncate max-w-[120px] sm:max-w-none">{formatDisplayName(wish.nombre_usuario)}</span>
             </span>
-            <span className={`text-sm flex items-center gap-1 ${getPrioridadColor(wish.prioridad)}`}>
-              <PriorityIcon className="w-4 h-4" />
-              {getPrioridadText(wish.prioridad)}
+            <span className={`flex items-center gap-1 ${getPrioridadColor(wish.prioridad)}`}>
+              <PriorityIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">{getPrioridadText(wish.prioridad)}</span>
             </span>
             <Badge variant={wish.cumplido ? 'success' : 'warning'}>
               {wish.cumplido ? 'Cumplido' : 'Pendiente'}
             </Badge>
-            <span className="text-xs text-white/50">
+            <span className="text-white/50 hidden sm:inline">
               {formatearFecha(wish.created_at)}
             </span>
           </div>
         </div>
 
         {isOwner && (
-          <div className="flex gap-2 flex-shrink-0">
+          <div className="flex gap-2 flex-shrink-0 self-end sm:self-start">
             <Button
               onClick={handleToggle}
               disabled={loading}
               variant="ghost"
-              size="md"
-              className="min-w-[44px]"
+              size="sm"
+              className="min-w-[44px] p-2"
               title={wish.cumplido ? 'Marcar pendiente' : 'Marcar cumplido'}
               aria-label={wish.cumplido ? 'Marcar pendiente' : 'Marcar cumplido'}
             >
               {wish.cumplido ? (
-                <Undo2 className="w-5 h-5" />
+                <Undo2 className="w-4 h-4 sm:w-5 sm:h-5" />
               ) : (
-                <CheckCircle className="w-5 h-5" />
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </Button>
             <Button
               onClick={handleDelete}
               disabled={loading}
               variant="ghost"
-              size="md"
-              className="min-w-[44px]"
+              size="sm"
+              className="min-w-[44px] p-2"
               title="Eliminar"
               aria-label="Eliminar deseo"
             >
-              <Trash2 className="w-5 h-5" />
+              <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
           </div>
         )}

@@ -28,10 +28,11 @@ export default function ExportButton({ wishes, onExport }: ExportButtonProps) {
     <Button
       onClick={handleExport}
       variant="secondary"
-      size="sm"
+      size="md"
+      aria-label="Exportar"
     >
-      <Clipboard className="w-4 h-4 mr-1.5" />
-      Exportar
+      <Clipboard className="w-4 h-4 sm:mr-1.5" />
+      <span className="hidden sm:inline">Exportar</span>
     </Button>
   )
 }

@@ -121,20 +121,20 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
               onClick={handleShare}
               variant="secondary"
               size="md"
-              className="min-h-[44px] py-3 px-4 text-[16px]"
+              aria-label="Compartir"
             >
-              <LinkIcon className="w-4 h-4 mr-1.5" />
-              Compartir
+              <LinkIcon className="w-4 h-4 sm:mr-1.5" />
+              <span className="hidden sm:inline">Compartir</span>
             </Button>
             <ExportButton wishes={wishes} onExport={handleExport} />
             <Button
               onClick={() => setShowStats(!showStats)}
               variant="ghost"
               size="md"
-              className="min-h-[44px] py-3 px-4 text-[16px]"
+              aria-label="Estadísticas"
             >
-              <BarChart3 className="w-4 h-4 mr-1.5" />
-              Estadísticas
+              <BarChart3 className="w-4 h-4 sm:mr-1.5" />
+              <span className="hidden sm:inline">Estadísticas</span>
             </Button>
           </div>
 
@@ -182,26 +182,26 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
           {user && (
             <button
               onClick={() => setShowForm(!showForm)}
-              className={`fixed bottom-6 right-6 z-50 text-white font-bold px-6 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[56px] flex items-center gap-2 group ${
+              className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 text-white font-bold px-4 py-3 sm:px-6 sm:py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[48px] sm:min-h-[56px] flex items-center gap-1.5 sm:gap-2 group text-sm sm:text-base ${
                 showForm 
                   ? 'bg-red-600 hover:bg-red-700 focus-visible:ring-red-400' 
                   : 'bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400'
               }`}
               aria-label={showForm ? 'Cerrar formulario' : 'Agregar nuevo deseo'}
               style={{
-                paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))',
+                paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))',
               }}
             >
               {showForm ? (
                 <>
-                  <X className="w-6 h-6 transition-transform group-hover:rotate-90 duration-200" />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:rotate-90 duration-200" />
                   <span className="hidden sm:inline">Cerrar</span>
                 </>
               ) : (
                 <>
-                  <Plus className="w-6 h-6 transition-transform group-hover:rotate-90 duration-200" />
+                  <Plus className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:rotate-90 duration-200" />
                   <span className="hidden sm:inline">Agregar deseo</span>
-                  <Gift className="w-5 h-5" />
+                  <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
                 </>
               )}
             </button>
