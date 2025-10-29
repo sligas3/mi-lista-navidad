@@ -18,6 +18,7 @@ import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
 import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper, Plus, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface ClientPageProps {
   initialWishes: Wish[]
@@ -158,38 +159,52 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
             user={user}
           />
 
-          {/* Botón para agregar deseo */}
+          {/* Formulario colapsable */}
+          <AnimatePresence>
+            {user && showForm && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="space-y-3"
+              >
+                <WishForm
+                  nombreUsuario={user?.display_name || user?.email || ''}
+                  onSubmit={handleCreateWish}
+                  user={user}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Botón flotante para agregar deseo (FAB) */}
           {user && (
-            <div className="sticky bottom-6 z-10">
-              {!showForm ? (
-                <Button
-                  onClick={() => setShowForm(true)}
-                  variant="primary"
-                  size="lg"
-                  className="w-full shadow-2xl shadow-green-900/60 text-base font-bold"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Agregar nuevo deseo
-                </Button>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className={`fixed bottom-6 right-6 z-50 text-white font-bold px-6 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[56px] flex items-center gap-2 group ${
+                showForm 
+                  ? 'bg-red-600 hover:bg-red-700 focus-visible:ring-red-400' 
+                  : 'bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400'
+              }`}
+              aria-label={showForm ? 'Cerrar formulario' : 'Agregar nuevo deseo'}
+              style={{
+                paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))',
+              }}
+            >
+              {showForm ? (
+                <>
+                  <X className="w-6 h-6 transition-transform group-hover:rotate-90 duration-200" />
+                  <span className="hidden sm:inline">Cerrar</span>
+                </>
               ) : (
-                <div className="space-y-3">
-                  <Button
-                    onClick={() => setShowForm(false)}
-                    variant="ghost"
-                    size="md"
-                    className="w-full"
-                  >
-                    <X className="w-5 h-5 mr-2" />
-                    Cancelar
-                  </Button>
-                  <WishForm
-                    nombreUsuario={user?.display_name || user?.email || ''}
-                    onSubmit={handleCreateWish}
-                    user={user}
-                  />
-                </div>
+                <>
+                  <Plus className="w-6 h-6 transition-transform group-hover:rotate-90 duration-200" />
+                  <span className="hidden sm:inline">Agregar deseo</span>
+                  <Gift className="w-5 h-5" />
+                </>
               )}
-            </div>
+            </button>
           )}
 
           <Footer />

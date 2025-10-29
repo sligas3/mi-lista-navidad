@@ -20,7 +20,7 @@ export default function SnowEffect() {
   }, [])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0">
+    <div className="fixed inset-0 pointer-events-none -z-10">
       {snowflakes.map((flake) => (
         <div
           key={flake.id}

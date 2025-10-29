@@ -50,7 +50,7 @@ export default function BackgroundFX() {
   if (reducedMotion) return null
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
       {/* Silueta de árbol de navidad */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[700px] opacity-10 hidden md:block">
         {/* Triángulos del árbol */}

@@ -58,9 +58,10 @@
     }
   }
 
-  /* Scrollbar personalizado */
+  /* Scrollbar personalizado vertical */
   ::-webkit-scrollbar {
     width: 10px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -72,6 +73,23 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/30;
+  }
+
+  /* Scrollbar horizontal para carrousel */
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-full;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     @apply bg-white/30;
   }
 }
@@ -211,6 +229,12 @@
       transform: translate3d(10vw, 100vh, 0);
       opacity: 0.3;
     }
+  }
+
+  /* Scroll suave */
+  .overflow-x-auto {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Respeta prefers-reduced-motion */
