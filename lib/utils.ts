@@ -55,7 +55,16 @@ export function validarNombre(nombre: string): boolean {
 
 // Extraer URL de un texto
 export function extractUrl(text: string): string | null {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const match = text.match(urlRegex);
-  return match ? match[0] : null;
+  // Regex mejorada que captura URLs completas sin cortar parámetros
+  const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+)/g;
+  const matches = text.match(urlRegex);
+  
+  if (!matches) return null;
+  
+  // Limpiar caracteres finales que no son parte de la URL
+  let url = matches[0];
+  // Remover puntuación final común (punto, coma, paréntesis)
+  url = url.replace(/[.,;:!?)]+$/, '');
+  
+  return url;
 }

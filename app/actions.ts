@@ -19,13 +19,28 @@ export async function getWishes() {
 }
 
 export async function createWish(nombreUsuario: string, deseo: string, prioridad: 1 | 2 | 3) {
-  const deseoCapitalizado = deseo.charAt(0).toUpperCase() + deseo.slice(1).toLowerCase()
+  // Extraer URL si existe para no modificarla
+  const urlRegex = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+)/g
+  const urlMatch = deseo.match(urlRegex)
+  
+  let deseoFinal = deseo
+  if (urlMatch) {
+    // Separar texto de URL
+    const url = urlMatch[0]
+    const texto = deseo.replace(url, '').trim()
+    // Capitalizar solo el texto, mantener URL intacta
+    const textoCapitalizado = texto.charAt(0).toUpperCase() + texto.slice(1)
+    deseoFinal = `${textoCapitalizado} ${url}`
+  } else {
+    // Sin URL, capitalizar normalmente
+    deseoFinal = deseo.charAt(0).toUpperCase() + deseo.slice(1)
+  }
   
   const { error } = await supabase
     .from('wishes')
     .insert({
       nombre_usuario: nombreUsuario,
-      deseo: deseoCapitalizado,
+      deseo: deseoFinal,
       prioridad: prioridad,
       cumplido: false,
     })
