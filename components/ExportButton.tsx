@@ -31,7 +31,7 @@ export default function ExportButton({ wishes, onExport }: ExportButtonProps) {
       size="md"
       aria-label="Exportar"
     >
-      <Clipboard className="w-4 h-4 sm:mr-1.5" />
+      <Clipboard className="w-3.5 h-3.5 sm:w-4 sm:h-4 sm:mr-1.5" />
       <span className="hidden sm:inline">Exportar</span>
     </Button>
   )

@@ -59,16 +59,16 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
     <Card className={`animate-scale-in ${wish.cumplido ? 'opacity-60' : ''}`}>
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div className="flex-1 space-y-3 min-w-0">
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-2 sm:gap-3">
             <span className="flex-shrink-0">
               {wish.cumplido ? (
-                <CheckCircle className="w-6 h-6 text-green-400" />
+                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" />
               ) : (
-                <Gift className="w-6 h-6 text-yellow-400" />
+                <Gift className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
               )}
             </span>
             <div className="flex-1">
-              <p className={`text-base font-semibold text-white leading-relaxed break-words ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
+              <p className={`text-sm sm:text-base font-semibold text-white leading-relaxed break-words ${wish.cumplido ? 'line-through opacity-60' : ''}`}>
                 {deseoSinUrl}
               </p>
               {url && (
@@ -76,10 +76,10 @@ export default function WishItem({ wish, currentUser, onToggle, onDelete, user }
                   href={url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-xs sm:text-sm text-blue-400 hover:text-blue-300 underline mt-1 inline-block truncate max-w-full"
+                  className="text-[11px] xs:text-xs sm:text-sm text-blue-400 hover:text-blue-300 underline mt-0.5 sm:mt-1 inline-block truncate max-w-full"
                   title={url}
                 >
-                  {url.length > 50 ? `${url.substring(0, 47)}...` : url}
+                  {url.length > 40 ? `${url.substring(0, 37)}...` : url}
                 </a>
               )}
             </div>

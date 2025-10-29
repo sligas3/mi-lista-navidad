@@ -30,17 +30,17 @@ export function UserMenu({ user }: UserMenuProps) {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5 sm:gap-2">
       {/* Avatar + Nombre */}
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10">
-        <div className={`w-8 h-8 rounded-full ${getAvatarColor(user.email)} flex items-center justify-center`}>
+      <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white/10">
+        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full ${getAvatarColor(user.email)} flex items-center justify-center`}>
           {(() => {
             const AvatarIcon = getChristmasAvatar(user.email)
-            return <AvatarIcon className="w-5 h-5 text-white" />
+            return <AvatarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           })()}
         </div>
         <div className="hidden sm:block">
-          <p className="text-white text-sm font-medium leading-tight">
+          <p className="text-white text-xs sm:text-sm font-medium leading-tight">
             {user.display_name ? formatDisplayName(user.display_name) : 'Usuario'}
           </p>
           {user.role === 'admin' && (
@@ -55,7 +55,7 @@ export function UserMenu({ user }: UserMenuProps) {
         disabled={loading}
         variant="outline"
         size="md"
-        className="min-h-[44px] px-4 py-3 text-[16px] focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950"
+        className="focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950"
         aria-label="Cerrar sesión"
         isLoading={loading}
       >
