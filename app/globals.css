@@ -140,22 +140,28 @@
     }
   }
 
-  /* Animación de orbes */
+  /* Animación de orbes optimizada */
+  .orb {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
   @keyframes float-orb {
     0%, 100% {
-      transform: translate(0, 0) scale(1);
+      transform: translate3d(0, 0, 0) scale(1);
       opacity: 0.3;
     }
     25% {
-      transform: translate(30px, -40px) scale(1.1);
+      transform: translate3d(30px, -40px, 0) scale(1.1);
       opacity: 0.5;
     }
     50% {
-      transform: translate(-20px, -80px) scale(0.9);
+      transform: translate3d(-20px, -80px, 0) scale(0.9);
       opacity: 0.4;
     }
     75% {
-      transform: translate(40px, -60px) scale(1.05);
+      transform: translate3d(40px, -60px, 0) scale(1.05);
       opacity: 0.6;
     }
   }
@@ -163,25 +169,24 @@
   @keyframes pulse-glow {
     0%, 100% {
       opacity: 0.4;
-      filter: blur(20px);
     }
     50% {
       opacity: 0.7;
-      filter: blur(25px);
     }
   }
 
-  /* Animación de copos de nieve */
+  /* Animación de copos de nieve optimizada */
   .snowflake {
     position: fixed;
     top: -10vh;
     color: white;
     font-size: 1.5rem;
-    -webkit-animation: snowfall linear infinite;
     animation: snowfall linear infinite;
     pointer-events: none;
     z-index: 0;
-    will-change: transform, opacity;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   @-webkit-keyframes snowfall {
@@ -199,13 +204,11 @@
 
   @keyframes snowfall {
     0% {
-      -webkit-transform: translateY(-10vh) translateX(0);
-      transform: translateY(-10vh) translateX(0);
+      transform: translate3d(0, -10vh, 0);
       opacity: 1;
     }
     100% {
-      -webkit-transform: translateY(100vh) translateX(10vw);
-      transform: translateY(100vh) translateX(10vw);
+      transform: translate3d(10vw, 100vh, 0);
       opacity: 0.3;
     }
   }

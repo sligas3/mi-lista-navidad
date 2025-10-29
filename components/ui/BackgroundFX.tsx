@@ -17,13 +17,15 @@ export default function BackgroundFX() {
   const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
-    // Detectar prefers-reduced-motion
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     setReducedMotion(mediaQuery.matches)
 
     if (!mediaQuery.matches) {
-      // Crear 8 orbes dorados
-      const newYellowOrbs = Array.from({ length: 8 }, (_, i) => ({
+      // Detectar dispositivo de baja gama
+      const isLowEnd = navigator.hardwareConcurrency <= 4 || window.innerWidth < 768
+      const orbCount = isLowEnd ? 3 : 6
+
+      const newYellowOrbs = Array.from({ length: orbCount }, (_, i) => ({
         id: i,
         left: Math.random() * 100,
         top: Math.random() * 100,
@@ -33,8 +35,7 @@ export default function BackgroundFX() {
       }))
       setYellowOrbs(newYellowOrbs)
 
-      // Crear 8 orbes rojos con el mismo patrón
-      const newRedOrbs = Array.from({ length: 8 }, (_, i) => ({
+      const newRedOrbs = Array.from({ length: orbCount }, (_, i) => ({
         id: i + 100,
         left: Math.random() * 100,
         top: Math.random() * 100,
@@ -51,17 +52,17 @@ export default function BackgroundFX() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
       {/* Silueta de árbol de navidad */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[700px] opacity-10">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[700px] opacity-10 hidden md:block">
         {/* Triángulos del árbol */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[200px] border-r-[200px] border-b-[250px] border-l-transparent border-r-transparent border-b-green-600/40" style={{ filter: 'blur(30px)' }} />
-        <div className="absolute bottom-[180px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[180px] border-r-[180px] border-b-[230px] border-l-transparent border-r-transparent border-b-green-600/40" style={{ filter: 'blur(30px)' }} />
-        <div className="absolute bottom-[340px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[150px] border-r-[150px] border-b-[200px] border-l-transparent border-r-transparent border-b-green-600/40" style={{ filter: 'blur(30px)' }} />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[200px] border-r-[200px] border-b-[250px] border-l-transparent border-r-transparent border-b-green-600/40" style={{ filter: 'blur(20px)' }} />
+        <div className="absolute bottom-[180px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[180px] border-r-[180px] border-b-[230px] border-l-transparent border-r-transparent border-b-green-600/40" style={{ filter: 'blur(20px)' }} />
+        <div className="absolute bottom-[340px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[150px] border-r-[150px] border-b-[200px] border-l-transparent border-r-transparent border-b-green-600/40" style={{ filter: 'blur(20px)' }} />
         
         {/* Tronco */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-20 bg-amber-900/30" style={{ filter: 'blur(20px)' }} />
         
         {/* Bolas rojas decorativas */}
-        <div className="absolute top-[120px] left-[45%] w-12 h-12 rounded-full bg-red-600/40 animate-pulse" style={{ filter: 'blur(15px)', animationDuration: '3s' }} />
+        <div className="absolute top-[120px] left-[45%] w-12 h-12 rounded-full bg-red-600/40 animate-pulse" style={{ filter: 'blur(10px)', animationDuration: '3s' }} />
         <div className="absolute top-[200px] right-[35%] w-10 h-10 rounded-full bg-red-500/40 animate-pulse" style={{ filter: 'blur(15px)', animationDuration: '3.5s', animationDelay: '0.5s' }} />
         <div className="absolute top-[280px] left-[40%] w-14 h-14 rounded-full bg-red-600/40 animate-pulse" style={{ filter: 'blur(15px)', animationDuration: '4s', animationDelay: '1s' }} />
         <div className="absolute top-[360px] right-[38%] w-11 h-11 rounded-full bg-red-500/40 animate-pulse" style={{ filter: 'blur(15px)', animationDuration: '3.2s', animationDelay: '1.5s' }} />

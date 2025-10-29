@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
@@ -24,6 +24,14 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
   const [prioridad, setPrioridad] = useState<1 | 2 | 3>(2)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  
+  const shouldAnimate = useMemo(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(prefers-reduced-motion: no-preference)').matches && 
+           navigator.hardwareConcurrency > 4
+  }, [])
+  
+  const MotionDiv = shouldAnimate ? motion.div : 'div'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,10 +58,12 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
   return (
     <Card>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+        <MotionDiv
+          {...(shouldAnimate && {
+            initial: { opacity: 0, y: 10 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.1 }
+          })}
           className="space-y-2"
         >
           <Label htmlFor="titulo" required className="text-base flex items-center gap-2">
@@ -71,12 +81,14 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
             maxLength={500}
             error={error}
           />
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+        <MotionDiv
+          {...(shouldAnimate && {
+            initial: { opacity: 0, y: 10 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.2 }
+          })}
           className="space-y-2"
         >
           <Label htmlFor="link" className="text-base flex items-center gap-2">
@@ -92,21 +104,25 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
             type="url"
           />
           <LinkPreview url={link} />
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+        <MotionDiv
+          {...(shouldAnimate && {
+            initial: { opacity: 0, y: 10 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.3 }
+          })}
         >
           <PrioritySegment value={prioridad} onChange={setPrioridad} />
-        </motion.div>
+        </MotionDiv>
 
         {user ? (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+          <MotionDiv
+            {...(shouldAnimate && {
+              initial: { opacity: 0, y: 10 },
+              animate: { opacity: 1, y: 0 },
+              transition: { delay: 0.4 }
+            })}
           >
             <Button
               type="submit"
@@ -121,7 +137,7 @@ export default function WishForm({ nombreUsuario, onSubmit, user }: WishFormProp
             <p className="text-xs text-center text-white/60 mt-3">
               Pidiendo como: <span className="font-semibold text-white">{user.display_name || user.email}</span>
             </p>
-          </motion.div>
+          </MotionDiv>
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-center text-white/80">

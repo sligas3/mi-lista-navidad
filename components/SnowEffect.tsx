@@ -6,7 +6,11 @@ export default function SnowEffect() {
   const [snowflakes, setSnowflakes] = useState<Array<{ id: number; left: number; delay: number; duration: number }>>([])
 
   useEffect(() => {
-    const flakes = Array.from({ length: 40 }, (_, i) => ({
+    // Detectar dispositivo de baja gama
+    const isLowEnd = navigator.hardwareConcurrency <= 4 || 
+                     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    
+    const flakes = Array.from({ length: isLowEnd ? 15 : 30 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 5,
