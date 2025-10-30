@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BaseModal } from '@/components/ui/BaseModal';
+import { AnimatedTabs } from '@/components/ui/AnimatedTabs';
 import { Button } from '@/components/ui/Button';
-import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Users, Copy, Check, RefreshCw } from 'lucide-react';
@@ -21,6 +22,11 @@ export function FamilyCodeModal({ isOpen, onClose, onSuccess }: FamilyCodeModalP
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  useEffect(() => {
+    setShouldAnimate(window.matchMedia('(prefers-reduced-motion: no-preference)').matches);
+  }, []);
 
   const handleGenerateCode = async () => {
     setLoading(true);
@@ -40,7 +46,7 @@ export function FamilyCodeModal({ isOpen, onClose, onSuccess }: FamilyCodeModalP
       setError('Genera un código primero');
       return;
     }
-    
+
     setLoading(true);
     setError(null);
     try {
@@ -58,7 +64,7 @@ export function FamilyCodeModal({ isOpen, onClose, onSuccess }: FamilyCodeModalP
       setError('Ingresa un código válido');
       return;
     }
-    
+
     setLoading(true);
     setError(null);
     try {
@@ -68,7 +74,7 @@ export function FamilyCodeModal({ isOpen, onClose, onSuccess }: FamilyCodeModalP
         setLoading(false);
         return;
       }
-      
+
       await updateFamilyCode(code);
       onSuccess();
     } catch (err) {
@@ -84,142 +90,130 @@ export function FamilyCodeModal({ isOpen, onClose, onSuccess }: FamilyCodeModalP
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleTabChange = (newMode: string) => {
+    setMode(newMode as 'create' | 'join');
+    setCode('');
+    setError(null);
+  };
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
-          onClick={onClose}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="relative w-full max-w-md bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="space-y-6">
-              <div className="text-center space-y-2">
-                <Users className="w-12 h-12 text-emerald-400 mx-auto" />
-                <h2 className="text-2xl font-bold text-white">Configura tu Familia</h2>
-                <p className="text-white/70 text-sm">
-                  Comparte deseos solo con tu familia
-                </p>
-              </div>
+    <BaseModal isOpen={isOpen} onClose={onClose} title="Configura tu Familia" icon={Users}>
+      <p className="text-white/70 text-sm text-center mb-4 sm:mb-6">
+        Comparte deseos solo con tu familia
+      </p>
 
-              <div className="flex gap-2 bg-white/5 p-1 rounded-xl">
-                <button
-                  onClick={() => { setMode('create'); setCode(''); setError(null); }}
-                  className={`flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-colors ${
-                    mode === 'create' ? 'bg-white/20 text-white' : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  Crear Familia
-                </button>
-                <button
-                  onClick={() => { setMode('join'); setCode(''); setError(null); }}
-                  className={`flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition-colors ${
-                    mode === 'join' ? 'bg-white/20 text-white' : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  Unirse
-                </button>
-              </div>
-
-              {mode === 'create' ? (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label>Código de Familia</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        value={code}
-                        readOnly
-                        placeholder="Genera un código"
-                        className="flex-1"
-                      />
-                      {code && (
-                        <Button
-                          onClick={handleCopy}
-                          variant="ghost"
-                          size="md"
-                          className="min-w-[44px]"
-                        >
-                          {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-
-                  <AnimatedButton
-                    onClick={handleGenerateCode}
-                    variant="secondary"
-                    size="lg"
-                    className="w-full font-bold shadow-2xl shadow-slate-900/60 hover:shadow-slate-500/50"
-                    disabled={loading}
-                    leftIcon={<RefreshCw className="w-5 h-5" />}
-                  >
-                    Generar Código
-                  </AnimatedButton>
-
-                  {code && (
-                    <>
-                      <AnimatedButton
-                        onClick={handleCreateFamily}
-                        variant="primary"
-                        size="lg"
-                        className="w-full font-bold shadow-2xl shadow-emerald-900/60 hover:shadow-emerald-500/50"
-                        disabled={loading}
-                        isLoading={loading}
-                      >
-                        Crear Familia
-                      </AnimatedButton>
-                      <p className="text-xs text-white/60 text-center">
-                        Comparte este código con tu familia
-                      </p>
-                    </>
-                  )}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label>Código de Familia</Label>
+      <AnimatedTabs
+        tabs={[
+          { id: 'create', label: 'Crear Familia' },
+          { id: 'join', label: 'Unirse' },
+        ]}
+        value={mode}
+        onChange={handleTabChange}
+      >
+        <div className="space-y-4">
+            {mode === 'create' ? (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="family-code">Código de Familia</Label>
+                  <div className="flex gap-2">
                     <Input
+                      id="family-code"
                       value={code}
-                      onChange={(e) => setCode(e.target.value.toUpperCase())}
-                      placeholder="Ej: ABC12345"
-                      maxLength={8}
+                      readOnly
+                      placeholder="Genera un código"
+                      className="flex-1"
+                      tabIndex={-1}
                     />
+                    {code && (
+                      <Button
+                        onClick={handleCopy}
+                        variant="ghost"
+                        size="md"
+                        className="min-w-[44px] px-3"
+                        aria-label={copied ? 'Código copiado' : 'Copiar código'}
+                      >
+                        {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                      </Button>
+                    )}
                   </div>
-
-                  <AnimatedButton
-                    onClick={handleJoinFamily}
-                    variant="primary"
-                    size="lg"
-                    className="w-full font-bold shadow-2xl shadow-emerald-900/60 hover:shadow-emerald-500/50"
-                    disabled={loading || !code}
-                    isLoading={loading}
-                  >
-                    Unirse a Familia
-                  </AnimatedButton>
-
-                  <p className="text-xs text-white/60 text-center">
-                    Pide el código a un miembro de tu familia
-                  </p>
                 </div>
-              )}
 
-              {error && (
-                <div className="p-3 rounded-lg bg-red-500/20 border border-red-500/30 text-red-300 text-sm">
-                  {error}
+                <Button
+                  onClick={handleGenerateCode}
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                  disabled={loading}
+                  leftIcon={<RefreshCw className="w-5 h-5" />}
+                >
+                  Generar Código
+                </Button>
+
+                {code && (
+                  <>
+                    <Button
+                      onClick={handleCreateFamily}
+                      variant="primary"
+                      size="lg"
+                      className="w-full"
+                      disabled={loading}
+                      isLoading={loading}
+                    >
+                      Crear Familia
+                    </Button>
+                    <p className="text-xs text-white/60 text-center">
+                      Comparte este código con tu familia
+                    </p>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="join-code">Código de Familia</Label>
+                  <Input
+                    id="join-code"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value.toUpperCase())}
+                    placeholder="Ej: ABC12345"
+                    maxLength={8}
+                    autoFocus
+                  />
                 </div>
-              )}
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+
+                <Button
+                  onClick={handleJoinFamily}
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  disabled={loading || !code}
+                  isLoading={loading}
+                >
+                  Unirse a Familia
+                </Button>
+
+                <p className="text-xs text-white/60 text-center">
+                  Pide el código a un miembro de tu familia
+                </p>
+              </>
+            )}
+
+            {error && (
+              <motion.div
+                {...(shouldAnimate && {
+                  initial: { opacity: 0, y: -10 },
+                  animate: { opacity: 1, y: 0 },
+                  exit: { opacity: 0, y: -10 },
+                  transition: { duration: 0.2 },
+                })}
+                className="p-3 rounded-lg bg-red-500/20 border border-red-500/30 text-red-300 text-sm"
+                role="alert"
+              >
+                {error}
+              </motion.div>
+            )}
+        </div>
+      </AnimatedTabs>
+    </BaseModal>
   );
 }

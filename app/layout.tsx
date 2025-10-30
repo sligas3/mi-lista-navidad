@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Manrope } from "next/font/google";
 import "./globals.css";
-import { ChristmasCountdown } from "@/components/ui/ChristmasCountdown";
 
 export const dynamic = 'force-dynamic'
 
@@ -46,7 +45,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         background: 'radial-gradient(ellipse at top, #064e3b 0%, #022c22 50%, #0a1f1a 100%)',
         minHeight: '100vh'
       }}>
-        <ChristmasCountdown />
         {children}
       </body>
     </html>

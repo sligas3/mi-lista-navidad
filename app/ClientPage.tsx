@@ -22,6 +22,7 @@ import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
 import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper, Plus, X, Users } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ChristmasCountdownClient } from '@/components/ui/ChristmasCountdownClient'
 
 interface ClientPageProps {
   initialWishes: Wish[]
@@ -133,6 +134,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
       <BackgroundFX />
       <SnowEffect />
       <WelcomeToast userName={user?.display_name} />
+      {shouldShowContent && <ChristmasCountdownClient />}
       
       {showProfileModal && user && (
         <ProfileModal
