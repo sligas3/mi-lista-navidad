@@ -77,26 +77,28 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
           leftIcon={<Search className="w-4 h-4" />}
         />
 
-        <div className="flex gap-2 flex-wrap">
-          <Button onClick={() => handleFilterChange("todos")} variant={filtro === "todos" ? "primary" : "outline"} size="md">
-            <Gift className="w-4 h-4 mr-1.5" />
-            Todos
+        <div className="grid grid-cols-3 gap-2">
+          <Button onClick={() => handleFilterChange("todos")} variant={filtro === "todos" ? "primary" : "outline"} size="md" className="flex-col sm:flex-row gap-1 sm:gap-1.5">
+            <Gift className="w-4 h-4" />
+            <span className="text-xs sm:text-sm">Todos</span>
           </Button>
           <Button
             onClick={() => handleFilterChange("pendientes")}
             variant={filtro === "pendientes" ? "primary" : "outline"}
             size="md"
+            className="flex-col sm:flex-row gap-1 sm:gap-1.5"
           >
-            <Clock className="w-4 h-4 mr-1.5" />
-            Pendientes
+            <Clock className="w-4 h-4" />
+            <span className="text-xs sm:text-sm">Pendientes</span>
           </Button>
           <Button
             onClick={() => handleFilterChange("cumplidos")}
             variant={filtro === "cumplidos" ? "primary" : "outline"}
             size="md"
+            className="flex-col sm:flex-row gap-1 sm:gap-1.5"
           >
-            <CheckCircle className="w-4 h-4 mr-1.5" />
-            Cumplidos
+            <CheckCircle className="w-4 h-4" />
+            <span className="text-xs sm:text-sm">Cumplidos</span>
           </Button>
         </div>
       </div>

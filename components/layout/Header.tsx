@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { User } from '@/lib/types/database'
 import { Button } from '@/components/ui/Button'
-import { CookieLoader } from '@/components/ui/CookieLoader'
+import ChristmasTreeLoader from '@/components/ui/ChristmasTreeLoader'
 import { Menu, X, Link as LinkIcon, BarChart3, Download, LogOut, Users, Copy, Check, User as UserIcon } from 'lucide-react'
 import { createClient } from '@/lib/supabase-browser'
 import { useRouter } from 'next/navigation'
@@ -59,7 +59,7 @@ export function Header({ user, onShare, onStats, onExport, showStats }: HeaderPr
   }
   return (
     <>
-      {loading && <CookieLoader message="Cerrando sesión..." />}
+      {loading && <ChristmasTreeLoader label="Cerrando sesión..." />}
       <header 
         className="sticky top-0 z-50 w-full border-b border-white/10 backdrop-blur-xl bg-emerald-950/80"
         style={{

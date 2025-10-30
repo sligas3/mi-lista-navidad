@@ -5,16 +5,37 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.5.0] - 2024-01-XX
+
+### 🎉 Agregado
+- **Loader de Árbol Navideño** reemplazando CookieLoader
+- Árbol SVG con bolas rojas (#E11D48) y doradas (#FACC15)
+- Luces multicolor animadas (verde → dorado → rojo → blanco)
+- Animación de glow y pulse en el árbol
+- Respeta `prefers-reduced-motion` para accesibilidad
+
+### 🎨 Mejorado
+- Botón Scroll to Top con transiciones fade in/out suaves (200ms)
+- Posicionamiento del botón scroll ajustado (bottom-24) para evitar superposición con FABs
+- Botones de filtrado en WishList con grid 3 columnas alineados
+- Layout responsivo en filtros: vertical en móvil, horizontal en desktop
+- Tipografía del loader consistente con fuente de la app
+- Sombreado (drop-shadow-lg) en texto del loader
+- Tamaños responsivos del loader: 112px móvil, 128px desktop
+
+### 🗑️ Eliminado
+- CookieLoader.tsx y todas sus referencias
+- Animación de galleta comiéndose
+
+---
+
 ## [2.4.0] - 2024-01-XX
 
 ### 🎉 Agregado
 - **Botón Scroll to Top** con diseño glassmorphism sutil
-- **Loader de Árbol Navideño** con bolas rojas/amarillas y luces multicolor
-- Animaciones SVG nativas para decoraciones del árbol
-- Estrella dorada parpadeante en la punta del árbol
+- Animaciones SVG nativas para decoraciones
 
 ### 🎨 Mejorado
-- Loader reemplazado de galleta a árbol navideño festivo
 - Botón scroll to top con backdrop blur y diseño no invasivo
 - Aparición del botón solo después de 300px de scroll
 - Posicionamiento optimizado para no interferir con FABs

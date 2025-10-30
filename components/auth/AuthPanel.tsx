@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
 import { Separator } from '@/components/ui/Separator'
 import { PasswordField } from './PasswordField'
-import { CookieLoader } from '@/components/ui/CookieLoader'
+import ChristmasTreeLoader from '@/components/ui/ChristmasTreeLoader'
 import { useRouter } from 'next/navigation'
 import { formatDisplayName } from '@/lib/formatName'
 import { Gift, Mail } from 'lucide-react'
@@ -114,7 +114,7 @@ export function AuthPanel({ initialMode = 'login' }: AuthPanelProps = {}) {
 
   return (
     <>
-      {loading && <CookieLoader message={mode === 'register' ? 'Creando cuenta...' : 'Iniciando sesión...'} />}
+      {loading && <ChristmasTreeLoader label={mode === 'register' ? 'Creando cuenta...' : 'Iniciando sesión...'} />}
       <div className="w-full max-w-md mx-auto">
       <AnimatedTabs
         tabs={[
