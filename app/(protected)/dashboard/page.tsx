@@ -12,7 +12,8 @@ export default async function DashboardPage() {
     redirect('/login?next=/dashboard');
   }
   
-  const wishes = await getWishes();
+  // Solo cargar deseos si tiene código de familia
+  const wishes = user.family_code ? await getWishes() : [];
 
   return <ClientPage initialWishes={wishes} user={user} />;
 }
