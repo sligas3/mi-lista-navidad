@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
+import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Users, Copy, Check, RefreshCw } from 'lucide-react';
@@ -152,29 +153,29 @@ export function FamilyCodeModal({ isOpen, onClose, onSuccess }: FamilyCodeModalP
                     </div>
                   </div>
 
-                  <Button
+                  <AnimatedButton
                     onClick={handleGenerateCode}
                     variant="secondary"
                     size="lg"
-                    className="w-full"
+                    className="w-full font-bold shadow-2xl shadow-slate-900/60 hover:shadow-slate-500/50"
                     disabled={loading}
+                    leftIcon={<RefreshCw className="w-5 h-5" />}
                   >
-                    <RefreshCw className="w-5 h-5" />
                     Generar Código
-                  </Button>
+                  </AnimatedButton>
 
                   {code && (
                     <>
-                      <Button
+                      <AnimatedButton
                         onClick={handleCreateFamily}
                         variant="primary"
                         size="lg"
-                        className="w-full"
+                        className="w-full font-bold shadow-2xl shadow-emerald-900/60 hover:shadow-emerald-500/50"
                         disabled={loading}
                         isLoading={loading}
                       >
                         Crear Familia
-                      </Button>
+                      </AnimatedButton>
                       <p className="text-xs text-white/60 text-center">
                         Comparte este código con tu familia
                       </p>
@@ -193,16 +194,16 @@ export function FamilyCodeModal({ isOpen, onClose, onSuccess }: FamilyCodeModalP
                     />
                   </div>
 
-                  <Button
+                  <AnimatedButton
                     onClick={handleJoinFamily}
                     variant="primary"
                     size="lg"
-                    className="w-full"
+                    className="w-full font-bold shadow-2xl shadow-emerald-900/60 hover:shadow-emerald-500/50"
                     disabled={loading || !code}
                     isLoading={loading}
                   >
                     Unirse a Familia
-                  </Button>
+                  </AnimatedButton>
 
                   <p className="text-xs text-white/60 text-center">
                     Pide el código a un miembro de tu familia

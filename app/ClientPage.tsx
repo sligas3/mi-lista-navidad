@@ -12,7 +12,7 @@ import BackgroundFX from '@/components/ui/BackgroundFX'
 import SnowEffect from '@/components/SnowEffect'
 import { ProfileModal } from '@/components/ProfileModal'
 import { FamilyCodeModal } from '@/components/family/FamilyCodeModal'
-import { FamilyCodeCard } from '@/components/family/FamilyCodeCard'
+import { FamilyCodeBadge } from '@/components/family/FamilyCodeBadge'
 import { Toast } from '@/components/ui/Toast'
 import { updateProfile } from './actions/auth'
 import Stats from '@/components/Stats'
@@ -20,7 +20,7 @@ import { WelcomeToast } from '@/components/auth/WelcomeToast'
 import ExportButton from '@/components/ExportButton'
 import UserFilter from '@/components/UserFilter'
 import { Button } from '@/components/ui/Button'
-import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper, Plus, X } from 'lucide-react'
+import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper, Plus, X, Users } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface ClientPageProps {
@@ -38,12 +38,28 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const [showForm, setShowForm] = useState(false)
   const wishFormRef = useRef<WishFormRef>(null)
 
+  // Exponer acciones al Header mediante eventos
+  useEffect(() => {
+    const handleHeaderShare = () => handleShare()
+    const handleHeaderExport = () => handleExport()
+    const handleHeaderStats = () => setShowStats(prev => !prev)
+
+    window.addEventListener('header:share', handleHeaderShare)
+    window.addEventListener('header:export', handleHeaderExport)
+    window.addEventListener('header:stats', handleHeaderStats)
+
+    return () => {
+      window.removeEventListener('header:share', handleHeaderShare)
+      window.removeEventListener('header:export', handleHeaderExport)
+      window.removeEventListener('header:stats', handleHeaderStats)
+    }
+  }, [wishes])
+
   useEffect(() => {
     if (user && !user.display_name) {
       setShowProfileModal(true)
-    } else if (user && !user.family_code) {
-      setShowFamilyModal(true)
     }
+    // No forzar modal de familia, mostrar botón flotante
   }, [user])
 
   useEffect(() => {
@@ -98,6 +114,10 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   }
 
   const handleExport = () => {
+    const text = wishes
+      .map(w => `${w.cumplido ? '✅' : '⏳'} ${w.deseo} - ${w.nombre_usuario}`)
+      .join('\n')
+    navigator.clipboard.writeText(text)
     setToast({ message: 'Lista copiada al portapapeles', variant: 'success' })
   }
 
@@ -122,17 +142,15 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
         />
       )}
       
-      {showFamilyModal && user && (
-        <FamilyCodeModal
-          isOpen={showFamilyModal}
-          onClose={() => setShowFamilyModal(false)}
-          onSuccess={() => {
-            setShowFamilyModal(false)
-            setToast({ message: '¡Familia configurada!', variant: 'success' })
-            window.location.reload()
-          }}
-        />
-      )}
+      <FamilyCodeModal
+        isOpen={showFamilyModal}
+        onClose={() => setShowFamilyModal(false)}
+        onSuccess={() => {
+          setShowFamilyModal(false)
+          setToast({ message: '¡Familia configurada!', variant: 'success' })
+          window.location.reload()
+        }}
+      />
 
       <main className="min-h-screen px-4 py-6 sm:px-6 md:px-8 md:py-8 lg:py-12">
         <div className="container mx-auto max-w-screen-sm md:max-w-screen-md lg:max-w-3xl space-y-6 md:space-y-8">
@@ -140,38 +158,15 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
             <>
               <HeaderNavidad />
 
-              {/* Acciones */}
-              <div className="flex gap-2 flex-wrap">
-                <Button
-                  onClick={handleShare}
-                  variant="secondary"
-                  size="lg"
-                  aria-label="Compartir"
-                  className="min-h-[44px]"
-                >
-                  <LinkIcon className="w-4 h-4 sm:mr-1.5" />
-                  <span className="hidden sm:inline">Compartir</span>
-                </Button>
-                <ExportButton wishes={wishes} onExport={handleExport} />
-                <Button
-                  onClick={() => setShowStats(!showStats)}
-                  variant="ghost"
-                  size="lg"
-                  aria-label="Estadísticas"
-                  className="min-h-[44px] whitespace-nowrap"
-                >
-                  <BarChart3 className="w-4 h-4 mr-1.5" />
-                  <span>Estadísticas</span>
-                </Button>
-              </div>
-
-              {/* Código de Familia */}
+              {/* Código de Familia Compacto */}
               {user?.family_code && (
-                <FamilyCodeCard familyCode={user.family_code} />
+                <FamilyCodeBadge familyCode={user.family_code} />
               )}
 
               {/* Estadísticas */}
-              {showStats && <Stats wishes={wishes} />}
+              <AnimatePresence>
+                {showStats && <Stats wishes={wishes} />}
+              </AnimatePresence>
 
               {/* Filtro por usuario */}
               {wishes.length > 0 && (
@@ -193,71 +188,90 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
             </>
           ) : (
             <div className="flex items-center justify-center min-h-[60vh]">
-              <div className="text-center text-white/60">
-                <PartyPopper className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p>Configura tu código de familia para comenzar</p>
+              <div className="text-center text-white/80 space-y-4">
+                <PartyPopper className="w-20 h-20 mx-auto mb-4 text-emerald-400" />
+                <h2 className="text-2xl font-bold">Bienvenido a tu Lista Navideña</h2>
+                <p className="text-white/60 max-w-md mx-auto">
+                  Configura tu código de familia para comenzar a compartir deseos
+                </p>
+                <Button
+                  onClick={() => setShowFamilyModal(true)}
+                  variant="primary"
+                  size="lg"
+                  className="mt-4"
+                >
+                  <Users className="w-5 h-5" />
+                  Configurar Familia
+                </Button>
               </div>
             </div>
           )}
 
-          {shouldShowContent && (
-            <>
-              {/* Formulario colapsable */}
-              <AnimatePresence>
-                {user && showForm && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                    transition={{ duration: 0.2, ease: 'easeOut' }}
-                    className="space-y-3"
-                  >
-                    <WishForm
-                      ref={wishFormRef}
-                      nombreUsuario={user?.display_name || user?.email || ''}
-                      onSubmit={handleCreateWish}
-                      user={user}
-                      isVisible={showForm}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+          {/* Formulario colapsable */}
+          <AnimatePresence>
+            {user && showForm && shouldShowContent && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="space-y-3"
+              >
+                <WishForm
+                  ref={wishFormRef}
+                  nombreUsuario={user?.display_name || user?.email || ''}
+                  onSubmit={handleCreateWish}
+                  user={user}
+                  isVisible={showForm}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-              {/* Botón flotante para agregar deseo (FAB) */}
-              {user && (
-                <div className="fixed-mobile-safe bottom-4 right-4 sm:bottom-6 sm:right-6 z-50" style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
-                  <button
-                    onClick={() => {
-                      if (!showForm) {
-                        setShowForm(true)
-                      } else {
-                        setShowForm(false)
-                      }
-                    }}
-                    className={`text-white font-bold px-4 py-3 sm:px-6 sm:py-4 rounded-full shadow-2xl motion-safe:hover:shadow-emerald-500/50 motion-safe:hover:scale-[1.08] motion-safe:active:scale-[0.96] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[52px] min-w-[52px] sm:min-h-[60px] sm:min-w-[60px] flex items-center justify-center gap-1.5 sm:gap-2 group text-touch-safe hover:brightness-110 ${
-                      showForm 
-                        ? 'bg-rose-600 hover:bg-rose-700 motion-safe:hover:shadow-rose-500/50 focus-visible:ring-rose-400' 
-                        : 'bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400'
-                    }`}
-                    aria-label={showForm ? 'Cerrar formulario' : 'Agregar nuevo deseo'}
-                    aria-expanded={showForm}
-                  >
-                    {showForm ? (
-                      <>
-                        <X className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
-                        <span className="hidden sm:inline">Cerrar</span>
-                      </>
-                    ) : (
-                      <>
-                        <Plus className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
-                        <span className="hidden xs:inline">Agregar</span>
-                        <Gift className="w-4 h-4 sm:w-5 sm:h-5 hidden xs:inline" />
-                      </>
-                    )}
-                  </button>
-                </div>
+          {/* Botones flotantes (FAB) */}
+          {user && (
+            <div className="fixed-mobile-safe bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-3" style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
+              {/* Botón de Código de Familia */}
+              {!user.family_code && (
+                <motion.button
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  onClick={() => setShowFamilyModal(true)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 sm:p-4 rounded-full shadow-2xl motion-safe:hover:shadow-blue-500/50 motion-safe:hover:scale-[1.08] motion-safe:active:scale-[0.96] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-950 min-h-[52px] min-w-[52px] sm:min-h-[60px] sm:min-w-[60px] flex items-center justify-center group hover:brightness-110"
+                  aria-label="Configurar familia"
+                >
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6" />
+                </motion.button>
               )}
-            </>
+              
+              {/* Botón de Agregar Deseo */}
+              {shouldShowContent && (
+                <button
+                  onClick={() => setShowForm(!showForm)}
+                  className={`text-white font-bold px-4 py-3 sm:px-6 sm:py-4 rounded-full shadow-2xl motion-safe:hover:shadow-emerald-500/50 motion-safe:hover:scale-[1.08] motion-safe:active:scale-[0.96] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 min-h-[52px] min-w-[52px] sm:min-h-[60px] sm:min-w-[60px] flex items-center justify-center gap-1.5 sm:gap-2 group text-touch-safe hover:brightness-110 ${
+                    showForm 
+                      ? 'bg-rose-600 hover:bg-rose-700 motion-safe:hover:shadow-rose-500/50 focus-visible:ring-rose-400' 
+                      : 'bg-emerald-600 hover:bg-emerald-700 focus-visible:ring-emerald-400'
+                  }`}
+                  aria-label={showForm ? 'Cerrar formulario' : 'Agregar nuevo deseo'}
+                  aria-expanded={showForm}
+                >
+                  {showForm ? (
+                    <>
+                      <X className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
+                      <span className="hidden sm:inline">Cerrar</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-5 h-5 sm:w-6 sm:h-6 transition-transform motion-safe:group-hover:rotate-90 duration-200" />
+                      <span className="hidden xs:inline">Agregar</span>
+                      <Gift className="w-4 h-4 sm:w-5 sm:h-5 hidden xs:inline" />
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           )}
 
           <Footer />

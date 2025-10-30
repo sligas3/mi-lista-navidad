@@ -15,16 +15,20 @@ export default async function PublicHeader() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          );
+        setAll() {
+          // No-op: cookies are read-only in this context
         },
       },
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
+  let session = null;
+  try {
+    const { data } = await supabase.auth.getSession();
+    session = data.session;
+  } catch (error) {
+    // Ignorar errores de refresh token
+  }
   return (
     <header 
       className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-xl bg-emerald-950/80"

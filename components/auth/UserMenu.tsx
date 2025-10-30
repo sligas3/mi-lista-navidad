@@ -32,19 +32,19 @@ export function UserMenu({ user }: UserMenuProps) {
   return (
     <div className="flex items-center gap-1.5 sm:gap-2">
       {/* Avatar + Nombre */}
-      <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white/10">
-        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full ${getAvatarColor(user.email)} flex items-center justify-center`}>
+      <div className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-emerald-600/80 border border-emerald-500/50">
+        <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full ${getAvatarColor(user.email)} flex items-center justify-center ring-2 ring-white/30`}>
           {(() => {
             const AvatarIcon = getChristmasAvatar(user.email)
             return <AvatarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           })()}
         </div>
         <div className="hidden sm:block">
-          <p className="text-white text-xs sm:text-sm font-medium leading-tight">
+          <p className="text-white text-sm sm:text-base font-semibold leading-tight">
             {user.display_name ? formatDisplayName(user.display_name) : 'Usuario'}
           </p>
           {user.role === 'admin' && (
-            <span className="text-xs text-yellow-400">Admin</span>
+            <span className="text-xs text-yellow-300 font-medium">Admin</span>
           )}
         </div>
       </div>
