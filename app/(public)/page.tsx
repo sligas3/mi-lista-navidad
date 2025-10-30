@@ -21,19 +21,24 @@ export default async function HomePage() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          );
+        setAll() {
+          // No-op: cookies are read-only in this context
         },
       },
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  if (session) {
-    redirect("/dashboard");
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error) {
+      // Limpiar cookies corruptas
+      await supabase.auth.signOut();
+    } else if (session) {
+      redirect("/dashboard");
+    }
+  } catch (error) {
+    // Silenciar errores de autenticación en landing page pública
   }
 
   return (
