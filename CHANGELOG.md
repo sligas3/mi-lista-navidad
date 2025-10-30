@@ -5,6 +5,33 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.2.0] - 2024-01-XX
+
+### 🎉 Agregado
+- **Sistema de Códigos de Familia** para restringir listas por familia
+- Modal automático para configurar código de familia (crear o unirse)
+- Card en dashboard para compartir código con familia
+- Botón "Compartir" con Web Share API (WhatsApp, SMS, Email)
+- Función SQL `generate_family_code()` para códigos únicos
+- Server actions para manejar códigos de familia
+- Documentación completa en `FAMILY_CODE_GUIDE.md`
+
+### 🔒 Seguridad
+- Filtrado de deseos por `family_code` en queries
+- Solo usuarios de la misma familia ven deseos compartidos
+- Verificación de códigos antes de unirse
+
+### 💾 Base de Datos
+- Nueva columna `users.family_code` (TEXT, nullable)
+- Índice `idx_users_family_code` para búsquedas rápidas
+- Migración `004_add_family_code.sql`
+
+### 🔄 Cambiado
+- `getWishes()` ahora filtra por familia si usuario tiene código
+- Usuarios sin código ven todos los deseos (comportamiento legacy)
+
+---
+
 ## [2.1.0] - 2024-01-XX
 
 ### 🎉 Agregado

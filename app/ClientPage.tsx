@@ -11,6 +11,8 @@ import WishList from '@/components/WishList'
 import BackgroundFX from '@/components/ui/BackgroundFX'
 import SnowEffect from '@/components/SnowEffect'
 import { ProfileModal } from '@/components/ProfileModal'
+import { FamilyCodeModal } from '@/components/family/FamilyCodeModal'
+import { FamilyCodeCard } from '@/components/family/FamilyCodeCard'
 import { Toast } from '@/components/ui/Toast'
 import { updateProfile } from './actions/auth'
 import Stats from '@/components/Stats'
@@ -29,6 +31,7 @@ interface ClientPageProps {
 export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes)
   const [showProfileModal, setShowProfileModal] = useState(false)
+  const [showFamilyModal, setShowFamilyModal] = useState(false)
   const [toast, setToast] = useState<{ message: string; variant: 'success' | 'error' | 'info' | 'warning' } | null>(null)
   const [selectedUser, setSelectedUser] = useState('Todos')
   const [showStats, setShowStats] = useState(false)
@@ -38,6 +41,8 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
   useEffect(() => {
     if (user && !user.display_name) {
       setShowProfileModal(true)
+    } else if (user && !user.family_code) {
+      setShowFamilyModal(true)
     }
   }, [user])
 
@@ -113,6 +118,18 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
           onClose={() => setShowProfileModal(false)}
         />
       )}
+      
+      {showFamilyModal && user && (
+        <FamilyCodeModal
+          isOpen={showFamilyModal}
+          onClose={() => setShowFamilyModal(false)}
+          onSuccess={() => {
+            setShowFamilyModal(false)
+            setToast({ message: '¡Familia configurada!', variant: 'success' })
+            window.location.reload()
+          }}
+        />
+      )}
 
       <main className="min-h-screen px-4 py-6 sm:px-6 md:px-8 md:py-8 lg:py-12">
         <div className="container mx-auto max-w-screen-sm md:max-w-screen-md lg:max-w-3xl space-y-6 md:space-y-8">
@@ -142,6 +159,11 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
               <span>Estadísticas</span>
             </Button>
           </div>
+
+          {/* Código de Familia */}
+          {user?.family_code && (
+            <FamilyCodeCard familyCode={user.family_code} />
+          )}
 
           {/* Estadísticas */}
           {showStats && <Stats wishes={wishes} />}

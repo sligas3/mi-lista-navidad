@@ -12,9 +12,49 @@ export async function getWishes() {
     return []
   }
 
+  // Obtener family_code del usuario actual
+  const { data: userData } = await supabase
+    .from('users')
+    .select('family_code')
+    .eq('id', session.user.id)
+    .single()
+  
+  const familyCode = userData?.family_code
+  
+  // Si no tiene family_code, mostrar todos los deseos (comportamiento legacy)
+  if (!familyCode) {
+    const { data, error } = await supabase
+      .from('wishes')
+      .select('id, nombre_usuario, deseo, prioridad, cumplido, created_at')
+      .order('created_at', { ascending: false })
+      .limit(100)
+
+    if (error) {
+      console.error('Error fetching wishes:', error)
+      return []
+    }
+
+    return data || []
+  }
+  
+  // Obtener IDs de usuarios de la misma familia
+  const { data: familyUsers } = await supabase
+    .from('users')
+    .select('display_name, email')
+    .eq('family_code', familyCode)
+  
+  if (!familyUsers || familyUsers.length === 0) {
+    return []
+  }
+  
+  // Crear lista de nombres de usuarios de la familia
+  const familyNames = familyUsers.map(u => u.display_name || u.email).filter(Boolean)
+  
+  // Filtrar deseos por nombres de usuarios de la familia
   const { data, error } = await supabase
     .from('wishes')
     .select('id, nombre_usuario, deseo, prioridad, cumplido, created_at')
+    .in('nombre_usuario', familyNames)
     .order('created_at', { ascending: false })
     .limit(100)
 

@@ -5,6 +5,7 @@ Lista de deseos navideña colaborativa con autenticación y diseño festivo.
 ## 🚀 Características
 
 - ✨ Autenticación con Supabase (Google OAuth + Email/Password)
+- 👨‍👩‍👧‍👦 **Códigos de Familia** para compartir listas solo con tu familia
 - 🎁 Crear, editar y eliminar deseos
 - ⭐ Sistema de prioridades (Mucho, Normal, Un poco)
 - 🔗 Soporte para URLs largas con preview
@@ -12,6 +13,7 @@ Lista de deseos navideña colaborativa con autenticación y diseño festivo.
 - ❄️ Efectos visuales: nieve, árbol navideño, orbes flotantes
 - 🎯 Iconos SVG con Lucide React
 - ⌨️ Hotkeys para prioridades (1/2/3)
+- 🎄 Filtro de usuarios en forma de árbol navideño
 
 ## 🛠️ Stack Tecnológico
 
