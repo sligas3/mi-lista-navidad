@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { WishSkeleton } from "@/components/ui/Skeleton";
 import { User } from "@/lib/types/database";
-import { Search, Gift, Clock, CheckCircle, TreePine, Sparkles } from "lucide-react";
+import { Search, Gift, Clock, CheckCircle, TreePine, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface WishListProps {
   readonly wishes: Wish[];
@@ -18,9 +18,12 @@ interface WishListProps {
   readonly user?: User | null;
 }
 
+const ITEMS_PER_PAGE = 10;
+
 export default function WishList({ wishes, currentUser, onToggle, onDelete, isLoading = false, user }: WishListProps) {
   const [filtro, setFiltro] = useState<"todos" | "pendientes" | "cumplidos">("todos");
   const [busqueda, setBusqueda] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const wishesFiltrados = wishes.filter((wish) => {
     let matchFiltro = false;
@@ -39,24 +42,48 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
     return matchFiltro && matchBusqueda;
   });
 
+  const totalPages = Math.ceil(wishesFiltrados.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentWishes = wishesFiltrados.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll al inicio de la lista de deseos
+    const wishListElement = document.querySelector('[data-wishlist-start]');
+    if (wishListElement) {
+      wishListElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleFilterChange = (newFiltro: "todos" | "pendientes" | "cumplidos") => {
+    setFiltro(newFiltro);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setBusqueda(value);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="space-y-6">
       {/* Filtros */}
       <div className="space-y-4">
         <Input
           value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Buscar por deseo o persona..."
           leftIcon={<Search className="w-4 h-4" />}
         />
 
         <div className="flex gap-2 flex-wrap">
-          <Button onClick={() => setFiltro("todos")} variant={filtro === "todos" ? "primary" : "outline"} size="md">
+          <Button onClick={() => handleFilterChange("todos")} variant={filtro === "todos" ? "primary" : "outline"} size="md">
             <Gift className="w-4 h-4 mr-1.5" />
             Todos
           </Button>
           <Button
-            onClick={() => setFiltro("pendientes")}
+            onClick={() => handleFilterChange("pendientes")}
             variant={filtro === "pendientes" ? "primary" : "outline"}
             size="md"
           >
@@ -64,7 +91,7 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
             Pendientes
           </Button>
           <Button
-            onClick={() => setFiltro("cumplidos")}
+            onClick={() => handleFilterChange("cumplidos")}
             variant={filtro === "cumplidos" ? "primary" : "outline"}
             size="md"
           >
@@ -106,23 +133,82 @@ export default function WishList({ wishes, currentUser, onToggle, onDelete, isLo
         }
 
         return (
-          <div className="space-y-3">
-            {wishesFiltrados.map((wish) => (
-              <WishItem
-                key={wish.id}
-                wish={wish}
-                currentUser={currentUser}
-                onToggle={onToggle}
-                onDelete={onDelete}
-                user={user}
-              />
-            ))}
-          </div>
+          <>
+            <div className="space-y-3">
+              {currentWishes.map((wish) => (
+                <WishItem
+                  key={wish.id}
+                  wish={wish}
+                  currentUser={currentUser}
+                  onToggle={onToggle}
+                  onDelete={onDelete}
+                  user={user}
+                />
+              ))}
+            </div>
+
+            {/* Paginación */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 pt-4">
+                <Button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  variant="outline"
+                  size="md"
+                  className="min-w-[44px]"
+                  aria-label="Página anterior"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+
+                <div className="flex gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                    if (
+                      page === 1 ||
+                      page === totalPages ||
+                      (page >= currentPage - 1 && page <= currentPage + 1)
+                    ) {
+                      return (
+                        <Button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          variant={currentPage === page ? "primary" : "outline"}
+                          size="md"
+                          className="min-w-[44px]"
+                        >
+                          {page}
+                        </Button>
+                      );
+                    } else if (page === currentPage - 2 || page === currentPage + 2) {
+                      return (
+                        <span key={page} className="flex items-center px-2 text-white/50">
+                          ...
+                        </span>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <Button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  variant="outline"
+                  size="md"
+                  className="min-w-[44px]"
+                  aria-label="Página siguiente"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
+          </>
         );
       })()}
 
       <p className="text-center text-sm text-white/60">
-        Mostrando {wishesFiltrados.length} de {wishes.length} deseos
+        Mostrando {startIndex + 1}-{Math.min(endIndex, wishesFiltrados.length)} de {wishesFiltrados.length} deseos
+        {wishesFiltrados.length !== wishes.length && ` (${wishes.length} total)`}
       </p>
     </div>
   );

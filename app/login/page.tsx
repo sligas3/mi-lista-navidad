@@ -11,6 +11,7 @@ export default function LoginPage() {
   const searchParams = useSearchParams()
   const [showMessage, setShowMessage] = useState(false)
   const next = searchParams.get('next') || '/dashboard'
+  const mode = (searchParams.get('mode') as 'login' | 'register') || 'login'
 
   useEffect(() => {
     // Mostrar mensaje si fue redirigido
@@ -42,7 +43,7 @@ export default function LoginPage() {
           <span>Inicia sesión para ver tu lista</span>
         </div>
       )}
-      <AuthModal isOpen={true} onClose={() => router.push('/')} />
+      <AuthModal isOpen={true} onClose={() => router.push('/')} initialMode={mode} />
     </>
   )
 }

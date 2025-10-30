@@ -5,6 +5,31 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.3.0] - 2024-01-XX
+
+### 🎉 Agregado
+- **Cookie Loader** animado con SVG de galletita comiéndose
+- Loader con backdrop blur durante login/logout
+- Countdown navideño fijo en header (solo con family_code)
+- Paginación en lista de deseos (10 items por página)
+- Scroll automático al cambiar de página
+
+### 🎨 Mejorado
+- Todos los emojis de landing reemplazados por iconos SVG:
+  - 🎄 → TreePine icon
+  - 💡 → Lightbulb icon
+  - ❤️ → Heart icon (con fill)
+- Header rediseñado mobile-first con hamburger menu
+- Animación de campo nombre solo en cambios manuales de tab
+- Botón "Crear Cuenta" desde landing abre tab correcto sin animación
+
+### 🐛 Corregido
+- Animación no deseada al abrir registro desde landing page
+- Falta de feedback visual durante login/logout
+- Navegación incorrecta desde botón "Crear Cuenta"
+
+---
+
 ## [2.2.0] - 2024-01-XX
 
 ### 🎉 Agregado

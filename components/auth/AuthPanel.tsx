@@ -9,28 +9,29 @@ import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
 import { Separator } from '@/components/ui/Separator'
 import { PasswordField } from './PasswordField'
+import { CookieLoader } from '@/components/ui/CookieLoader'
 import { useRouter } from 'next/navigation'
 import { formatDisplayName } from '@/lib/formatName'
 import { Gift, Mail } from 'lucide-react'
 
 type AuthMode = 'login' | 'register'
 
-export function AuthPanel() {
-  const [mode, setMode] = useState<AuthMode>('login')
+interface AuthPanelProps {
+  initialMode?: AuthMode
+}
+
+export function AuthPanel({ initialMode = 'login' }: AuthPanelProps = {}) {
+  const router = useRouter()
+  const supabase = createClient()
+  
+  const [mode, setMode] = useState<AuthMode>(initialMode)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [displayName, setDisplayName] = useState('')
   const [emailValid, setEmailValid] = useState(true)
-  const [shouldAnimate, setShouldAnimate] = useState(false)
-  
-  const supabase = createClient()
-  const router = useRouter()
-
-  useEffect(() => {
-    setShouldAnimate(window.matchMedia('(prefers-reduced-motion: no-preference)').matches)
-  }, [])
+  const [hasUserChangedTab, setHasUserChangedTab] = useState(false)
 
   const validateEmail = (email: string) => {
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -52,6 +53,7 @@ export function AuthPanel() {
       setError('Error al conectar con Google. Intenta de nuevo.')
       setLoading(false)
     }
+    // No quitamos loading aquí porque OAuth redirige
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -77,10 +79,12 @@ export function AuthPanel() {
         setError(error.message === 'User already registered' 
           ? 'Este email ya está registrado. Intenta iniciar sesión.'
           : 'Error al crear cuenta. Verifica tus datos.')
+        setLoading(false)
       } else {
         sessionStorage.setItem('new_session', 'true')
         const next = new URLSearchParams(window.location.search).get('next') || '/dashboard'
         window.location.href = next
+        // No quitamos loading para mantener loader durante navegación
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({
@@ -90,13 +94,14 @@ export function AuthPanel() {
       
       if (error) {
         setError('Email o contraseña incorrectos. ¿Olvidaste tu contraseña?')
+        setLoading(false)
       } else {
         sessionStorage.setItem('new_session', 'true')
         const next = new URLSearchParams(window.location.search).get('next') || '/dashboard'
         window.location.href = next
+        // No quitamos loading para mantener loader durante navegación
       }
     }
-    setLoading(false)
   }
 
   const isLogin = mode === 'login'
@@ -104,10 +109,13 @@ export function AuthPanel() {
   const handleTabChange = (newMode: string) => {
     setMode(newMode as AuthMode)
     setError(null)
+    setHasUserChangedTab(true)
   }
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <>
+      {loading && <CookieLoader message={mode === 'register' ? 'Creando cuenta...' : 'Iniciando sesión...'} />}
+      <div className="w-full max-w-md mx-auto">
       <AnimatedTabs
         tabs={[
           { id: 'login', label: 'Iniciar sesión' },
@@ -142,7 +150,7 @@ export function AuthPanel() {
               <AnimatePresence mode="wait">
               {!isLogin && (
                 <motion.div
-                  initial={{ opacity: 0, height: 0 }}
+                  initial={hasUserChangedTab ? { opacity: 0, height: 0 } : false}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
@@ -237,5 +245,6 @@ export function AuthPanel() {
           </div>
       </AnimatedTabs>
     </div>
+    </>
   )
 }

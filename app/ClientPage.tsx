@@ -12,7 +12,6 @@ import BackgroundFX from '@/components/ui/BackgroundFX'
 import SnowEffect from '@/components/SnowEffect'
 import { ProfileModal } from '@/components/ProfileModal'
 import { FamilyCodeModal } from '@/components/family/FamilyCodeModal'
-import { FamilyCodeBadge } from '@/components/family/FamilyCodeBadge'
 import { Toast } from '@/components/ui/Toast'
 import { updateProfile } from './actions/auth'
 import Stats from '@/components/Stats'
@@ -159,11 +158,6 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
           {shouldShowContent ? (
             <>
               <HeaderNavidad />
-
-              {/* Código de Familia Compacto */}
-              {user?.family_code && (
-                <FamilyCodeBadge familyCode={user.family_code} />
-              )}
 
               {/* Estadísticas */}
               <AnimatePresence>

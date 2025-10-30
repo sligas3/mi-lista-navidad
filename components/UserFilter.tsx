@@ -29,7 +29,7 @@ export default function UserFilter({ wishes, selectedUser, onSelectUser }: UserF
     <div className="space-y-3">
       {/* Estrella en la cima */}
       {totalUsers > 3 && (
-        <div className="flex justify-center">
+        <div className="flex justify-center" data-wishlist-start>
           <svg
             className="w-8 h-8 text-yellow-400 motion-safe:animate-pulse"
             viewBox="0 0 24 24"
