@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/Button'
 import { Gift, CheckCircle, Clock, Link as LinkIcon, BarChart3, PartyPopper, Plus, X, Users } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChristmasCountdownClient } from '@/components/ui/ChristmasCountdownClient'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 
 interface ClientPageProps {
   initialWishes: Wish[]
@@ -134,6 +135,7 @@ export default function ClientPage({ initialWishes, user }: ClientPageProps) {
       <SnowEffect />
       <WelcomeToast userName={user?.display_name} />
       {shouldShowContent && <ChristmasCountdownClient />}
+      <ScrollToTop />
       
       {showProfileModal && user && (
         <ProfileModal

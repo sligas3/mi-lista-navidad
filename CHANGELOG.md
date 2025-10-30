@@ -5,6 +5,22 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.4.0] - 2024-01-XX
+
+### 🎉 Agregado
+- **Botón Scroll to Top** con diseño glassmorphism sutil
+- **Loader de Árbol Navideño** con bolas rojas/amarillas y luces multicolor
+- Animaciones SVG nativas para decoraciones del árbol
+- Estrella dorada parpadeante en la punta del árbol
+
+### 🎨 Mejorado
+- Loader reemplazado de galleta a árbol navideño festivo
+- Botón scroll to top con backdrop blur y diseño no invasivo
+- Aparición del botón solo después de 300px de scroll
+- Posicionamiento optimizado para no interferir con FABs
+
+---
+
 ## [2.3.0] - 2024-01-XX
 
 ### 🎉 Agregado
