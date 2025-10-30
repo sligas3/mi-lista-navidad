@@ -5,6 +5,23 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.5.1] - 2024-01-XX
+
+### 📚 Documentación
+- Reorganización completa de archivos MD en carpeta `docs/`
+- Estructura organizada por categorías:
+  - `architecture/` - Arquitectura y diseño del sistema
+  - `development/` - Guías de desarrollo
+  - `deployment/` - Deployment y optimización
+  - `guides/` - Guías específicas de funcionalidades
+  - `testing/` - Documentación de testing
+  - `ui-components/` - Componentes UI
+  - `database/` - Base de datos y migraciones
+- README principal en `docs/` con índice completo
+- Nombres de archivos coherentes y descriptivos
+
+---
+
 ## [2.5.0] - 2024-01-XX
 
 ### 🎉 Agregado
