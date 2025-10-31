@@ -26,8 +26,8 @@ export function ScrollToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-24 left-4 z-40 
-        w-12 h-12 md:w-14 md:h-14
+      className={`fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 
+        w-12 h-12 sm:w-14 sm:h-14
         bg-white/10 hover:bg-white/20
         text-white rounded-full shadow-lg 
         flex items-center justify-center
@@ -37,8 +37,9 @@ export function ScrollToTop() {
         border border-white/30
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
       aria-label="Volver arriba"
+      style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
     >
-      <ArrowUp className="w-5 h-5 md:w-6 md:h-6" />
+      <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
     </button>
   );
 }

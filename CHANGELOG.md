@@ -5,7 +5,16 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
-## [2.5.1] - 2024-01-XX
+## [2.5.2] - 2025-10-30
+
+### 🐛 Corregido
+- Alineación del botón Scroll to Top con botón de agregar regalo
+- Ambos botones ahora en la misma línea horizontal (bottom-4)
+- Soporte para safe-area-inset-bottom en dispositivos móviles
+
+---
+
+## [2.5.1] - 2025-10-30
 
 ### 📚 Documentación
 - Reorganización completa de archivos MD en carpeta `docs/`
@@ -22,7 +31,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [2.5.0] - 2024-01-XX
+## [2.5.0] - 2025-10-30
 
 ### 🎉 Agregado
 - **Loader de Árbol Navideño** reemplazando CookieLoader
@@ -46,7 +55,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [2.4.0] - 2024-01-XX
+## [2.4.0] - 2025-10-30
 
 ### 🎉 Agregado
 - **Botón Scroll to Top** con diseño glassmorphism sutil
@@ -59,7 +68,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [2.3.0] - 2024-01-XX
+## [2.3.0] - 2025-10-30
 
 ### 🎉 Agregado
 - **Cookie Loader** animado con SVG de galletita comiéndose
@@ -84,7 +93,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [2.2.0] - 2024-01-XX
+## [2.2.0] - 2025-10-30
 
 ### 🎉 Agregado
 - **Sistema de Códigos de Familia** para restringir listas por familia
@@ -111,7 +120,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [2.1.0] - 2024-01-XX
+## [2.1.0] - 2025-10-29
 
 ### 🎉 Agregado
 - Filtro de usuarios en forma de árbol de navidad 🎄
@@ -128,7 +137,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [2.0.1] - 2024-01-XX
+## [2.0.1] - 2025-10-28
 
 ### 🎉 Agregado
 - Página 404 personalizada con diseño navideño
@@ -136,7 +145,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [2.0.0] - 2024-01-XX
+## [2.0.0] - 2025-10-28
 
 ### 🎉 Agregado
 - **Landing Page Pública** en `/` con Hero, Features y How It Works
@@ -194,7 +203,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
 ---
 
-## [1.0.0] - 2024-XX-XX
+## [1.0.0] - 2025-10-28
 
 ### 🎉 Lanzamiento Inicial
 - Aplicación de lista de deseos navideños
